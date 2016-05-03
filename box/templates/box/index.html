@@ -1,0 +1,69 @@
+{% extends "box/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="panel-body">
+
+        {% if error_message %}
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>{% trans "Artwork" %}</th>
+                <th>{% trans "Title" %}</th>
+                <th>{% trans "Artist" %}</th>
+                <th>{% trans "Album" %}</th>
+                <th>{% trans "Duration" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for song in all_songs %}
+                <tr id="song-{{ song.id }}">
+                    <td class="vert-align">
+                        <!--<a target="_blank" href="{{ song.audio_file.url }}">-->
+                            <button type="button" class="btn btn-success btn-xs btn-play-song" href="{{ song.audio_file.url }}">
+                                <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                            </button>
+                        <!--</a>-->
+                    </td>
+                    <td class="vert-align">
+                      <!-- Artwork cropped -->
+                      <div class="crop">
+                        <a href="{% url 'box:song-detail' song.id %}">
+                          {% if song.artwork %}
+                              <img src="{{ song.artwork.url }}">
+                          {% else %}
+                              <img src="{% static 'box/images/NoArtwork_Black.png' %}">
+                          {% endif %}
+                        </a>
+                      </div>
+                    </td>
+                    <!-- Title -->
+                    <td class="vert-align">
+                      <a href="{% url 'box:song-detail' song.id %}">{% if song.song_title %}{{ song.song_title }}{% endif %}</a>
+                    </td>
+                    <!-- Artist -->
+                    <td class="vert-align">{% if song.artist %}{{ song.artist }}{% endif %}</td>
+                    <!-- Album -->
+                    <td class="vert-align">{% if song.album %}{{ song.album }}{% endif %}</td>
+                    <!-- Duration -->
+                    <td class="vert-align">{% if song.duration %}{{ song.duration }}{% endif %}</td>
+                    <!-- Actions -->
+                    <td class="vert-align">
+                      <a href="{% url 'box:song-delete' song_id=song.id %}" class="fm-delete" data-fm-callback="remove" data-fm-target="#song-{{ song.id }}">
+                        <button type="submit" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span>&nbsp; {% trans "Delete" %}
+                        </button>
+                      </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

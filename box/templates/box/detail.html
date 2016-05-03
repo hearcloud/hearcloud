@@ -1,0 +1,198 @@
+{% extends 'box/base.html'|pjax:request %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container-fluid songs-container" id="song-{{ song.id }}">
+    <div class="row song-details-row">
+
+        <!-- Left cover artwork -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'box:song-detail' song.id %}">
+                        {% if song.artwork %}
+                            <img src="{{ song.artwork.url }}" class="img-responsive">
+                        {% else %}
+                            <img src="{% static 'box/images/NoArtwork_Black.png' %}" class="img-responsive">
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <div class="panel panel-default">
+                <div class="panel-body song-details">
+
+                    <div class="clearfix">
+                      <!-- Delete action -->
+                      <div class="pull-right">
+                        <form action="{% url 'box:song-delete' song.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="song_id" value="{{ song.id }}" />
+                            <button type="submit" class="btn btn-danger btn-xs">
+                                <span class="glyphicon glyphicon-trash"></span>&nbsp; Delete
+                            </button>
+                        </form>
+                      </div>
+
+                      <!-- Cancel edit action -->
+                      <div class="pull-right detail-action">
+                        <button type="button" class="btn btn-warning btn-xs" id="btn-cancel-edit-song" style="display: none;"><span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel</button>
+                      </div>
+
+                      <!-- Edit action -->
+                      <div class="pull-right detail-action">
+                        <a href="{% url 'box:song-update' song_id=song.id %}" class="fm-update" data-fm-callback="redirect" data-fm-target="{% url 'box:song-detail' song.id %}">
+                          <button type="button" class="btn btn-warning btn-xs" id="btn-edit-song"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</button>
+                        </a>
+                      </div>
+
+                      <!-- Submit edit action -->
+                      <div class="modal-buttons">
+                        <div class="pull-right detail-action">
+                          <button type="submit" class="btn btn-success btn-xs" id="btn-submit-song" style="display: none;"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Submit</button>
+                        </div>
+                      </div>
+
+                      <div class="inline-headers">
+                        <!-- Play action -->
+                        <a target="_blank" href="{{ song.audio_file.url }}">
+                            <button type="button" class="btn btn-success btn-circle btn-lg btn-play">
+                                <i class="glyphicon glyphicon-play"></i>
+                            </button>
+                        </a>
+                       
+                        {% if song.song_title %} 
+                          &nbsp;<h3>{{ song.song_title }}</h3>
+                        {% endif %}
+                      </div>
+                    </div>
+
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+
+                  <!-- Song details table -->
+                  <!-- Details list -->
+                  <ul class="list-unstyled" id="song-details">
+                      <!-- Filename -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Filename:" %}</strong></span>
+                      <span class="val">{{ song.audio_file.name }}</span>
+                    </li>
+
+                      <!-- Track title -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Track Title:" %}</strong></span>
+                      <span class="val">{% if song.song_title %} {{ song.song_title }} {% endif %}</span>
+                    </li>
+                          
+                      <!-- Artist -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Artist:" %}</strong></span>
+                      <span class="val">{% if song.artist %} {{ song.artist }} {% endif %}</span>
+                    </li>
+
+                      <!-- Time -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Duration:" %}</strong></span>
+                      <span class="val">{% if song.duration %} {{ song.duration }} {% endif %}</span>
+                    </li>
+
+                      <!-- Year -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Year:" %}</strong></span>
+                      <span class="val">{% if song.year %} {{ song.year }} {% endif %}</span>
+                    </li>
+
+                      <!-- Album -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Album:" %}</strong></span>
+                      <span class="val">{% if song.album %} {{ song.album }} {% endif %}</span> 
+                    </li>
+
+                      <!-- Album artist -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Album artist:" %}</strong></span>
+                      <span class="val">{% if song.album_artist %} {{ song.album_artist }} {% endif %}</span>
+                    </li>
+
+                      <!-- Track number -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Track number:" %}</strong></span>
+                      <span class="val">{% if song.track_number %} {{ song.track_number }} {% endif %}</span>
+                    </li>
+
+                      <!-- BPM -->
+                    <li>
+                      <span class="cat"><strong>{% trans "BPM:" %}</strong></span>
+                      <span class="val">{% if song.bpm %} {{ song.bpm }} {% endif %}</span>
+                    </li>
+
+                      <!-- Original artist -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Original artist:" %}</strong></span>
+                      <span class="val">{% if song.original_artist %} {{ song.original_artist }} {% endif %}</span>
+                    </li>
+
+                      <!-- Key -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Key:" %}</strong></span>
+                      <span class="val">{% if song.key %} {{ song.key }} {% endif %}</span>
+                    </li>
+
+                      <!-- Composer -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Composer:" %}</strong></span>
+                      <span class="val">{% if song.composer %} {{ song.composer }} {% endif %}</span>
+                    </li>
+
+                      <!-- Lyricist -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Lyricist:" %}</strong></span>
+                      <span class="val">{% if song.lyricist %} {{ song.lyricist }} {% endif %}</span>
+                    </li>
+
+                      <!-- Comments -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Comments:" %}</strong></span>
+                      <span class="val">{% if song.comments %} {{ song.comments }} {% endif %}</span>
+                    </li>
+
+                      <!-- Remixer -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Remixer:" %}</strong></span>
+                      <span class="val">{% if song.remixer %} {{ song.remixer }} {% endif %}</span>
+                    </li>
+
+                      <!-- Label/Publisher -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Label:" %}</strong></span>
+                      <span class="val">{% if song.label %} {{ song.label }} {% endif %}</span>
+                    </li>
+
+                      <!-- Genre/content type -->
+                    <li>
+                      <span class="cat"><strong>{% trans "Genre:" %}</strong></span>
+                      <span class="val">{% if song.genre %} {{ song.genre }} {% endif %}</span>
+                    </li>
+                  </ul>
+
+                  <!-- Details form -->
+                  <div class="update-form-body"></div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

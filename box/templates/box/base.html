@@ -1,0 +1,145 @@
+{% load i18n %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Hearcloud{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+  
+  <!-- Bootstrap CSS v3.3.6 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Custom Fonts -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+  <!-- nprogress bar -->
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css' rel='stylesheet' type='text/css'>
+
+  <!--<link href='https://cdn.rawgit.com/django-fm/django-fm/master/fm/static/fm/css/modal.css' rel='stylesheet' type='text/css'>-->
+  <!-- Custom CSS -->
+  <link rel="stylesheet" type="text/css" href="{% static 'hearcloud.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'box/css/box.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'box/css/player.css' %}"/>
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top navbar-shrink"  role="navigation">
+    <div class="container-fluid"> <!-- Entire width container -->
+
+        <!-- Website Logo -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse"> <!-- Responsive button thing -->
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'box:index' %}">Hearcloud</a>
+        </div>
+
+      <!-- Items -->
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+
+        <!-- Songs box section -->
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="{% url 'box:index' %}">
+              <span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp; {% trans "Songs box" %}
+            </a>
+          </li>
+        </ul>
+
+        <!-- Search songs section -->
+        <form class="navbar-form navbar-left" role="search" method="get" action="#">
+          <div class="form-group">
+            <input type="text" class="form-control" name="query" value="">
+          </div>
+          <button type="submit" class="btn btn-default">{% trans "Search" %}</button>
+        </form>
+
+        <!-- Pjax thing -->
+        <!--<p class="navbar-text hidden" id="loading"><span class="glyphicon glyphicon-refresh"></span> Loading..</p>-->
+        <p class="navbar-text navbar-right"><span class="label label-warning" style="font-weight: bold; font-size: 120%;">Page rendered at {{ today|time:"G:i:s" }}</span></p>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="{% url 'box:song-add' %}" class="fm-create" data-fm-callback="redirect" data-fm-target="{% url 'box:index' %}">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; {% trans "Add songs" %}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'users:logout' %}">
+              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; {% trans "Logout" %}
+            </a>
+          </li>
+        </ul>
+
+      </div>
+  </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12" id="pjax-container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+
+<div tabindex="-1" role="dialog" aria-hidden="true" id="fm-modal" class="fm-modal modal">
+    <div class="modal-dialog modal-content">
+        <div data-dismiss="modal" class="close-modal">
+            <div class="lr">
+                <div class="rl">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="">
+                    <div class="modal-wrapper" style="display: none;">
+                        <div class="modal-body"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">{% trans "This software is open source, licensed under AGPL v3. You can find the code, license and instructions " %}<a href="http://github.com/mpvillafranca/hearcloud">here</a>.</p>
+    <p class="text-muted">{% trans "Coded by" %} <a href="http://github.com/mpvillafranca">mpvillafranca</a> &copy; 2016.</p>
+  </div>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script src="http://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/1.9.6/jquery.pjax.js"></script>-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+<script type="text/javascript" src="{% static "box/js/fm.js" %}"></script>
+<script type="text/javascript">
+  $(function() {
+      $.fm({debug: true});
+  });
+</script>
+<script type="text/javascript" src="{% static "box/js/main.js" %}"></script>
+</body>
+</html>

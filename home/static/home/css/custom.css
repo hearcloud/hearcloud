@@ -1,0 +1,67 @@
+/* Rounded buttons */
+/* 1.- Removing the background */
+.btn.outline {
+	background: none;
+	padding: 12px 22px; /* reducing the button padding to not appear oversized. */
+}
+
+/* 2.- Increase the thickness of the border and change the color to match the border */
+.btn-primary.outline {
+	border: 2px solid #67efdf;
+	color: #fff;
+}
+
+/* 3.- Adding some hover effects */
+.btn-primary.outline:hover, .btn-primary.outline:focus, .btn-primary.outline:active, .btn-primary.outline.active, .open > .dropdown-toggle.btn-primary {
+	color: #000;
+  background-color: #67efdf;
+	border-color: #41e3d3;
+}
+.btn-primary.outline:active, .btn-primary.outline.active {
+	border-color: #41e3d3;
+	color: #007299;
+	box-shadow: none;
+}
+
+/* Centered navbar items */
+.navbar .navbar-collapse {
+    text-align: center;
+}
+@media (min-width: 768px) {
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
+
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
+}
+
+.nav li .btn{
+  float: right;
+  margin-right: 20px;
+}
+
+
+/* Description interline */
+section h3.section-subheading{
+  line-height: 30px;
+}
+
+strong{
+  text-transform: none;
+  color: #67efdf;
+  font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive
+}
+
+/* Sections spacing */
+section{
+    padding: 100px 0;
+}
+
+/* Font awesome background */
+.fa-inverse {
+    color: #333;
+}
