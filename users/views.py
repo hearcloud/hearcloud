@@ -86,7 +86,10 @@ class UserLogInFormView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('box:index')
+                    if 'next' in request.GET:
+                        return redirect(request.GET['next'])
+                    else:
+                        return redirect('box:index')
 
                 else:
                     return render(request, self.template_name, {'error_message': _('Your account has been disabled'), 'form': form})
