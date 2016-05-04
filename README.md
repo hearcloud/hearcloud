@@ -17,7 +17,7 @@ From all the programming languages that I've studied so far, Python es the one w
 
 ## Requirements
 
-Here is a list of everything you will need in order to run the project on your machine. But don't worry, if you read the next section, you will find how to install easily.
+[Here](./requirements.txt) is a list of everything you will need in order to run the project on your machine. But don't worry, if you read the next section, you will find how to install easily.
 
 ## How to install
 
@@ -33,6 +33,11 @@ $ pip install -r requirements.txt
 $ python manage.py migrate
 $ python manage.py runserver
 ```
+
+## Some stuff I'm planning to include
+- [ ] [jQuery File Upload](https://github.com/blueimp/jQuery-File-Upload): to allow users upload multiple file songs at the same time.
+
+- [ ] [Mixbolt](https://github.com/adaline/mixbolt): I'm trying to figure out how to include this project as my music player, refactoring the code to get the appearance of a single deck instead of a complete DJ mixer.
 
 ## License
 
