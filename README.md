@@ -28,7 +28,6 @@ $ git clone https://github.com/mpvillafranca/hearcloud.git
 $ cd hearcloud
 $ virtualenv hcenv
 $ source hcenv/bin/activate
-$ cd hearcloud
 $ pip install -r requirements.txt
 $ python manage.py migrate
 $ python manage.py runserver
