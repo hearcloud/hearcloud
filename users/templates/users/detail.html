@@ -1,0 +1,32 @@
+{% extends 'box/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+{% block title %}Hearcloud | {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid songs-container">
+    <div class="row">
+
+        <!-- User details -->
+        <div class="col-sm-12 col-md-12">
+            
+            <img class="img-rounded profile-thumbnail" src="{% thumbnail profile.photo 100x100 crop %}" alt=""/>
+            <div class="profile-header">
+                <h1>{{ user.username }}</h1>
+                {% if user.first_name %}
+                  <p>{{ user.first_name }}</p>
+                {% endif %}
+                <p>
+                    <a href="{% url 'box:index' %}">Songs: <span class="badge">{{ user.get_songs_count }}</span></a>
+                    <a href="#">Playlists: <span class="badge">0</span></a>
+                </p>
+                <p>
+                    <a class="btn btn-default" href="{% url 'users:user-update-profile' user.slug %}">Edit Profile</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

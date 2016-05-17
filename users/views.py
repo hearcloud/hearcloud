@@ -3,11 +3,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
+from django.views import generic
 from django.views.generic import View
 from django.views.generic import RedirectView
 
+from django.utils.timezone import now as tznow
 from django.utils.translation import ugettext as _
 
+from .models import User
 from .forms import UserRegisterForm, UserLoginForm
 
 class UserRegisterFormView(View):
@@ -110,3 +113,15 @@ class LogoutView(View):
         """
         logout(self.request)
         return redirect('home:index')
+
+class UserDetailView(generic.DetailView):
+    template_name = "users/detail.html"
+    model = User
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetailView, self).get_context_data(
+            today = tznow(),
+            **kwargs
+        )
+        print User.objects.all().values()
+        return context

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'easy_pjax',
     'crispy_forms',
     'fm',
+    'easy_thumbnails',
 
     # Project:
     'box',

@@ -3,7 +3,7 @@
 
 ##About the project
 
-**Heardcloud** is a web application that lets you effortlessly store all your music files and make them availabe anytime and everywhere you want. You can organize your songs inside the platform, editing all their attributes (like title, artists, artwork, ...) and download the updated files again to your system.
+**Heardcloud** is a web application that lets you effortlessly store all your music files and make them availabe anytime and everywhere you want. You can organize your songs inside the platform, edit all their attributes (like title, artists, artwork, ...) and download the updated files again to your system.
 
 ![Hearcloud-Home](http://i.imgur.com/ap5PRIt.png)
 
@@ -13,7 +13,7 @@ Since music is one of my passions, I found that I had a bunch of songs distribut
 
 ## Why Django?
 
-From all the programming languages that I've studied so far, Python es the one with which I'm feeling more comftable. So, when I found Django, I immediately wanted to learn more about it.
+From all the programming languages that I've studied so far, Python es the one with which I'm feeling more comfortable. So, when I found Django, I immediately wanted to learn more about it.
 
 ## Requirements
 
@@ -33,6 +33,8 @@ $ python manage.py migrate
 $ python manage.py runserver
 ```
 
+If you get any error related with the `Pillow` dependency, try installing a lower version of it. You need some `apt-get install` dependecincies installed if you want to use some of the latests `Pillow` versions.
+
 ## Some stuff I'm planning to include
 - [ ] [jQuery File Upload](https://github.com/blueimp/jQuery-File-Upload): to allow users upload multiple file songs at the same time.
 
@@ -44,4 +46,11 @@ All the code developed for the Headcloud project is licensed under GNU AFFERO GE
 
 ## Resources
 
-Everything related to the third party code that this project use goes here...
+- [X] [Bootstrap](http://getbootstrap.com/css/)
+- [X] [jQuery](https://jquery.com/)
+- [X] [NProgress](https://github.com/rstacruz/nprogress): Slim progress bars for Ajax'y applications. Inspired by Google, YouTube, and Medium.
+- [X] [Django REST framework](http://www.django-rest-framework.org/): Web APIs for Django. 
+- [X] [django-cors-headers](https://github.com/ottoyiu/django-cors-headers): A Django App that adds CORS (Cross-Origin Resource Sharing) headers to responses.
+- [X] [Django FM](https://github.com/django-fm/django-fm): Modal AJAX form to create, update and delete Django objects with ease. 
+- [X] [Mutagen](https://mutagen.readthedocs.io/en/latest/): Python module to handle audio metadata.
+- [X] [Easy-Thumbnails](https://github.com/SmileyChris/easy-thumbnails): Thumbnailing application for Django

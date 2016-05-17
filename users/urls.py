@@ -14,4 +14,13 @@ urlpatterns = [
 
     # /logout/
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
+
+    # /<username>
+    url(r'^(?P<slug>[\w.@+-]+)/$', views.UserDetailView.as_view(), name='user-detail'),
+
+    # /<username>/edit
+    url(r'^(?P<slug>[\w.@+-]+)/edit/$', views.UserDetailView.as_view(), name='user-update-profile'),
+
+    # /account/settings
+    url(r'^account/settings/$', views.UserDetailView.as_view(), name='user-update-settings'),
 ]

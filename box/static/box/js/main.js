@@ -1,15 +1,18 @@
 $(document).ready(function ($) {
     menuActive();
     EditSong();
-    getSong();
 });
 
 function menuActive() { // Function to toggle active menu links
-    $('.active').removeClass('active'); // Remove "active" class on menu links after an ajax call
+    $('.active').removeClass('active'); // Remove "active" class on menu links
     var pgpath = window.location.pathname; // Get the page path
     $(".navbar-nav a").each(function () {
         if ($(this).attr("href") == pgpath || $(this).attr("href") == '') { // Compare url to links
-            $(this).parents('li').addClass('active'); // Set "active" class
+            $(this).parents('li').each(function () {
+                if($(this).parents('.user-nav').length === 0) { // Split active if is the user section
+                    $(this).addClass('active'); // Set "active" class
+                }
+            });
         }
     });
 }
@@ -38,12 +41,37 @@ function EditSong() {
     });
 }
 
-function getSong() { // Function to toggle active menu links
+function getSong() { 
     $('.btn-play-song').click(function(ev) {
         var song_url = $(this).attr("href");
-        console.log(song_url);
-        
+        var song;
+
+        /*$.get(song_url, function( data ) {
+          alert(data);
+        });*/
+
         $.ajax({
+            xhr: function(){
+                var xhr = new window.XMLHttpRequest();
+                //Download progress
+                xhr.addEventListener("progress", function(evt){
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        //Do something with download progress
+                        console.log(percentComplete);
+                    }
+                }, false);
+                return xhr;
+            },
+            url: song_url,
+            type: "GET",
+            success: function(song) {
+            },
+        });
+        return song;
+
+
+        /*$.ajax({
             xhr: function(){
                 var xhr = new window.XMLHttpRequest();
                 //Download progress
@@ -67,6 +95,6 @@ function getSong() { // Function to toggle active menu links
                 console.log('Error!', e);
             }
 
-        }); 
+        });*/ 
     });
 }

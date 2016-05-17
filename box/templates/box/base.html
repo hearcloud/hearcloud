@@ -23,6 +23,7 @@
   <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,100,300,700" rel="stylesheet" type="text/css">
 
   <!-- nprogress bar -->
   <link href='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css' rel='stylesheet' type='text/css'>
@@ -31,64 +32,117 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" type="text/css" href="{% static 'hearcloud.css' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'box/css/box.css' %}"/>
-  <link rel="stylesheet" type="text/css" href="{% static 'box/css/player.css' %}"/>
+  <!--<link rel="stylesheet" type="text/css" href="http://d2ycj993f2qxkw.cloudfront.net/assets/application-5ef8ea2029bc5bc42e30bbc1d2ae8cec.css">-->
 </head>
 <body>
 
-<nav class="navbar navbar-default navbar-fixed-top navbar-shrink"  role="navigation">
-    <div class="container-fluid"> <!-- Entire width container -->
+<header id="site-header" role="banner">
+  <nav class="navbar navbar-default navbar-fixed-top navbar-shrink" id="mainnav" role="navigation">
+    <div class="container-fluid"> <!-- Entire width navbar -->
 
-        <!-- Website Logo -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse"> <!-- Responsive button thing -->
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+      <!-- Website Logo -->
+      <div class="navbar-header">
+        <!-- Responsive button thing -->
+        <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- Logo itself -->
+        <a class="navbar-brand" href="{% url 'box:index' %}">Hearcloud</a>
+      </div><!-- navbar-header -->
+
+      <!-- Items: Nav left -->
+      <div class="nav-left">
+        <div class="navbar-collapse collapse" id="navbar">
+
+            <!-- Songs box section -->
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="{% url 'box:index' %}">
+                  <span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp; {% trans "Collection" %}
+                </a>
+              </li>
+
+              <li>
+                <a href="#">
+                  <span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp; {% trans "Playlists" %}
+                </a>
+              </li>
+            </ul>
+
+            <!-- Search songs section desktop-->
+            <div class="search-form hidden-md hidden-lg t-search-form-mobile">
+              <form action="#" accept-charset="UTF-8" method="get">
+                <input name="utf8" type="hidden" value="&#x2713;" />
+                <input type="text" name="query" id="query" placeholder="{% trans "Search on Hearcloud" %}" class="form-control" />
+                <button name="button" type="submit"><i class="fa fa-search"></i></button>
+              </form>
+            </div><!-- search-for -->
+        </div><!-- navbar-collapse -->
+      </div><!-- nav-left -->
+
+      <!-- Items: Nav-right -->
+      <div class="nav-right">
+
+        <!-- Search songs section mobile -->
+        <div class="search-form hidden-xs hidden-sm t-search-form-desktop">
+          <form action="#" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" />
+            <input type="text" name="query" id="query" placeholder="{% trans "Search on Hearcloud" %}" class="form-control" />
+            <button name="button" type="submit">
+              <i class="fa fa-search"></i>
             </button>
-            <a class="navbar-brand" href="{% url 'box:index' %}">Hearcloud</a>
+          </form>
         </div>
 
-      <!-- Items -->
-      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <!-- User nav -->
+        <div class="user-nav">
+          <ul class="nav navbar-nav loggedin clearfix">
+            <!-- Add songs -->
+            <li class="addthing t-addthing">
+              <a href="{% url 'box:song-add' %}" class="fm-create" data-fm-callback="redirect" data-fm-target="{% url 'box:index' %}">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; {% trans "Add songs" %}
+              </a>
+            </li>
 
-        <!-- Songs box section -->
-        <ul class="nav navbar-nav">
-          <li>
-            <a href="{% url 'box:index' %}">
-              <span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp; {% trans "Songs box" %}
-            </a>
-          </li>
-        </ul>
+            <!-- User settings -->
+            <li class="user">
+              <a class="dropdown-toggle user-menu" aria-expanded="false" data-toggle="dropdown" id="me">
+                <span class="avatar avatar--s">
+                  <img title="{{ user.username }}" alt="{{ user.username }}" src="{% static 'box/images/NoArtwork_Black.png' %}" />
+                </span>
+              <span class="sr-only">{{ user.username }}</span>
+                </a><div class="dropdown-menu pull-right" role="menu">
+                <ul>
+                    <li>
+                    <a href="{% url 'users:user-detail' user.slug %}"><i class="fa fa-user fa-fw"></i>
+                    {% trans "Profile" %}
+                    </a></li>
+                    <li>
+                    <a href="{% url 'users:user-update-profile' user.slug %}"><i class="fa fa-edit fa-fw"></i>
+                    {% trans "Edit profile" %}
+                    </a></li>
+                    <li class="divider"></li>
+                    <li>
+                    <a href="{% url 'users:user-update-settings' %}"><i class="fa fa-cog fa-fw"></i>
+                    {% trans "Account settings" %}
+                    </a></li>
+                    <li class="divider"></li>
+                    <li>
+                    <a rel="nofollow" data-method="delete" href="{% url 'users:logout' %}"><i class="fa fa-arrow-left fa-fw"></i>
+                    {% trans "Logout" %}
+                    </a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
 
-        <!-- Search songs section -->
-        <form class="navbar-form navbar-left" role="search" method="get" action="#">
-          <div class="form-group">
-            <input type="text" class="form-control" name="query" value="">
-          </div>
-          <button type="submit" class="btn btn-default">{% trans "Search" %}</button>
-        </form>
-
-        <!-- Pjax thing -->
-        <!--<p class="navbar-text hidden" id="loading"><span class="glyphicon glyphicon-refresh"></span> Loading..</p>-->
-        <p class="navbar-text navbar-right"><span class="label label-warning" style="font-weight: bold; font-size: 120%;">Page rendered at {{ today|time:"G:i:s" }}</span></p>
-
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a href="{% url 'box:song-add' %}" class="fm-create" data-fm-callback="redirect" data-fm-target="{% url 'box:index' %}">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; {% trans "Add songs" %}
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'users:logout' %}">
-              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; {% trans "Logout" %}
-            </a>
-          </li>
-        </ul>
-
+        </div>
       </div>
-  </div>
-</nav>
+    </div>
+  </nav>
+</header>
 
 <div class="container">
     <div class="row">

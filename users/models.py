@@ -4,6 +4,11 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
 
+from django.template.defaultfilters import slugify
+
+from easy_thumbnails.fields import ThumbnailerImageField
+
+
 class UserManager(BaseUserManager, models.Manager):
     """
     Represents our custom user model manager
@@ -38,7 +43,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, max_length=50)
     first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
+    picture = ThumbnailerImageField(upload_to='profile_images', blank=True)
+
+    slug = models.SlugField(unique=True)
 
     objects = UserManager() # objects is the manager of every model (users.objects.all(), ...)
 
@@ -48,8 +55,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.username)
+        super(User, self).save(*args, **kwargs)
+
     def get_short_name(self):
         return self.username
+
+    def get_songs_count(self):
+        return self.song_set.all().count()
 
     def __unicode__(self):
         return self.username

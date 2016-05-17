@@ -1,6 +1,8 @@
 from django import forms
 from .models import User
 
+from django.utils.translation import ugettext as _
+
 class UserRegisterForm(forms.ModelForm):
     #password = forms.CharField(widget = forms.PasswordInput)
 
@@ -24,9 +26,9 @@ class UserRegisterForm(forms.ModelForm):
                 }),
         }
         labels = {
-            'username' : "Choose an username:",
-            'email' : "What's your email address?",
-            'password': "Choose a password:",
+            'username' : _("Choose an username:"),
+            'email' : _("What's your email address?"),
+            'password': _("Choose a password:"),
         }
 
 class UserLoginForm(forms.Form):
@@ -41,3 +43,52 @@ class UserLoginForm(forms.Form):
                     'type' : 'password',
                     'class' : 'form-control'
                     }))
+
+class UserUpdateProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'picture']
+        widgets = {
+            'first_name' : forms.TextInput(attrs = 
+                {
+                'class' : 'form-control'
+                }),
+            'last_name' : forms.TextInput(attrs = 
+                {
+                'class' : 'form-control'
+                }),
+            'picture' : forms.FileField(),
+        }
+        labels = {
+            'first_name' : _("First name:"),
+            'last_name' : _("Last name:"),
+            'picture': _("Avatar:"),
+        }
+
+class UserUpdateSettingsForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+        widgets = {
+            'username' : forms.TextInput(attrs = 
+                {
+                'class' : 'form-control'
+                }),
+            'email' : forms.TextInput(attrs = 
+                {
+                'type' : 'email',
+                'class' : 'form-control'
+                }),
+            'password' : forms.TextInput(attrs =
+                {
+                'type' : 'password',
+                'class' : 'form-control'
+                }),
+        }
+        labels = {
+            'username' : _("Choose an username:"),
+            'email' : _("What's your email address?"),
+            'password': _("Choose a password:"),
+        }
