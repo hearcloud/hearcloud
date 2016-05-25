@@ -12,25 +12,27 @@
         <table class="table">
             <thead>
             <tr>
-                <th></th>
-                <th>{% trans "Artwork" %}</th>
-                <th>{% trans "Title" %}</th>
-                <th>{% trans "Artist" %}</th>
-                <th>{% trans "Album" %}</th>
-                <th>{% trans "Duration" %}</th>
-                <th>{% trans "Actions" %}</th>
+
+                <th colspan="2" class="ascending">
+                    {% trans "TITLE" %}
+                    <span class="glyphicon glyphicon-arrow-down sorting-arrow"></span>
+                </th>
+                <th>{% trans "ARTIST" %}</th>
+                <th>{% trans "ALBUM" %}</th>
+                <th><span class="glyphicon glyphicon-time"></span></th>
+                <th>{% trans "ACTIONS" %}</th>
             </tr>
             </thead>
             <tbody>
             {% for song in all_songs %}
                 <tr id="song-{{ song.id }}">
-                    <td class="vert-align">
-                        <!--<a target="_blank" href="{{ song.audio_file.url }}">-->
+                    <!--<td class="vert-align">
+                        <a target="_blank" href="{{ song.audio_file.url }}">
                             <button type="button" class="btn btn-success btn-xs btn-play-song" href="{{ song.audio_file.url }}">
                                 <span class="glyphicon glyphicon-play"></span>&nbsp; Play
                             </button>
-                        <!--</a>-->
-                    </td>
+                        </a>
+                    </td>-->
                     <td class="vert-align">
                       <!-- Artwork cropped -->
                       <div class="crop">

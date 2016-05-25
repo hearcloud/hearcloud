@@ -94,6 +94,13 @@ code {
     height: 110px;
 }
 
+.img-detail-artwork{
+    min-width: 100%;
+}
+.panel-body-artwork{
+    background-color: #f5f5f5;
+}
+
 /* Vertically alligned rows in tables */
 .table tbody>tr>td.vert-align{
     vertical-align: middle;
@@ -132,4 +139,13 @@ code {
     margin-left: -20px;
     padding-bottom: 10px;
     padding-top: 10px;
+}
+
+.song-detail-tag-body{
+  padding:5px;
+}
+
+.sorting-arrow{
+    font-size:70%;
+    color:#616161;
 }

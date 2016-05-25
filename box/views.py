@@ -8,20 +8,17 @@ from django.views import generic
 from django.views.generic import View
 from django.core.files import File
 from django.utils.timezone import now as tznow
+from django.http import HttpResponseForbidden
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from mutagen.mp3 import MP3
-
 from base64 import decodestring
-from datetime import timedelta
 
 from .models import Song
 from .forms import SongForm, UpdateSongForm
 from .serializers import SongSerializer
-from .functions import mp3_tags_to_song_model, tags_from_song_model_to_mp3
 
 from users.models import User
 
@@ -33,7 +30,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(
-            all_songs = Song.objects.filter(user=self.request.user),
+            all_songs = Song.objects.filter(user=self.request.user).order_by('song_title'),
             today = tznow(),
             **kwargs
         )
@@ -60,30 +57,12 @@ class SongAjaxCreateView(AjaxCreateView):
         """
         form.instance.user = self.request.user
 
-        song = form.save(commit=False) # Creates an object from the form but doesn't save it into db yet
-            
-        # Cleaned (normalized) data
-        audio_file = form.cleaned_data["audio_file"]
-        audio_file_path = audio_file.temporary_file_path()
-        audio_file_name = audio_file.name
-        audio_extension = os.path.splitext(audio_file_name)[1]
-        print audio_extension
+        song = form.save(commit=False)
 
-        # MP3 ID3 stuff
-        if audio_extension==".mp3":
-            song = mp3_tags_to_song_model(audio_file_name, audio_file_path, song)
+        song.audio_file = form.cleaned_data['audio_file']
 
-            # Get the song length
-            mutagen_mp3 = MP3(audio_file_path)
-            song.duration = timedelta(seconds=int(mutagen_mp3.info.length))
-    
-        # If there is no 'Title' attribute, use the filename as title
-        if not song.song_title:
-            song.song_title = os.path.splitext(audio_file_name)[0]
-
-        # Save into db
-        song.save()
-
+        song.save(create=True)
+          
         return super(SongAjaxCreateView, self).form_valid(form)
 
 
@@ -97,6 +76,13 @@ class SongDetailView(generic.DetailView):
             **kwargs
         )
         return context
+
+    def get(self, request, **kwargs):
+        # Check if the user is trying to get a song which doesn't own
+        if not request.user.id == Song.objects.get(pk=kwargs["pk"]).user.id:
+            return HttpResponseForbidden()
+
+        return super(SongDetailView, self).get(request)
 
 class SongUpdateView(AjaxUpdateView):
     form_class = UpdateSongForm
@@ -112,11 +98,8 @@ class SongUpdateView(AjaxUpdateView):
 
         song = form.save(commit=False) # Creates an object from the form but doesn't save it into db yet
             
-        # MP3 ID3 stuff
-        tags_from_song_model_to_mp3(song)
-
         # Save into db
-        song.save()
+        song.save(update=True)
 
         return super(SongUpdateView, self).form_valid(form)
 

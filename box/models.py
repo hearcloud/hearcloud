@@ -5,7 +5,10 @@ from __future__ import unicode_literals
 import uuid
 import mimetypes
 import datetime
+import os
 
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -16,7 +19,11 @@ from django.db.models.signals import pre_delete # Receive the pre_delete signal 
 from django.dispatch.dispatcher import receiver
 from django.db import models
 
+
 from django.conf import settings
+
+from .functions import (mp3_tags_to_song_model, tags_from_song_model_to_mp3,
+                      m4a_tags_to_song_model)
 
 class Song(models.Model):
     """
@@ -113,9 +120,34 @@ class Song(models.Model):
     def get_absolute_url(self):
         return reverse('box:detail-update', kwargs={'pk': self.pk})
 
-    def save(self, *args, **kwargs):
-        if not self.id:
+    def save(self, create= False, update=False, *args, **kwargs):
+        if not self.pk:
             self.slug = slugify(self.song_title)
+
+        if create:
+            file_final_path = self.audio_file.path
+            file_name = self.audio_file.name
+            file_type = file_final_path.split('.')[-1].lower()
+            file_temp_path = os.path.join(settings.MEDIA_ROOT,'tmp','temp.'+file_type)
+            default_storage.save(file_temp_path,ContentFile(self.audio_file.file.read()))
+
+            # MP3
+            if file_type == "mp3":
+                mp3_tags_to_song_model(file_name, file_temp_path, self)
+
+            # MP4
+            elif file_type == "m4a":
+                m4a_tags_to_song_model(file_name, file_temp_path, self)
+
+            default_storage.delete(os.path.join(settings.MEDIA_ROOT,'tmp','temp.'+file_type))
+        
+            # If there is no 'Title' attribute, use the filename as title
+            if not self.song_title:
+                self.song_title = os.path.splitext(file_name)[0]
+        elif update:
+            tags_from_song_model_to_mp3(self)
+
+
         super(Song, self).save(*args, **kwargs)
             
     def __unicode__(self):

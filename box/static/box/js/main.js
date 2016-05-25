@@ -3,6 +3,7 @@ $(document).ready(function ($) {
     EditSong();
 });
 
+/* Function to add an "active" tag to the current page menu tag */
 function menuActive() { // Function to toggle active menu links
     $('.active').removeClass('active'); // Remove "active" class on menu links
     var pgpath = window.location.pathname; // Get the page path

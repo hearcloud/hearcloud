@@ -9,12 +9,12 @@
         <!-- Left cover artwork -->
         <div class="col-sm-4 col-md-3">
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-body panel-body-artwork">
                     <a href="{% url 'box:song-detail' song.id %}">
                         {% if song.artwork %}
-                            <img src="{{ song.artwork.url }}" class="img-responsive">
+                            <img src="{{ song.artwork.url }}" class="img-responsive img-detail-artwork">
                         {% else %}
-                            <img src="{% static 'box/images/NoArtwork_Black.png' %}" class="img-responsive">
+                            <img src="{% static 'box/images/NoArtwork_Black.png' %}" class="img-responsive img-detail-artwork">
                         {% endif %}
                     </a>
                 </div>
@@ -79,110 +79,215 @@
 
 
                   <!-- Song details table -->
-                  <!-- Details list -->
-                  <ul class="list-unstyled" id="song-details">
-                      <!-- Filename -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Filename:" %}</strong></span>
-                      <span class="val">{{ song.audio_file.name }}</span>
-                    </li>
+                  <div class="row">
+                      <!-- Details list -->
+                      <ul class="list-unstyled" id="song-details">
 
-                      <!-- Track title -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Track Title:" %}</strong></span>
-                      <span class="val">{% if song.song_title %} {{ song.song_title }} {% endif %}</span>
-                    </li>
-                          
-                      <!-- Artist -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Artist:" %}</strong></span>
-                      <span class="val">{% if song.artist %} {{ song.artist }} {% endif %}</span>
-                    </li>
+                        <!-- Filename -->
+                        <div class="col-md-12">
+                          <li>
+                            <span class="cat"><strong>{% trans "Filename:" %}</strong></span>
+                            <div class="panel panel-default">
+                              <div class="song-detail-tag-body">
+                                <span class="val">{% if song.audio_file.name %} {{ song.audio_file.name }} {% else %} &nbsp; {% endif %}</span>
+                              </div>
+                            </div>
+                          </li>
+                        </div>
 
-                      <!-- Time -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Duration:" %}</strong></span>
-                      <span class="val">{% if song.duration %} {{ song.duration }} {% endif %}</span>
-                    </li>
+                        <!-- Track title -->
+                        <div class="col-md-10">
+                          <li>
+                            <span class="cat"><strong>{% trans "Track Title:" %}</strong></span>
+                            <div class="panel panel-default">
+                              <div class="song-detail-tag-body">
+                                <span class="val">{% if song.song_title %} {{ song.song_title }} {% else %} &nbsp; {% endif %}</span>
+                              </div>
+                            </div>
+                          </li>
+                        </div>
 
-                      <!-- Year -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Year:" %}</strong></span>
-                      <span class="val">{% if song.year %} {{ song.year }} {% endif %}</span>
-                    </li>
+                        <!-- Duration -->
+                        <div class="col-md-2">
+                          <li>
+                            <span class="cat"><strong>{% trans "Duration:" %}</strong></span>
+                            <div class="panel panel-default">
+                              <div class="song-detail-tag-body">
+                                <span class="val">{% if song.duration %} {{ song.duration }} {% else %} &nbsp; {% endif %}</span>
+                              </div>
+                            </div>
+                          </li>
+                        </div>
 
-                      <!-- Album -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Album:" %}</strong></span>
-                      <span class="val">{% if song.album %} {{ song.album }} {% endif %}</span> 
-                    </li>
+                        <!-- Artist -->  
+                        <div class="col-md-10">
+                          <li>
+                            <span class="cat"><strong>{% trans "Artist:" %}</strong></span>
+                            <div class="panel panel-default">
+                              <div class="song-detail-tag-body">
+                                <span class="val">{% if song.artist %} {{ song.artist }} {% else %} &nbsp; {% endif %}</span>
+                              </div>
+                            </div>
+                          </li>
+                        </div>
 
-                      <!-- Album artist -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Album artist:" %}</strong></span>
-                      <span class="val">{% if song.album_artist %} {{ song.album_artist }} {% endif %}</span>
-                    </li>
+                        <!-- Year -->
+                        <div class="col-md-2">
+                          <li>
+                            <span class="cat"><strong>{% trans "Year:" %}</strong></span>
+                            <div class="panel panel-default">
+                              <div class="song-detail-tag-body">
+                                <span class="val">{% if song.year %} {{ song.year }} {% else %} &nbsp; {% endif %}</span>
+                              </div>
+                            </div>
+                          </li>
+                        </div>
 
-                      <!-- Track number -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Track number:" %}</strong></span>
-                      <span class="val">{% if song.track_number %} {{ song.track_number }} {% endif %}</span>
-                    </li>
+                        <!-- Album -->
+                        <div class="col-md-6">
+                          <li>
+                            <span class="cat"><strong>{% trans "Album:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.album %} {{ song.album }} {% else %} &nbsp; {% endif %}</span> 
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- BPM -->
-                    <li>
-                      <span class="cat"><strong>{% trans "BPM:" %}</strong></span>
-                      <span class="val">{% if song.bpm %} {{ song.bpm }} {% endif %}</span>
-                    </li>
+                        <!-- Album artist -->
+                        <div class="col-md-6">
+                          <li>
+                            <span class="cat"><strong>{% trans "Album artist:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.album_artist %} {{ song.album_artist }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- Original artist -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Original artist:" %}</strong></span>
-                      <span class="val">{% if song.original_artist %} {{ song.original_artist }} {% endif %}</span>
-                    </li>
+                        <!-- Track number -->
+                        <div class="col-md-3">
+                          <li>
+                            <span class="cat"><strong>{% trans "Track number:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.track_number %} {{ song.track_number }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- Key -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Key:" %}</strong></span>
-                      <span class="val">{% if song.key %} {{ song.key }} {% endif %}</span>
-                    </li>
+                        <!-- BPM -->
+                        <div class="col-md-3">
+                          <li>
+                            <span class="cat"><strong>{% trans "BPM:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.bpm %} {{ song.bpm }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- Composer -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Composer:" %}</strong></span>
-                      <span class="val">{% if song.composer %} {{ song.composer }} {% endif %}</span>
-                    </li>
+                        <!-- Original artist -->
+                        <div class="col-md-6">
+                          <li>
+                            <span class="cat"><strong>{% trans "Original artist:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.original_artist %} {{ song.original_artist }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- Lyricist -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Lyricist:" %}</strong></span>
-                      <span class="val">{% if song.lyricist %} {{ song.lyricist }} {% endif %}</span>
-                    </li>
+                        <!-- Key -->
+                        <div class="col-md-2">
+                          <li>
+                            <span class="cat"><strong>{% trans "Key:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.key %} {{ song.key }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- Comments -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Comments:" %}</strong></span>
-                      <span class="val">{% if song.comments %} {{ song.comments }} {% endif %}</span>
-                    </li>
+                        <!-- Composer -->
+                        <div class="col-md-5">
+                          <li>
+                            <span class="cat"><strong>{% trans "Composer:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.composer %} {{ song.composer }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- Remixer -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Remixer:" %}</strong></span>
-                      <span class="val">{% if song.remixer %} {{ song.remixer }} {% endif %}</span>
-                    </li>
+                        <!-- Lyricist -->
+                        <div class="col-md-5">
+                          <li>
+                            <span class="cat"><strong>{% trans "Lyricist:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.lyricist %} {{ song.lyricist }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- Label/Publisher -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Label:" %}</strong></span>
-                      <span class="val">{% if song.label %} {{ song.label }} {% endif %}</span>
-                    </li>
+                        <!-- Comments -->
+                        <div class="col-md-12">
+                          <li>
+                            <span class="cat"><strong>{% trans "Comments:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.comments %} {{ song.comments }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
 
-                      <!-- Genre/content type -->
-                    <li>
-                      <span class="cat"><strong>{% trans "Genre:" %}</strong></span>
-                      <span class="val">{% if song.genre %} {{ song.genre }} {% endif %}</span>
-                    </li>
-                  </ul>
+                        <!-- Remixer -->
+                        <div class="col-md-4">
+                          <li>
+                            <span class="cat"><strong>{% trans "Remixer:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.remixer %} {{ song.remixer }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
+
+                        <!-- Label/Publisher -->
+                        <div class="col-md-4">
+                          <li>
+                            <span class="cat"><strong>{% trans "Label:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.label %} {{ song.label }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
+
+                        <!-- Genre/content type -->
+                        <div class="col-md-4">
+                          <li>
+                            <span class="cat"><strong>{% trans "Genre:" %}</strong></span>
+                              <div class="panel panel-default">
+                                <div class="song-detail-tag-body">
+                                  <span class="val">{% if song.genre %} {{ song.genre }} {% else %} &nbsp; {% endif %}</span>
+                                </div>
+                              </div>
+                          </li>
+                        </div>
+                      </ul>
+                  </div>
 
                   <!-- Details form -->
                   <div class="update-form-body"></div>

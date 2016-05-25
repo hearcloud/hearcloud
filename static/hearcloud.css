@@ -10,7 +10,8 @@
 /* Body: Fonts */
 body {
     overflow-x: hidden;
-    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
+    /*font-family: 'Roboto', "Helvetica Neue", Helvetica, sans-serif;*/
+    font-family: 'Roboto', 'Noto', sans-serif;
 }
 /*************************************/
 /* Navbar */
@@ -79,7 +80,6 @@ body {
     border-bottom: 4px solid transparent;
     color: #fff;
     font-size: large;
-    font-weight: 600;
 }
 .navbar .nav>li>a:hover{
     color: #67efdf;
