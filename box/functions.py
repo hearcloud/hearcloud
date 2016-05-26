@@ -23,7 +23,7 @@ def mp3_tags_to_song_model(audio_file_name, audio_file_path, song):
     # 1.- Creating a mutagen file instance
     file = MutaFile(audio_file_path)
 
-    #print file.tags.getall("USLT")
+    print file.tags.getall("USLT")
 
     # 2.- Read all the ID3 tags from the file and save them on the song model
     for i in file.tags:

@@ -149,3 +149,7 @@ code {
     font-size:70%;
     color:#616161;
 }
+
+#music-collection-table th:hover{
+     cursor:pointer;    
+}

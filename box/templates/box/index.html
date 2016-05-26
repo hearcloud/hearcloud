@@ -9,30 +9,32 @@
             <p><strong>{{ error_message }}</strong></p>
         {% endif %}
 
-        <table class="table">
+        <table class="table" id="music-collection-table">
             <thead>
             <tr>
 
-                <th colspan="2" class="ascending">
+                <th id="col-title" colspan="2">
                     {% trans "TITLE" %}
-                    <span class="glyphicon glyphicon-arrow-down sorting-arrow"></span>
+                    <span class="glyphicon sorting-arrow glyphicon-arrow-down"></span>
                 </th>
-                <th>{% trans "ARTIST" %}</th>
-                <th>{% trans "ALBUM" %}</th>
-                <th><span class="glyphicon glyphicon-time"></span></th>
+                <th id="col-artist">
+                    {% trans "ARTIST" %}
+                    <span class="glyphicon sorting-arrow"></span>
+                </th>
+                <th id="col-album">
+                    {% trans "ALBUM" %}
+                    <span class="glyphicon sorting-arrow"></span>
+                </th>
+                <th id="col-time">
+                    <span class="glyphicon glyphicon-time"></span>
+                    <span class="glyphicon sorting-arrow"></span>
+                </th>
                 <th>{% trans "ACTIONS" %}</th>
             </tr>
             </thead>
             <tbody>
             {% for song in all_songs %}
                 <tr id="song-{{ song.id }}">
-                    <!--<td class="vert-align">
-                        <a target="_blank" href="{{ song.audio_file.url }}">
-                            <button type="button" class="btn btn-success btn-xs btn-play-song" href="{{ song.audio_file.url }}">
-                                <span class="glyphicon glyphicon-play"></span>&nbsp; Play
-                            </button>
-                        </a>
-                    </td>-->
                     <td class="vert-align">
                       <!-- Artwork cropped -->
                       <div class="crop">

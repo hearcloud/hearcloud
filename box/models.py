@@ -145,7 +145,15 @@ class Song(models.Model):
             if not self.song_title:
                 self.song_title = os.path.splitext(file_name)[0]
         elif update:
-            tags_from_song_model_to_mp3(self)
+            file_type = self.audio_file.name.split('.')[-1].lower()
+
+            # MP3
+            if file_type == "mp3":
+                tags_from_song_model_to_mp3(self)
+
+            # MP4
+            elif file_type == "m4a":
+                pass
 
 
         super(Song, self).save(*args, **kwargs)
