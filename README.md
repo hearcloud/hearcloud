@@ -1,6 +1,8 @@
 ![](./static/favicon.ico) Hearcloud
 ============
 
+[![Code Climate](https://codeclimate.com/github/mpvillafranca/hearcloud/badges/gpa.svg)](https://codeclimate.com/github/mpvillafranca/hearcloud)
+
 ##About the project
 
 **Heardcloud** is a web application that lets you effortlessly store all your music files and make them availabe anytime and everywhere you want. You can organize your songs inside the platform, edit all their attributes (like title, artists, artwork, ...) and download the updated files again to your system.

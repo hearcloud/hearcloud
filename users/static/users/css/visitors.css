@@ -53,15 +53,14 @@ form{
 }
 
 .btn-outline:hover, .btn-outline:focus, .btn-outline:active, .btn-outline.active, .open > .dropdown-toggle.btn-primary {
-	color: #fff;
-  background: none;
-  color: #41e3d3;
-	border-color: #41e3d3;
+  background: none !important;
+  color: #41e3d3 !important;
+	border-color: #41e3d3 !important;
 }
-.btn-outline:active, .btn-outline.active {
-	border-color: #41e3d3;
-	color: #007299;
-	box-shadow: none;
+.btn-outline:active, .btn-outline.active{
+	border-color: #41e3d3 !important;
+	color: #fff !important;
+	box-shadow: none !important;
 }
 
 .form-buttons{
@@ -99,7 +98,7 @@ a {
     color: #67efdf;
     text-decoration: none;
 }
-a:hover {
+a:hover, a:focus, a:active {
     color: #fff;
 }
 
@@ -126,4 +125,12 @@ a:hover {
 }
 strong{
     color: #67efdf;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
 }
