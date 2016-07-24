@@ -1,18 +1,18 @@
 {% load i18n %}
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Your music everywhere">
+    <meta name="author" content="mpvillafranca">
 
     <title>{% block title %}Hearcloud - Your music everywhere{% endblock %}</title>
-
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -24,9 +24,10 @@
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
-    <!-- Custom CSS -->
+    <!-- Theme CSS -->
     <link href="{% static 'home/css/home.css' %}" rel="stylesheet">
     <link href="{% static 'home/css/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'home/css/colors.css' %}" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,15 +41,12 @@
 <body id="page-top" class="index">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="sr-only">Toggle navigation</span> <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand page-scroll" href="#page-top">Hearcloud</a>
             </div>
@@ -60,21 +58,21 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#whatis">What is Heardcloud?</a>
+                        <a class="page-scroll" href="#whatis">{% trans "What is Heardcloud?" %}</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#features">Features</a>
+                        <a class="page-scroll" href="#features">{% trans "Features" %}</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+                        <a class="page-scroll" href="#contact">{% trans "Contact" %}</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="navbar-signin" style="display: none;">
-                        <a href="{% url 'users:register' %}" class="btn btn-primary btn-lg outline">Sign Up For Free</a>
+                    <li class="navbar-signin btn-space" style="display: none;">
+                        <a href="{% url 'users:register' %}" class="btn btn-primary btn-lg outline">{% trans "Sign Up For Free" %}</a>
                     </li>
-                    <li>
-                        <a href="{% url 'users:login' %}" class="btn btn-primary btn-lg outline">Sign In</a>
+                    <li class="btn-space">
+                        <a href="{% url 'users:login' %}" class="btn btn-primary btn-lg outline">{% trans "Sign In" %}</a>
                     </li>
                 </ul>
             </div>
@@ -87,9 +85,9 @@
     <header>
         <div class="container">
             <div class="intro-text">
-                <div class="intro-heading">Your music everywhere</div>
-                <div class="intro-lead-in">Listen on every computer, phone, tablet and TV</div>
-                <a href="{% url 'users:register' %}" class="btn btn-primary btn-xl outline">Sign Up For Free</a>
+                <div class="intro-heading">{% trans "Your music everywhere" %}</div>
+                <div class="intro-lead-in">{% trans "Listen on every computer, phone, tablet and TV" %}</div>
+                <a href="{% url 'users:register' %}" class="page-scroll btn btn-xl">{% trans "Sign Up For Free" %}</a>
             </div>
         </div>
     </header>
@@ -100,8 +98,8 @@
             <div class="row">
                 <div class="col-lg-offset-2 col-lg-8 text-center">
                     
-                    <h2 class="section-heading">What is <strong>Heardcloud</strong>&nbsp;?</h2>
-                    <h3 class="section-subheading text-muted">Heardcloud is a web application which lets you effortlessly store all your music files and make them availabe anywhere and anytime you want. You can organise your songs inside the plattform, editing all their attributes (like title, artists, artwork, ...) and download the updated files again to your system.</h3>
+                    <h2 class="section-heading">{% trans "What is " %}<strong>Heardcloud</strong>&nbsp;?</h2>
+                    <h3 class="section-subheading text-muted">{% trans "Heardcloud is a web application which lets you effortlessly store all your music files and make them availabe anywhere and anytime you want. You can organise your songs inside the plattform, editing all their attributes (like title, artists, artwork, ...) and download the updated files again to your system." %}</h3>
                 </div>
             </div>
         </div>
@@ -112,7 +110,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Features</h2>
+                    <h2 class="section-heading">{% trans "Features" %}</h2>
                 </div>
             </div>
             
@@ -122,41 +120,41 @@
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-clock-o fa-stack-1x fa-inverse"></i>
                     </span>
-                    <h4 class="service-heading">Anytime, everywhere</h4>
-                    <p class="text-muted">Access to your music collection whenever you want.</p>
+                    <h4 class="service-heading">{% trans "Anytime, everywhere" %}</h4>
+                    <p class="text-muted">{% trans "Access to your music collection whenever you want." %}</p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-tasks fa-stack-1x fa-inverse"></i>
                     </span>
-                    <h4 class="service-heading">Editing online</h4>
-                    <p class="text-muted">Edit file's attributes like "Title", "Artist", "Artwork", etc and get your music be clearly and well organized.</p>
+                    <h4 class="service-heading">{% trans "Editing online" %}</h4>
+                    <p class="text-muted">{% trans "Edit file's attributes like \"Title\", \"Artist\", \"Artwork\", etc and get your music clearly and well organized." %}</p>
                 </div>
                 <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-hdd-o fa-stack-1x fa-inverse"></i>
                     </span>
-                    <h4 class="service-heading">Unlimited free storage</h4>
-                    <p class="text-muted">You can upload as many files as you want in order to never miss a song.</p>
+                    <h4 class="service-heading">{% trans "Unlimited free storage" %}</h4>
+                    <p class="text-muted">{% trans "You can upload as many files as you want in order to never miss a song." %}</p>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Contact Section -->
+
+        <!-- Contact Section -->
     <section id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Contact the developer</h2>
+                    <h2 class="section-heading">{% trans "Contact the developer" %}</h2>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-offset-4 col-sm-4">
                     <div class="team-member">
-                        <img src="{% static 'home/img/team/mpvillafranca.jpg' %}" class="img-responsive img-circle" alt="">
+                        <img src="{% static 'home/img/team/mpvillafranca.jpg' %}" class="img-responsive img-circle img-developer" alt="">
                         <h4>Mariano Palomo Villafranca</h4>
                         <p class="text-muted">@mpvillafranca</p>
                         <ul class="list-inline social-buttons">
@@ -175,20 +173,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <span class="">This software is open source, licensed under AGPL v3. You can find the code, license and instructions <a href="http://github.com/mpvillafranca/hearcloud">here</a>.</span>
-                    <span class="copyright">Coded by mpvillafranca &copy; Hearcloud 2016</span>
+                    <span class="">{% trans "This software is open source, licensed under AGPL v3. You can find the code, license and instructions" %} <a href="http://github.com/mpvillafranca/hearcloud">{% trans "here" %}</a>.</span><br>
+                    <span class="copyright">{% trans "Coded by" %} mpvillafranca &copy; Hearcloud 2016</span>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline social-buttons">
                         <li><a href="#"><i class="fa fa-twitter"></i></a>
                         </li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <ul class="list-inline quicklinks">
-                        <li><a href="#">Privacy Policy</a>
+                        <li><a href="#">{% trans "Privacy Policy" %}</a>
                         </li>
-                        <li><a href="#">Terms of Use</a>
+                        <li><a href="#">{% trans "Terms of Use" %}</a>
                         </li>
                     </ul>
                 </div>

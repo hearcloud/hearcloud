@@ -1,0 +1,262 @@
+/* Color variables */
+:root{
+    --transparent: transparent;
+    --black: #000000;
+    --white: #ffffff;
+    --white-transparent-02: rgba(255, 255, 255, .02);
+    --gray2: #222222;
+    --gray4: #444444;
+    --gray7: #777777;
+    --graye: #eeeeee;
+    --light-gray-f1: #f1f1f1;
+    --light-gray-f7: #f7f7f7;
+    --dark-gray: #222222;
+    --main: #009688;/*#fed136;*/
+    --main-dark1: #00877a; /*#fec503;*/
+    --main-dark2: #00796b; /*#f6bf01;*/
+    --main-transparent-09: rgba(0, 150, 136, 0.9); /*#009688*/
+    --danger: #f44336;
+}
+
+/******************* Original Template ***************/
+.text-muted {
+    color: var(--gray7);
+}
+.text-primary {
+    color: var(--main);
+}
+a {
+    color: var(--main);
+}
+a:hover, a:focus, a:active, a.active {
+    color: var(--main-dark1);
+}
+.bg-light-gray {
+    background-color: var(--graye);
+}
+.bg-darkest-gray {
+    background-color: var(--gray2);
+}
+.btn-primary {
+    color: var(--white);
+    background-color: var(--main);
+    border-color: var(--main);
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+  color: var(--white);
+  background-color: var(--main-dark1);
+  border-color: var(--main-dark2);;
+}
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active {
+  background-color: var(--main);
+  border-color: var(--main);
+}
+.btn-primary .badge {
+    color: var(--main);
+    background-color: var(--white);
+}
+.btn-xl {
+    color: var(--white);
+    background-color: var(--main);
+    border-color: var(--main);
+}
+.btn-xl:hover,
+.btn-xl:focus,
+.btn-xl:active,
+.btn-xl.active,
+.open .dropdown-toggle.btn-xl {
+    color: var(--white);
+    background-color: var(--main-dark1);
+    border-color: var(--main-dark2);
+}
+.btn-xl.disabled,
+.btn-xl[disabled],
+fieldset[disabled] .btn-xl,
+.btn-xl.disabled:hover,
+.btn-xl[disabled]:hover,
+fieldset[disabled] .btn-xl:hover,
+.btn-xl.disabled:focus,
+.btn-xl[disabled]:focus,
+fieldset[disabled] .btn-xl:focus,
+.btn-xl.disabled:active,
+.btn-xl[disabled]:active,
+fieldset[disabled] .btn-xl:active,
+.btn-xl.disabled.active,
+.btn-xl[disabled].active,
+fieldset[disabled] .btn-xl.active {
+    background-color: var(--main);
+    border-color: var(--main);
+}
+.btn-xl .badge {
+    color: var(--main);
+    background-color: var(--white);
+}
+.navbar-custom {
+  background-color: var(--gray2);
+  border-color: var(--transparent);
+}
+.navbar-custom .navbar-brand {
+  color: var(--main);
+}
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-brand:focus,
+.navbar-custom .navbar-brand:active,
+.navbar-custom .navbar-brand.active {
+  color: var(--main-dark1);
+}
+.navbar-custom .navbar-collapse {
+  border-color: var(--white-transparent-02);
+}
+.navbar-custom .navbar-toggle {
+  background-color: var(--main);
+  border-color: var(--main);
+  color: var(--white);
+}
+.navbar-custom .navbar-toggle:hover,
+.navbar-custom .navbar-toggle:focus {
+  background-color: var(--main);
+}
+.navbar-custom .nav li a {
+  color: var(--white);
+}
+.navbar-custom .nav li a:hover,
+.navbar-custom .nav li a:focus {
+  color: var(--main);
+}
+.navbar-custom .navbar-nav > .active > a {
+  color: var(--white);
+  background-color: var(--main);
+}
+.navbar-custom .navbar-nav > .active > a:hover,
+.navbar-custom .navbar-nav > .active > a:focus {
+  color: var(--white);
+  background-color: var(--main-dark1);
+}
+@media (min-width: 768px) {
+  .navbar-custom {
+    background-color: var(--transparent);
+  }
+}
+@media (min-width: 768px) {
+  .navbar-custom.affix {
+    background-color: var(--gray2);
+  }
+}
+header {
+  color: var(--white);
+}
+#portfolio .portfolio-item .portfolio-link .portfolio-hover {
+  background: var(--main-transparent-09:);
+}
+#portfolio .portfolio-item .portfolio-link .portfolio-hover .portfolio-hover-content {
+  color: var(--white);
+}
+#portfolio .portfolio-item .portfolio-caption {
+  background-color: var(--white);
+}
+.timeline:before {
+  background-color: var(--light-gray-f1);
+}
+.timeline > li .timeline-image {
+  background-color: var(--main);
+  color: var(--white);
+  border-color: var(--light-gray-f1);
+}
+.team-member img {
+  border-color: var(--white);
+}
+section#contact {
+  background-color: var(--gray2);
+}
+section#contact .section-heading {
+  color: var(--white);
+}
+section#contact .form-control:focus {
+  border-color: var(--main);
+}
+section#contact ::-webkit-input-placeholder {
+  color: var(--graye);
+}
+section#contact :-moz-placeholder {
+  /* Firefox 18- */
+  color: var(--graye);
+}
+section#contact ::-moz-placeholder {
+  /* Firefox 19+ */
+  color: var(--graye);
+}
+section#contact :-ms-input-placeholder {
+  color: var(--graye);
+}
+section#contact .text-danger {
+  color: var(--danger);
+}
+ul.social-buttons li a {
+  color: var(--white);
+  background-color: var(--gray2);
+}
+ul.social-buttons li a:hover,
+ul.social-buttons li a:focus,
+ul.social-buttons li a:active {
+  background-color: var(--main);
+}
+.portfolio-modal .close-modal .lr {
+  background-color: var(--gray2);
+}
+.portfolio-modal .close-modal .lr .rl {
+  background-color: var(--gray2);
+}
+/*::-moz-selection {
+  background: var(--main);
+}
+::selection {
+  background: var(--main);
+}*/
+img::selection {
+  background: var(--transparent);
+}
+img::-moz-selection {
+  background: var(--transparent);
+}
+body {
+  webkit-tap-highlight-color: var(--white);
+}
+
+/***************** Custom stuff *****************/
+.btn-primary.outline {
+	border-color: var(--main);
+	color: var(--white);
+}
+.btn-primary.outline:hover, .btn-primary.outline:focus, .btn-primary.outline:active, .btn-primary.outline.active, .open > .dropdown-toggle.btn-primary {
+	color: var(--black);
+  background-color: var(--main);
+	border-color: var(--main-dark1);
+}
+.btn-primary.outline:active, .btn-primary.outline.active {
+	border-color: var(--main-dark1);
+	color: var(--main-dark2);
+}
+strong{
+  color: var(--main);
+}
+.team-member h4 {
+  color: var(--white);
+}

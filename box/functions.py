@@ -14,16 +14,14 @@ from datetime import timedelta
 # ### #
 # MP3 #
 # ### #
-def mp3_tags_to_song_model(audio_file_name, audio_file_path, song):
+def mp3_tags_to_song_model(file_name, file_path, song):
     """
     Read all the ID3 tags from an mp3 file an store them according to the
     song model attributes
     """
     # ID3 tags stuff
     # 1.- Creating a mutagen file instance
-    file = MutaFile(audio_file_path)
-
-    print file.tags.getall("USLT")
+    file = MutaFile(file_path)
 
     # 2.- Read all the ID3 tags from the file and save them on the song model
     for i in file.tags:
@@ -31,12 +29,12 @@ def mp3_tags_to_song_model(audio_file_name, audio_file_path, song):
         if i.startswith("APIC"):
             image_data = file.tags[i].data
             image_io = io.BytesIO(image_data)
-            image_name = os.path.splitext(audio_file_name)[0] + " - Artwork" + ".jpg"
+            image_name = os.path.splitext(file_name)[0] + " - Artwork" + ".jpg"
             song.artwork.save(image_name, File(image_io))
 
         # - TIT2: Song Title
         elif i.startswith("TIT2"):
-            song.song_title = file.tags[i].text[0]
+            song.title = file.tags[i].text[0]
 
         # - TPE1: Artist
         elif i.startswith("TPE1"):
@@ -59,7 +57,13 @@ def mp3_tags_to_song_model(audio_file_name, audio_file_path, song):
 
         # - TRCK: Track number
         elif i.startswith("TRCK"):
-            song.track_number = int(file.tags[i].text[0].split('/')[0])
+            aux = file.tags[i].text[0].split('/')
+            if len(aux) > 1:
+                song.track_number = int(aux[0])
+                song.track_total = int(aux[1])
+            else:
+                song.track_number = int(aux[0])
+                song.track_total = int(aux[0])
 
         # - TBPM: BPM
         elif i.startswith("TBPM"):
@@ -96,6 +100,10 @@ def mp3_tags_to_song_model(audio_file_name, audio_file_path, song):
         # - TCON: Genre/content type
         elif i.startswith("TCON"):
             song.genre = file.tags[i].text[0]
+        
+        # - 
+        elif i.startswith("USLT"):
+            song.lyrics = file.tags[i].text
 
     # Get the song length
     song.duration = timedelta(seconds=int(file.info.length))
@@ -108,13 +116,13 @@ def tags_from_song_model_to_mp3(song):
     # ID3 tags stuff
     # 1.- Creating an ID3 tag if not present or read it if present
     try: 
-        tags = ID3(song.audio_file.path)
+        tags = ID3(song.file.path)
     except ID3NoHeaderError:
         tags = ID3()
 
     # 2.- Save everything into ID3 tags
     # - TIT2: Song Title
-    tags["TIT2"] = TIT2(encoding=3, text=song.song_title.decode('unicode-escape'))
+    tags["TIT2"] = TIT2(encoding=3, text=song.title.decode('unicode-escape'))
 
     # - TPE1: Artist
     tags["TPE1"] = TPE1(encoding=3, text=song.artist.decode('unicode-escape'))
@@ -161,19 +169,17 @@ def tags_from_song_model_to_mp3(song):
     # - TCON: Genre/content type
     tags["TCON"] = TCON(encoding=3, text=song.genre.decode('unicode-escape'))
 
-    tags.save(song.audio_file.path)
+    tags.save(song.file.path)
 
 # ### #
 # M4A #
 # ### #
-
-
-def m4a_tags_to_song_model(audio_file_name, audio_file_path, song):
+def m4a_tags_to_song_model(file_name, file_path, song):
     """
     Read all the tags from an m4a file an store them according to the
     song model attributes
     """
-    file = MP4(audio_file_path)
+    file = MP4(file_path)
 
     # Read all tags and save them on the song model
     for i in file.tags:
@@ -186,13 +192,13 @@ def m4a_tags_to_song_model(audio_file_name, audio_file_path, song):
             
             image_io = io.BytesIO(image_data)
             song.artwork.save(
-                os.path.splitext(audio_file_name)[0] + " - Artwork." + artworkformat, 
+                os.path.splitext(file_name)[0] + " - Artwork." + artworkformat, 
                 File(image_io)
             )
 
         # - \xa9nam: Song Title
         elif i.startswith("\xa9nam"):
-            song.song_title = file.tags[i][0]
+            song.title = file.tags[i][0]
 
         # - \xa9ART: Artist
         elif i.startswith("\xa9ART"):
@@ -233,9 +239,9 @@ def m4a_tags_to_song_model(audio_file_name, audio_file_path, song):
         elif i.startswith("\xa9wrt"):
             song.composer = file.tags[i][0]
 
-        # - \xa9lyr: Lyricist
+        # - \xa9lyr: Lyricist/Lyrics
         elif i.startswith("\xa9lyr"):
-            song.lyricist = file.tags[i][0]
+            song.lyrics = file.tags[i][0]
 
         # - \xa9cmt: Comments
         elif i.startswith("\xa9cmt"):

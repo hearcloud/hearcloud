@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-  
+
   <!-- Bootstrap CSS v3.3.6 -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
@@ -35,6 +35,7 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" type="text/css" href="{% static 'hearcloud.css' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'box/css/box.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'box/css/player.css' %}"/>
   <!--<link rel="stylesheet" type="text/css" href="http://d2ycj993f2qxkw.cloudfront.net/assets/application-5ef8ea2029bc5bc42e30bbc1d2ae8cec.css">-->
 </head>
 <body>
@@ -75,11 +76,10 @@
               </li>
             </ul>
 
-            <!-- Search songs section desktop-->
+            <!-- Search songs section mobile-->
             <div class="search-form hidden-md hidden-lg t-search-form-mobile">
-              <form action="#" accept-charset="UTF-8" method="get">
-                <input name="utf8" type="hidden" value="&#x2713;" />
-                <input type="text" name="query" id="query" placeholder="{% trans "Search on Hearcloud" %}" class="form-control" />
+                {% csrf_token %}
+                <input type="text" name="query" id="querymb" placeholder="{% trans "Search on Hearcloud" %}" class="form-control" />
                 <button name="button" type="submit"><i class="fa fa-search"></i></button>
               </form>
             </div><!-- search-for -->
@@ -89,9 +89,9 @@
       <!-- Items: Nav-right -->
       <div class="nav-right">
 
-        <!-- Search songs section mobile -->
+        <!-- Search songs section desktop -->
         <div class="search-form hidden-xs hidden-sm t-search-form-desktop">
-          <form action="#" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" />
+            {% csrf_token %}
             <input type="text" name="query" id="query" placeholder="{% trans "Search on Hearcloud" %}" class="form-control" />
             <button name="button" type="submit">
               <i class="fa fa-search"></i>
@@ -113,7 +113,8 @@
             <li class="user">
               <a class="dropdown-toggle user-menu" aria-expanded="false" data-toggle="dropdown" id="me">
                 <span class="avatar avatar--s">
-                  <img title="{{ user.username }}" alt="{{ user.username }}" src="{% static 'box/images/NoArtwork_Black.png' %}" />
+                  <img title="{{ user.username }}" alt="{{ user.username }}" src="{% static 'users/img/DefaultProfile.png' %}" />
+
                 </span>
               <span class="sr-only">{{ user.username }}</span>
                 </a><div class="dropdown-menu pull-right" role="menu">
@@ -185,8 +186,34 @@
   </div>
 </footer>
 
+<!--<nav class="navbar navbar-default navbar-fixed-bottom navbar-shrink" id="playernav">
+  <div class="container-fluid">
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="#">
+                  <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                </a>
+              </li>
+
+              <li>
+                <a href="#">
+                  <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+                </a>
+              </li>
+              <li>
+                <div id="waveform">
+                </div>
+              </li>
+              <li>
+              </li>
+            </ul>  
+  </div>
+</nav>-->
+{% include 'box/player.html' %}
+
 <!-- JAVASCRIPT -->
 <script src="http://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
 <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/1.9.6/jquery.pjax.js"></script>-->
@@ -199,5 +226,33 @@
 </script>
 <script type="text/javascript" src="{% static "box/js/main.js" %}"></script>
 <script type="text/javascript" src="{% static "box/js/sorttable.js" %}"></script>
+<script type="text/javascript" src="{% static "box/js/search.js" %}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.0.52/wavesurfer.min.js"></script>
+<script>
+  var wavesurfer = Object.create(WaveSurfer);
+
+  wavesurfer.init({
+	  container: document.querySelector('#waveform'),
+	  cursorColor: '#aaa',
+	  cursorWidth: 1,
+	  height: 80,
+	  waveColor: '#588efb',
+	  progressColor: '#f043a4'
+  });
+
+  wavesurfer.load('http://127.0.0.1:8000/media/mpvillafranca/Marvin_Gaye__Tammi_Terrell_-_Aint_No_Mountain_High_Enough.m4a');
+</script>
+<script>
+$(function() {
+  $( "#slider" ).slider();
+});
+
+var slider = $('#slider');
+
+slider.slider({
+  range: "min",
+  value: 35,
+});
+</script>
 </body>
 </html>

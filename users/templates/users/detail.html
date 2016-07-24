@@ -8,24 +8,37 @@
 {% block content %}
 <div class="container-fluid songs-container">
     <div class="row">
-
-        <!-- User details -->
-        <div class="col-sm-12 col-md-12">
-            
-            <img class="img-rounded profile-thumbnail" src="{% thumbnail profile.photo 100x100 crop %}" alt=""/>
-            <div class="profile-header">
-                <h1>{{ user.username }}</h1>
-                {% if user.first_name %}
-                  <p>{{ user.first_name }}</p>
+        <!-- Left cover artwork -->
+        <div class="col-sm-4 col-md-3">
+          <div class="panel panel-default">
+              <div class="panel-body">
+                {% if user.picture %}
+                <!--<img class="img-rounded profile-thumbnail" src="{% thumbnail profile.photo 100x100 crop %}" alt=""/>-->
+                {% else %}
+                  <img class="img-responsive img-rounded img-detail-artwork" src="{% static 'users/img/DefaultProfile.png' %}" alt=""/>
                 {% endif %}
-                <p>
-                    <a href="{% url 'box:index' %}">Songs: <span class="badge">{{ user.get_songs_count }}</span></a>
-                    <a href="#">Playlists: <span class="badge">0</span></a>
-                </p>
-                <p>
-                    <a class="btn btn-default" href="{% url 'users:user-update-profile' user.slug %}">Edit Profile</a>
-                </p>
+              </div>
             </div>
+        </div>
+        <!-- User details -->
+        <div class="col-sm-8 col-md-9">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="profile-header">
+                  <h1>{{ user.username }}</h1>
+                  {% if user.first_name %}
+                    <p>{{ user.first_name }}</p>
+                  {% endif %}
+                  <p>
+                      <a href="{% url 'box:index' %}">Songs: <span class="badge">{{ user.get_songs_count }}</span></a>
+                      <a href="#">Playlists: <span class="badge">0</span></a>
+                  </p>
+                  <p>
+                      <a class="btn btn-default" href="{% url 'users:user-update-profile' user.slug %}">Edit Profile</a>
+                  </p>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
 </div>

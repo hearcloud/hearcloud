@@ -1,0 +1,82 @@
+{% load i18n %}
+{% load staticfiles %}
+
+{% if error_message %}
+      <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<div class="table-responsive">
+  <table class="table" id="music-collection-table">
+      <thead>
+      <tr>
+
+          <th id="col-title" colspan="2">
+              {% trans "TITLE" %}
+              <span class="glyphicon sorting-arrow glyphicon-arrow-down"></span>
+          </th>
+          <th id="col-artist">
+              {% trans "ARTIST" %}
+              <span class="glyphicon sorting-arrow"></span>
+          </th>
+          <th id="col-album">
+              {% trans "ALBUM" %}
+              <span class="glyphicon sorting-arrow"></span>
+          </th>
+          <th id="col-time">
+              <span class="glyphicon glyphicon-time"></span>
+              <span class="glyphicon sorting-arrow"></span>
+          </th>
+          <th>{% trans "ACTIONS" %}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for song in all_songs %}
+          <tr id="song-{{ song.id }}">
+              <td class="vert-align">
+                <!-- Artwork cropped -->
+                <div class="crop">
+                  <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}">
+                    {% if song.artwork %}
+                        <img src="{{ song.artwork.url }}">
+                    {% else %}
+                        <img src="{% static 'box/images/NoArtwork_Black.png' %}">
+                    {% endif %}
+                  </a>
+                </div>
+              </td>
+              <!-- Title -->
+              <td class="vert-align">
+                <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}">{% if song.title %}{{ song.title }}{% endif %}</a>
+              </td>
+              <!-- Artist -->
+              <td class="vert-align">{% if song.artist %}{{ song.artist }}{% endif %}</td>
+              <!-- Album -->
+              <td class="vert-align">{% if song.album %}{{ song.album }}{% endif %}</td>
+              <!-- Duration -->
+              <td class="vert-align">{% if song.duration %}{{ song.duration }}{% endif %}</td>
+              <!-- Actions -->
+              <td class="vert-align">
+                <!-- Play -->
+                <a href="{{ song.file.url }}">
+                  <button type="submit" class="btn btn-success btn-xs">
+                      <span class="glyphicon glyphicon-play"></span>
+                  </button>
+                </a>
+                <!-- Download -->
+                <a href="{% url 'box:song-download' username=user.username slug=song.slug %}">
+                  <button type="submit" class="btn btn-default btn-xs">
+                      <span class="glyphicon glyphicon-download"></span>
+                  </button>
+                </a>
+                <!-- Delete -->
+                <a href="{% url 'box:song-delete' username=user.username slug=song.slug %}" class="fm-delete" data-fm-callback="remove" data-fm-target="#song-{{ song.id }}">
+                  <button type="submit" class="btn btn-danger btn-xs">
+                      <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </a>
+              </td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+</div>

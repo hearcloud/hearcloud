@@ -3,71 +3,7 @@
 {% load staticfiles %}
 
 {% block content %}
-    <div class="panel-body">
-
-        {% if error_message %}
-            <p><strong>{{ error_message }}</strong></p>
-        {% endif %}
-
-        <table class="table" id="music-collection-table">
-            <thead>
-            <tr>
-
-                <th id="col-title" colspan="2">
-                    {% trans "TITLE" %}
-                    <span class="glyphicon sorting-arrow glyphicon-arrow-down"></span>
-                </th>
-                <th id="col-artist">
-                    {% trans "ARTIST" %}
-                    <span class="glyphicon sorting-arrow"></span>
-                </th>
-                <th id="col-album">
-                    {% trans "ALBUM" %}
-                    <span class="glyphicon sorting-arrow"></span>
-                </th>
-                <th id="col-time">
-                    <span class="glyphicon glyphicon-time"></span>
-                    <span class="glyphicon sorting-arrow"></span>
-                </th>
-                <th>{% trans "ACTIONS" %}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for song in all_songs %}
-                <tr id="song-{{ song.id }}">
-                    <td class="vert-align">
-                      <!-- Artwork cropped -->
-                      <div class="crop">
-                        <a href="{% url 'box:song-detail' song.id %}">
-                          {% if song.artwork %}
-                              <img src="{{ song.artwork.url }}">
-                          {% else %}
-                              <img src="{% static 'box/images/NoArtwork_Black.png' %}">
-                          {% endif %}
-                        </a>
-                      </div>
-                    </td>
-                    <!-- Title -->
-                    <td class="vert-align">
-                      <a href="{% url 'box:song-detail' song.id %}">{% if song.song_title %}{{ song.song_title }}{% endif %}</a>
-                    </td>
-                    <!-- Artist -->
-                    <td class="vert-align">{% if song.artist %}{{ song.artist }}{% endif %}</td>
-                    <!-- Album -->
-                    <td class="vert-align">{% if song.album %}{{ song.album }}{% endif %}</td>
-                    <!-- Duration -->
-                    <td class="vert-align">{% if song.duration %}{{ song.duration }}{% endif %}</td>
-                    <!-- Actions -->
-                    <td class="vert-align">
-                      <a href="{% url 'box:song-delete' song_id=song.id %}" class="fm-delete" data-fm-callback="remove" data-fm-target="#song-{{ song.id }}">
-                        <button type="submit" class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span>&nbsp; {% trans "Delete" %}
-                        </button>
-                      </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class="panel-body">
+    {% include 'box/songs_list.html' %}
+</div>
 {% endblock %}

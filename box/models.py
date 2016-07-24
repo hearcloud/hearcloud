@@ -6,6 +6,7 @@ import uuid
 import mimetypes
 import datetime
 import os
+import humanize
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -19,147 +20,124 @@ from django.db.models.signals import pre_delete # Receive the pre_delete signal 
 from django.dispatch.dispatcher import receiver
 from django.db import models
 
-
 from django.conf import settings
 
 from .functions import (mp3_tags_to_song_model, tags_from_song_model_to_mp3,
                       m4a_tags_to_song_model)
 
+def upload_to_username(instance, filename):
+    return '%s/%s' % (instance.user.username, filename)
+
 class Song(models.Model):
     """
     Song model
     """
-    #: Universally unique identifier
-    uuid = models.UUIDField(default=uuid.uuid4, db_index=True, editable=False)
+    file = models.FileField(_('File'), default='', upload_to=upload_to_username)
+    file_size = models.CharField(_('File size in bytes'), max_length=10, blank=True, null=True)
+    file_type = models.CharField(_('File type'), max_length=5, blank=True, null=True)
+    duration = models.DurationField(_('Song duration'), blank=True, null=True)
 
-    #: Creation time
-    ctime = models.DateField(auto_now_add=True)
-
-    #: Modified time
-    mtime = models.DateField(auto_now=True)
-
-    #: User which this song file belongs to
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-
-    # Slug
-    slug = models.SlugField()
-
-    #: Song file itself
-    audio_file = models.FileField(default='')
-
-    #: File mime type
-    mime_type = models.CharField(_('Mime type'), blank=True, max_length=256)
-
-    # Attached picture/cover/logo/artwork
-    artwork = models.ImageField(blank=True, null=True)
-
-    #: The song's title
-    song_title = models.CharField(max_length=250, blank=True, null=True)
-
-    #: Artist (lead performer(s)/soloist(s)
-    artist = models.CharField(max_length=250, blank=True, null=True) 
-
-    #: Releasing year
+    title = models.CharField(_('Title'), max_length=250, blank=True, null=True)
+    artist = models.CharField(_('Artist'), max_length=250, blank=True, null=True)
+    album = models.CharField(_('Album name'), max_length=500, blank=True, null=True)
     year = models.PositiveSmallIntegerField(
+        _('Year'),
         validators=[MaxValueValidator(3000)],
-        blank=True, 
+        blank=True,
         null=True
-    ) 
-
-    #: Album which the song belongs to
-    album = models.CharField(max_length=500, blank=True, null=True) 
-
-    #: Complete release date (day-month-year)
-    release_date = models.DateField(blank=True, null=True) 
-    
-    #: Album artist: band/orchestra/accompaniment
-    album_artist = models.CharField(max_length=250, blank=True, null=True)
-
-    #: Track number: position in set
+    )
+    release_date = models.DateField(_('Complete release date (day-month-year)'), blank=True, null=True)
+    album_artist = models.CharField(_('Album artist (band/orchestra/accompaniment)'), max_length=250, blank=True, null=True)
     track_number = models.PositiveSmallIntegerField(
+        _('Track number'),
+        validators=[MaxValueValidator(3000)],
+        blank=True,
+        null=True
+    )
+    track_total = models.PositiveSmallIntegerField(
+        _('Total track count'),
         validators=[MaxValueValidator(3000)],
         blank=True, 
         null=True
     )
-
-    #: Beats per minute
     bpm = models.FloatField(
+        _('Beats per minute'),
         validators=[MinValueValidator(5), MaxValueValidator(300)],
-        blank=True, 
+        blank=True,
         null=True
     )
-    
-    #: Original artist(s)/performer(s)
-    original_artist = models.CharField(max_length=250, blank=True, null=True) 
+    original_artist = models.CharField(_('Original artist(s)/performer(s)'), max_length=250, blank=True, null=True)
+    key = models.CharField(_('Song key'), max_length=50, blank=True, null=True)
+    composer = models.CharField(_('Composer'), max_length=250, blank=True, null=True)
+    lyricist = models.CharField(_('Lyricist/text writer'), max_length=250, blank=True, null=True)
+    comments = models.CharField(_('Comments'), max_length=500, blank=True, null=True)
+    remixer = models.CharField(_('Interpreted, remixed or otherwise modified by'), max_length=250, blank=True, null=True)
+    label = models.CharField(_('Label/Publisher'), max_length=250, blank=True, null=True)
+    genre = models.CharField(_('Genre/content type'), max_length=100, blank=True, null=True)
+    lyrics = models.TextField(_('Lyrics'), blank=True, null=True)
 
-    #: Key which the track is written
-    key = models.CharField(max_length=50, blank=True, null=True)
+    artwork = models.ImageField(_('Attached song cover'), upload_to=upload_to_username, blank=True, null=True)
 
-    #: Composer
-    composer = models.CharField(max_length=250, blank=True, null=True)
+    slug = models.SlugField(_('Slug'), unique=True, db_index=True)
+    ctime = models.DateField(_('Creation time'), auto_now_add=True)
+    mtime = models.DateField(_('Modified time'), auto_now=True)
 
-    #: Lyricist/text writer
-    lyricist = models.CharField(max_length=250, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL) # User which this song file belongs to
 
-    #: Comments
-    comments = models.CharField(max_length=500, blank=True, null=True)
-
-    #: Interpreted, remixed or otherwise modified by 
-    remixer = models.CharField(max_length=250, blank=True, null=True)
-
-    #: Label/Publisher
-    label = models.CharField(max_length=250, blank=True, null=True)
-
-    #: Genre/content type
-    genre = models.CharField(max_length=100, blank=True, null=True)
-
-    #: Duration
-    duration = models.DurationField(blank=True, null=True)
-    
-    #: Where to be redirected after you add a new song
+    # Where to be redirected after you add a new song
     def get_absolute_url(self):
         return reverse('box:detail-update', kwargs={'pk': self.pk})
 
     def save(self, create= False, update=False, *args, **kwargs):
-        if not self.pk:
-            self.slug = slugify(self.song_title)
-
         if create:
-            file_final_path = self.audio_file.path
-            file_name = self.audio_file.name
-            file_type = file_final_path.split('.')[-1].lower()
-            file_temp_path = os.path.join(settings.MEDIA_ROOT,'tmp','temp.'+file_type)
-            default_storage.save(file_temp_path,ContentFile(self.audio_file.file.read()))
+            file_final_path = self.file.path
+            file_name = self.file.name
+            self.file_type = file_final_path.split('.')[-1].lower()
+            file_temp_path = os.path.join(settings.MEDIA_ROOT,'tmp','temp.'+self.file_type)
+            default_storage.save(file_temp_path,ContentFile(self.file.file.read()))
+            print os.path.getsize(file_temp_path)
+            self.file_size = humanize.naturalsize(os.path.getsize(file_temp_path))
 
             # MP3
-            if file_type == "mp3":
+            if self.file_type == "mp3":
                 mp3_tags_to_song_model(file_name, file_temp_path, self)
 
             # MP4
-            elif file_type == "m4a":
+            elif self.file_type == "m4a":
                 m4a_tags_to_song_model(file_name, file_temp_path, self)
 
-            default_storage.delete(os.path.join(settings.MEDIA_ROOT,'tmp','temp.'+file_type))
-        
-            # If there is no 'Title' attribute, use the filename as title
-            if not self.song_title:
-                self.song_title = os.path.splitext(file_name)[0]
-        elif update:
-            file_type = self.audio_file.name.split('.')[-1].lower()
+            default_storage.delete(os.path.join(settings.MEDIA_ROOT,'tmp','temp.'+self.file_type))
 
+            # Slug
+            slugaux = os.path.splitext(os.path.basename(self.file.name))[0] # Filename without extension
+            slugaux = slugaux.replace("_", " ") # Replace '_' by ' '
+            slugaux = ' '.join(slugaux.split()) # Leave only one space between words
+            self.slug = slugify(slugaux)
+
+            # If there is no 'Title' attribute, use the filename as title
+            if not self.title:
+                self.title = slugaux
+
+        elif update:
             # MP3
-            if file_type == "mp3":
+            if self.file_type == "mp3":
                 tags_from_song_model_to_mp3(self)
 
             # MP4
-            elif file_type == "m4a":
+            elif self.file_type == "m4a":
                 pass
 
 
         super(Song, self).save(*args, **kwargs)
-            
+
     def __unicode__(self):
-        return self.audio_file.name
+        return self.file.name
+
+    #def clean_filename(self):
+    #    cleaned_name = (self.file.name).replace("_", " ") # Replace '_' by ' '
+    #    cleaned_name = ' '.join(cleaned_name.split()) # Leave only one space between words
+    #    cleaned_name = cleaned_name.replace(" ", "_") # Replace ' ' by '_'
+    #    return cleaned_name
 
 @receiver(pre_delete, sender=Song)
 def song_delete(sender, instance, **kwargs):
@@ -167,5 +145,5 @@ def song_delete(sender, instance, **kwargs):
     Things to do before delete a song field from the db
     """
     # Pass false so FileField doesn't save the model.
-    instance.audio_file.delete(False)
+    instance.file.delete(False)
     instance.artwork.delete(False)
