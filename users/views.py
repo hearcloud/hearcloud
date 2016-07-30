@@ -11,7 +11,9 @@ from django.utils.timezone import now as tznow
 from django.utils.translation import ugettext as _
 
 from .models import User
-from .forms import UserRegisterForm, UserLoginForm
+from .forms import UserRegisterForm, UserLoginForm, UserUpdateProfileForm
+
+from box.views import handler401
 
 class UserRegisterFormView(View):
     """
@@ -123,5 +125,26 @@ class UserDetailView(generic.DetailView):
             today = tznow(),
             **kwargs
         )
-        print User.objects.all().values()
         return context
+
+    def get(self, request, **kwargs):
+        # Check if the user is trying to get his profile page or another user page
+        if not request.user.id == User.objects.get(slug=kwargs['slug']).id:
+            return handler401(request)
+
+        return super(UserDetailView, self).get(request)
+
+class UserUpdateView(generic.UpdateView):
+    template_name = "users/user_profile_form.html"
+    form_class = UserUpdateProfileForm
+    model = User
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+
+        user = form.save(commit=False) # Creates an object from the form but doesn't save it into db yet
+
+        # Save into db
+        user.save()
+
+        return super(UserUpdateView, self).form_valid(form)

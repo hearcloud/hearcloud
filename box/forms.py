@@ -3,24 +3,33 @@ from django.core.exceptions import ValidationError
 
 from .models import Song
 
+from multiupload.fields import MultiMediaField
+
 # Allowed file types
 file_TYPES = ['mp3', 'wav', 'm4a']
 
-class SongForm(forms.ModelForm):
+class UploadSongForm(forms.ModelForm):
     """
     Form class to create songs on the db
     """
+    files = MultiMediaField(
+        min_num=1, 
+        max_num=3, 
+        max_file_size=1024*1024*30, 
+        media_type='audio'  # 'audio', 'video' or 'image'
+    )
+
     def clean_file(self):
-        file = self.cleaned_data.get("file", False)
-        filetype = file.name.split('.')[-1].lower()
-        if filetype not in file_TYPES:
-            raise ValidationError("Audio file must be WAV or MP3")
-        return file
+        for file in self.cleaned_data.get("file", False):
+            filetype = file.name.split('.')[-1].lower()
+            if filetype not in file_TYPES:
+                raise ValidationError("Audio file" + file.name + " must be M4A, WAV or MP3")
+            return file
 
     # Info about the class
     class Meta:
         model = Song
-        fields = ['file']
+        fields = ['files']
 
 
 

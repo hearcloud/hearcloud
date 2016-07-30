@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
 
     # /box/song/add
-    url(r'song/add/$', login_required(views.SongAjaxCreateView.as_view()), name='song-add'),
+    url(r'song/add/$', login_required(views.SongUploadPageView.as_view()), name='song-add'),
 
     # /box/<username>/<song-slug>/
     url(r'^(?P<username>[\w.@+-]+)/(?P<slug>[\w.-]{0,256})/$', login_required(views.SongDetailView.as_view()), name='song-detail'),

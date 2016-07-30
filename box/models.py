@@ -28,6 +28,9 @@ from .functions import (mp3_tags_to_song_model, tags_from_song_model_to_mp3,
 def upload_to_username(instance, filename):
     return '%s/%s' % (instance.user.username, filename)
 
+def upload_to_root(instance, filename):
+    return '%s/%s' % ('./', filename)
+
 class Song(models.Model):
     """
     Song model
@@ -76,7 +79,7 @@ class Song(models.Model):
     genre = models.CharField(_('Genre/content type'), max_length=100, blank=True, null=True)
     lyrics = models.TextField(_('Lyrics'), blank=True, null=True)
 
-    artwork = models.ImageField(_('Attached song cover'), upload_to=upload_to_username, blank=True, null=True)
+    artwork = models.ImageField(_('Attached song cover'), upload_to=upload_to_root, blank=True, null=True)
 
     slug = models.SlugField(_('Slug'), unique=True, db_index=True)
     ctime = models.DateField(_('Creation time'), auto_now_add=True)
@@ -95,7 +98,6 @@ class Song(models.Model):
             self.file_type = file_final_path.split('.')[-1].lower()
             file_temp_path = os.path.join(settings.MEDIA_ROOT,'tmp','temp.'+self.file_type)
             default_storage.save(file_temp_path,ContentFile(self.file.file.read()))
-            print os.path.getsize(file_temp_path)
             self.file_size = humanize.naturalsize(os.path.getsize(file_temp_path))
 
             # MP3

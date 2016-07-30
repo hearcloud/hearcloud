@@ -1,0 +1,6 @@
+{% extends 'jfu/upload_form.html' %}
+
+{% block JS_OPTS %}
+sequentialUploads: true,
+acceptFileTypes: /(\.|\/)(mp3|m4a|wav)$/i
+{% endblock %}

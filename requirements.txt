@@ -9,3 +9,4 @@ django-fm==0.2.1
 djangorestframework==3.3.3
 easy-thumbnails==2.3
 mutagen==1.31
+humanize==0.5.1

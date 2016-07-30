@@ -2,6 +2,7 @@ import os
 from itertools import chain
 
 from django.views.generic import TemplateView
+from django.views.generic.edit import FormView
 from fm.views import AjaxCreateView, AjaxUpdateView, AjaxDeleteView
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.template import RequestContext
@@ -11,6 +12,7 @@ from django.views.generic import View
 from django.core.files import File
 from django.utils.timezone import now as tznow
 from django.http import HttpResponseForbidden, HttpResponse
+from django.views.decorators.http import require_POST
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -19,10 +21,13 @@ from rest_framework import status
 from base64 import decodestring
 
 from .models import Song
-from .forms import SongForm, UpdateSongForm
+from .forms import UploadSongForm, UpdateSongForm
 from .serializers import SongSerializer
 
 from users.models import User
+
+from django.conf import settings
+from jfu.http import upload_receive, UploadResponse, JFUResponse
 
 class IndexView(TemplateView):
     """
@@ -44,19 +49,37 @@ class IndexView(TemplateView):
 
         return super(IndexView, self).get(request)
 
-class SongAjaxCreateView(AjaxCreateView):
+class SongUploadPageView(FormView):
     """
     View to allow users store new songs into the db.
     """
-    form_class = SongForm
-    template_name = "box/song_form.html"
+    template_name = "box/song_upload.html"
+    success_url = reverse_lazy('box:index') # Redirect to index after successfully add the songs
+    form_class = UploadSongForm
 
+    def get_context_data(self, **kwargs):
+        context = super(SongUploadPageView, self).get_context_data( **kwargs )
+        context['accepted_mime_types'] = ['audio/*']
+        return context
 
     def form_valid(self, form):
-        """
-        Overriding the form_valid method to do the ID3 tags stuff before store
-        the song
-        """
+        for file in form.cleaned_data['files']:
+            song = Song.objects.create(user=self.request.user, file=file)
+            song.save(create=True)
+
+            #song = form.save(commit=False)
+
+            #song.file = file
+
+            #song.save(create=True)
+        return super(SongUploadPageView, self).form_valid(form)
+
+"""
+    def form_valid(self, form):
+
+        #Overriding the form_valid method to do the ID3 tags stuff before store
+        #the song
+
         form.instance.user = self.request.user
 
         song = form.save(commit=False)
@@ -66,7 +89,7 @@ class SongAjaxCreateView(AjaxCreateView):
         song.save(create=True)
 
         return super(SongAjaxCreateView, self).form_valid(form)
-
+"""
 
 class SongDetailView(generic.DetailView):
     template_name = "box/detail.html"

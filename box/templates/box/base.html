@@ -104,7 +104,7 @@
           <ul class="nav navbar-nav loggedin clearfix">
             <!-- Add songs -->
             <li class="addthing t-addthing">
-              <a href="{% url 'box:song-add' %}" class="fm-create" data-fm-callback="redirect" data-fm-target="{% url 'box:index' %}">
+              <a href="{% url 'box:song-add' %}" class="">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; {% trans "Add songs" %}
               </a>
             </li>
@@ -150,34 +150,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12" id="pjax-container">
+        <div class="col-sm-12">
             {% block content %}
             {% endblock %}
         </div>
     </div>
 </div>
-
-
-<div tabindex="-1" role="dialog" aria-hidden="true" id="fm-modal" class="fm-modal modal">
-    <div class="modal-dialog modal-content">
-        <div data-dismiss="modal" class="close-modal">
-            <div class="lr">
-                <div class="rl">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="">
-                    <div class="modal-wrapper" style="display: none;">
-                        <div class="modal-body"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <footer class="footer">
   <div class="container">
