@@ -3,7 +3,8 @@
     --transparent: transparent;
     --black: #000000;
     --white: #ffffff;
-    --white-transparent-02: rgba(255, 255, 255, .02);
+    --black-transparent-02: rgba(255, 255, 255, .02);
+    --black-transparent-04: rgba(0, 0, 0, 0.4);
     --gray2: #222222;
     --gray4: #444444;
     --gray7: #777777;
@@ -123,7 +124,7 @@ fieldset[disabled] .btn-xl.active {
   color: var(--main-dark1);
 }
 .navbar-custom .navbar-collapse {
-  border-color: var(--white-transparent-02);
+  border-color: var(--black-transparent-02);
 }
 .navbar-custom .navbar-toggle {
   background-color: var(--main);
@@ -164,7 +165,7 @@ header {
   color: var(--white);
 }
 #portfolio .portfolio-item .portfolio-link .portfolio-hover {
-  background: var(--main-transparent-09:);
+  background: var(--main-transparent-09);
 }
 #portfolio .portfolio-item .portfolio-link .portfolio-hover .portfolio-hover-content {
   color: var(--white);
@@ -224,12 +225,6 @@ ul.social-buttons li a:active {
 .portfolio-modal .close-modal .lr .rl {
   background-color: var(--gray2);
 }
-/*::-moz-selection {
-  background: var(--main);
-}
-::selection {
-  background: var(--main);
-}*/
 img::selection {
   background: var(--transparent);
 }
@@ -241,6 +236,9 @@ body {
 }
 
 /***************** Custom stuff *****************/
+.panel-black-transparent {
+    background-color: var(--black-transparent-04) !important;
+}
 .btn-primary.outline {
 	border-color: var(--main);
 	color: var(--white);

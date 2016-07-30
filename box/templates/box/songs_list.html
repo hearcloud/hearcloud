@@ -5,7 +5,7 @@
       <p><strong>{{ error_message }}</strong></p>
 {% endif %}
 
-<div class="table-responsive">
+<div class="table-responsive" id="no-more-tables">
   <table class="table" id="music-collection-table">
       <thead>
       <tr>
@@ -32,7 +32,7 @@
       <tbody>
       {% for song in all_songs %}
           <tr id="song-{{ song.id }}">
-              <td class="vert-align">
+              <td class="vert-align" data-title="{% trans "Artwork" %}">
                 <!-- Artwork cropped -->
                 <div class="crop">
                   <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}">
@@ -45,31 +45,31 @@
                 </div>
               </td>
               <!-- Title -->
-              <td class="vert-align">
+              <td class="vert-align" data-title="{% trans "Title" %}">
                 <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}">{% if song.title %}{{ song.title }}{% endif %}</a>
               </td>
               <!-- Artist -->
-              <td class="vert-align">{% if song.artist %}{{ song.artist }}{% endif %}</td>
+              <td class="vert-align" data-title="{% trans "Artist" %}">{% if song.artist %}{{ song.artist }}{% endif %}</td>
               <!-- Album -->
-              <td class="vert-align">{% if song.album %}{{ song.album }}{% endif %}</td>
+              <td class="vert-align" data-title="{% trans "Album" %}">{% if song.album %}{{ song.album }}{% endif %}</td>
               <!-- Duration -->
-              <td class="vert-align">{% if song.duration %}{{ song.duration }}{% endif %}</td>
+              <td class="vert-align" data-title="{% trans "Duration" %}">{% if song.duration %}{{ song.duration }}{% endif %}</td>
               <!-- Actions -->
-              <td class="vert-align">
+              <td class="vert-align" data-title="{% trans "Actions" %}">
                 <!-- Play -->
-                <a href="{{ song.file.url }}">
+                <a class="no-decoration" href="{{ song.file.url }}">
                   <button type="submit" class="btn btn-success btn-xs">
                       <span class="glyphicon glyphicon-play"></span>
                   </button>
                 </a>
                 <!-- Download -->
-                <a href="{% url 'box:song-download' username=user.username slug=song.slug %}">
+                <a class="no-decoration" href="{% url 'box:song-download' username=user.username slug=song.slug %}">
                   <button type="submit" class="btn btn-default btn-xs">
                       <span class="glyphicon glyphicon-download"></span>
                   </button>
                 </a>
                 <!-- Delete -->
-                <a href="{% url 'box:song-delete' username=user.username slug=song.slug %}" class="fm-delete" data-fm-callback="remove" data-fm-target="#song-{{ song.id }}">
+                <a href="{% url 'box:song-delete' username=user.username slug=song.slug %}" class="no-decoration fm-delete" data-fm-callback="remove" data-fm-target="#song-{{ song.id }}">
                   <button type="submit" class="btn btn-danger btn-xs">
                       <span class="glyphicon glyphicon-trash"></span>
                   </button>

@@ -27,7 +27,6 @@ from .serializers import SongSerializer
 from users.models import User
 
 from django.conf import settings
-from jfu.http import upload_receive, UploadResponse, JFUResponse
 
 class IndexView(TemplateView):
     """

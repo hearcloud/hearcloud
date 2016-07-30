@@ -57,7 +57,7 @@ section h3.section-subheading{
   line-height: 30px;
 }
 
-strong{
+.strong-font{
   text-transform: none;
   font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive
 }

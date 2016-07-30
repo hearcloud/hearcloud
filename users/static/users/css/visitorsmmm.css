@@ -1,0 +1,145 @@
+header{
+    /*background-image: url(../img/header-bg.jpg);
+    background-repeat: none;
+    background-attachment: scroll;
+    background-position: center center;
+    height:100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;*/
+  background-image: url('../img/header-bg.jpg');
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  text-align: center;
+}
+
+form{
+    padding-top: 10px;
+}
+
+.pagewrapper{
+    padding: 100px 0px 0;
+    width: 95%;
+}
+
+.form-header {
+    font-size: 30px;
+    margin-top: 0px;
+    padding-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+/* Normal outline */
+.outline {
+	  background: none;
+	  padding: 12px 22px; /* reducing the button padding to not appear oversized. */
+	  border: 2px solid #67efdf;
+	  color: #fff;
+}
+
+/* Outline for footer form */
+.panel-footer-outline{
+	  background: none;
+	  color: #fff;
+    text-align: right;
+}
+
+/* Outline form buttons */
+.btn-outline {
+	background: none;
+	padding: 12px 22px; /* reducing the button padding to not appear oversized. */
+	border: 2px solid #67efdf;
+	color: #fff;
+}
+
+.btn-outline:hover, .btn-outline:focus, .btn-outline:active, .btn-outline.active, .open > .dropdown-toggle.btn-primary {
+  background: none !important;
+  color: #41e3d3 !important;
+	border-color: #41e3d3 !important;
+}
+.btn-outline:active, .btn-outline.active{
+	border-color: #41e3d3 !important;
+	color: #fff !important;
+	box-shadow: none !important;
+}
+
+.form-buttons{
+    text-align: right;
+}
+
+/* Outline form controls */
+.form-control {
+	background: none;
+	padding: 12px 22px; /* reducing the button padding to not appear oversized. */
+	border: 2px solid #fff;
+	color: #fff;
+}
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+  background-color: rgba(250, 250, 250, 0.3) !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+/* 3.- Adding some hover effects */
+.form-control:focus, .form-control:active, .form-control.active, .open > .dropdown-toggle.form-control {
+	color: #fff;
+  background: none;
+  color: #fff;
+	border-color: #41e3d3;
+}
+.form-control:active, .form-control.active {
+	border-color: #41e3d3;
+	color: #fff;
+	box-shadow: none;
+}
+
+
+/* Links */
+a {
+    color: #67efdf;
+    text-decoration: none;
+}
+a:hover, a:focus, a:active {
+    color: #fff;
+}
+
+.form-cancel{
+    padding-right: 10px;
+    margin: auto;
+    color: #fff;
+    text-decoration: none;
+}
+.form-cancel:hover {
+    color: #67efdf;
+    text-decoration: none;
+}
+
+/* form errors */
+.errorlist{
+    list-style-type: none;
+    color: #67efdf;
+    line-height: 1.3em;
+    margin: 0 0 0 0 !important;
+    padding: 0;
+    position: relative;
+    top: 2px;
+}
+strong{
+    color: #67efdf;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+}

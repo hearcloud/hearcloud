@@ -2,10 +2,11 @@
 {% load staticfiles %}
 <head>
     <meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Your music everywhere">
+    <meta name="author" content="mpvillafranca">
 
     <title>{% block title %}Hearcloud - Your music everywhere{% endblock %}</title>
 
@@ -22,8 +23,12 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'hearcloud.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'users/css/visitors.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/visitors.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/custom.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/colors.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/custom.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/colors.css' %}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,39 +39,47 @@
 
 </head>
 
-<body class="index">
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <a class="navbar-brand page-scroll" href="{% url 'home:index' %}">Hearcloud</a>
-            </div>
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
+<body id="page-top" class="index">
+    <div class="background"></div>
+        <div class="site-wrapper">
+          <div class="site-wrapper-inner">
 
+              <div class="masthead clearfix">
+                <div class="inner">
+                    <!-- Navigation -->
+                    <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top navbar-shrink">
+                        <div class="container-fluid">
+                            <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header">
+                                <a class="navbar-brand page-scroll" href="{% url 'home:index' %}">Hearcloud</a>
+                            </div>
+                        </div>
+                        <!-- /.container-fluid -->
+                    </nav>
 
-    <header>
-        <div class="container pagewrapper">
-            <div class="row">
-                <div class="col-sm-12" id="pjax-container">
-                    {% block content %}
-                    {% endblock %}
                 </div>
-            </div>
+              </div>
+
+              <div class="inner cover">
+                <div class="row">
+                    <div class="col-sm-12" id="pjax-container">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+              </div>
+
+          </div>
         </div>
-    </header>
 
+        <!-- jQuery -->
+        <script src="http://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
 
+        <!-- Bootstrap Core JavaScript -->
+        <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 
-    <!-- jQuery -->
-    <script src="http://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+        <!-- Plugin JavaScript -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/classie/1.0.1/classie.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/classie/1.0.1/classie.min.js"></script>
 </body>

@@ -9,7 +9,7 @@
 <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="user" value="{{ user }}">
-    {% include 'form_template.html' %}
+    {% include 'users/form_template.html' %}
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <div class="modal-buttons">
