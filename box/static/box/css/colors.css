@@ -62,64 +62,18 @@ a:hover, a:focus, a:active, a.active {
         background-color: var(--main);
     }
 }
-.navbar .search-form form:hover input,
-.navbar .search-form form:focus input,
-.navbar .search-form form.active input {
-    border-color: var(--main);
+.stylish-input-group .input-group-addon{
+    color: var(--white);
 }
-/* Button hover border color */
-.navbar .search-form form:hover button,
-.navbar .search-form form:focus button,
-.navbar .search-form form.active button {
+.stylish-input-group .input-group-addon:hover{
     color: var(--main);
 }
-.navbar .search-form form.active {
+.stylish-input-group .form-control{
+	border-color: var(--grayc);
+    color: var(--white);
+}
+.stylish-input-group button{
     background: var(--transparent);
-}
-.navbar .search-form .form-control {
-    color: var(--gray5);
-    border-color: var(--white);
-    box-shadow: 0 0 1px var(--black-transparent-05);
-}
-.navbar .search-form .form-control::-moz-placeholder {
-    color: var(--gray84);
-    opacity: 1;
-}
-.navbar .search-form .form-control:-ms-input-placeholder {
-    color: var(--gray84);
-}
-.navbar .search-form .form-control::-webkit-input-placeholder {
-    color: var(--gray84);
-}
-.navbar .search-form .form-control:hover {
-    color: var(--white);
-    border-color: var(--main);
-}
-.navbar .search-form .form-control:active,
-.navbar .search-form .form-control:focus {
-    border-color: var(--main);
-    background: var(--transparent);
-    color: var(--white);
-}
-.navbar .search-form .form-control:active::-moz-placeholder,
-.navbar .search-form .form-control:focus::-moz-placeholder {
-    color: var(--transparent);
-    opacity: 1;
-}
-.navbar .search-form .form-control:active:-ms-input-placeholder,
-.navbar .search-form .form-control:focus:-ms-input-placeholder {
-    color: var(--transparent);
-}
-.navbar .search-form .form-control:active::-webkit-input-placeholder,
-.navbar .search-form .form-control:focus::-webkit-input-placeholder {
-    color: var(--transparent);
-}
-.navbar .search-form button {
-    color: var(--white);
-}
-.navbar .search-form button:hover,
-.navbar .search-form button:focus {
-    color: var(--main);
 }
 .avatar {
     border: 1px solid var(--graye8);
@@ -146,7 +100,7 @@ a:hover, a:focus, a:active, a.active {
 .dropdown-menu {
     background-color: var(--gray2);
     color: var(--white);
-    border: px solid var(--main);
+    border-color: var(--main);
 }
 @media (max-width: 767px){
     .navbar-nav .open .dropdown-menu {
@@ -160,6 +114,11 @@ a:hover, a:focus, a:active, a.active {
 .dropdown-menu ul>li>a:hover,
 .dropdown-menu ul>li>a:focus {
     color: var(--main);
+}
+.navbar .dropdown-menu:after {
+    border-left-color: var(--transparent);
+    border-right-color: var(--transparent);
+    border-bottom-color: var(--main);
 }
 @media only screen and (max-width: 800px) {
 	#no-more-tables tr {

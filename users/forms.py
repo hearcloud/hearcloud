@@ -12,17 +12,17 @@ class UserRegisterForm(forms.ModelForm):
         widgets = {
             'username' : forms.TextInput(attrs = 
                 {
-                'class' : 'form-control'
+                'class' : 'form-control user-form-control'
                 }),
             'email' : forms.TextInput(attrs = 
                 {
                 'type' : 'email',
-                'class' : 'form-control'
+                'class' : 'form-control user-form-control'
                 }),
             'password' : forms.TextInput(attrs =
                 {
                 'type' : 'password',
-                'class' : 'form-control'
+                'class' : 'form-control user-form-control'
                 }),
         }
         labels = {
@@ -35,13 +35,13 @@ class UserLoginForm(forms.Form):
     username = forms.CharField(max_length=40, 
                 label = "Type your username",
                 widget = forms.TextInput(attrs = {
-                    'class' : 'form-control'
+                    'class' : 'form-control user-form-control'
                     }))
     password = forms.CharField(max_length=30,
                 label = "Type your password",
                 widget = forms.TextInput(attrs = {
                     'type' : 'password',
-                    'class' : 'form-control'
+                    'class' : 'form-control user-form-control'
                     }))
 
 class UserUpdateProfileForm(forms.ModelForm):

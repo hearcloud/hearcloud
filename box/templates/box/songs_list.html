@@ -32,7 +32,7 @@
       <tbody>
       {% for song in all_songs %}
           <tr id="song-{{ song.id }}">
-              <td class="vert-align" data-title="{% trans "Artwork" %}">
+              <td class="vert-align" data-title="{% trans "ARTWORK" %}">
                 <!-- Artwork cropped -->
                 <div class="crop">
                   <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}">
@@ -45,17 +45,17 @@
                 </div>
               </td>
               <!-- Title -->
-              <td class="vert-align" data-title="{% trans "Title" %}">
-                <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}">{% if song.title %}{{ song.title }}{% endif %}</a>
+              <td class="vert-align" data-title="{% trans "TITLE" %}">
+                <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}"><p class="list-value">{% if song.title %}{{ song.title }}{% endif %}</p></a>
               </td>
               <!-- Artist -->
-              <td class="vert-align" data-title="{% trans "Artist" %}">{% if song.artist %}{{ song.artist }}{% endif %}</td>
+              <td class="vert-align" data-title="{% trans "ARTIST" %}"><p class="list-value">{% if song.artist %}{{ song.artist }}{% endif %}</p></td>
               <!-- Album -->
-              <td class="vert-align" data-title="{% trans "Album" %}">{% if song.album %}{{ song.album }}{% endif %}</td>
+              <td class="vert-align" data-title="{% trans "ALBUM" %}"><p class="list-value">{% if song.album %}{{ song.album }}{% endif %}</p></td>
               <!-- Duration -->
-              <td class="vert-align" data-title="{% trans "Duration" %}">{% if song.duration %}{{ song.duration }}{% endif %}</td>
+              <td class="vert-align" data-title="{% trans "DURATION" %}"><p class="list-value">{% if song.duration %}{{ song.duration }}{% endif %}</p></td>
               <!-- Actions -->
-              <td class="vert-align" data-title="{% trans "Actions" %}">
+              <td class="vert-align" data-title="{% trans "ACTIONS" %}">
                 <!-- Play -->
                 <a class="no-decoration" href="{{ song.file.url }}">
                   <button type="submit" class="btn btn-success btn-xs">

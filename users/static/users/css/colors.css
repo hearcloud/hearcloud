@@ -35,7 +35,7 @@ body{
 	border-color: var(--main-dark1) !important;
 	color: var(--white) !important;
 }
-.form-control {
+.user-form-control {
 	border-color: var(--white);
 	color: var(--white);
 }
@@ -43,11 +43,11 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
   background-color: var(--black-transparent-03) !important;
   color: var(--black) !important;
 }
-.form-control:focus, .form-control:active, .form-control.active, .open > .dropdown-toggle.form-control {
+.user-form-control:focus, .user-form-control:active, .user-form-control.active, .open > .dropdown-toggle.form-control {
     color: var(--white);
 	border-color: var(--main-dark1);
 }
-.form-control:active, .form-control.active {
+.user-form-control:active, .user-form-control.active {
 	border-color: var(--main-dark1);
 	color: var(--white);
 }

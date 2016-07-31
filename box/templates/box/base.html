@@ -27,8 +27,6 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css' rel='stylesheet' type='text/css'>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/hearcloud.css' %}"/>
-
     <link rel="stylesheet" type="text/css" href="{% static 'box/css/box.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'box/css/player.css' %}"/>
 
@@ -71,13 +69,15 @@
               </li>
             </ul>
 
-            <div class="col-sm-6 col-md-6">
+            <div class="search-form" id="imaginary_container">
                 <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                        </div>
+                    <div class="input-group stylish-input-group">
+                        <input type="text" class="form-control"  placeholder="{% trans "Search on Hearcloud" %}" >
+                        <span class="input-group-addon">
+                            <button type="submit">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
                     </div>
                 </form>
             </div>
@@ -104,8 +104,12 @@
           <ul class="nav navbar-nav loggedin clearfix">
             <!-- Add songs -->
             <li class="addthing t-addthing">
-              <a href="{% url 'box:song-add' %}" class="">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              <a href="{% url 'box:song-add' %}" class="hidden-xs hidden-sm">
+                <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Upload
+              </a>
+
+              <a href="{% url 'box:song-add' %}" class="visible-xs visible-sm">
+                <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
               </a>
             </li>
 
