@@ -47,7 +47,8 @@
             <span class="sr-only">Toggle navigation</span> <i class="fa fa-bars"></i>
         </button>
         <!-- Logo itself -->
-        <a class="navbar-brand" href="{% url 'box:index' %}">Hearcloud</a>
+        <a class="navbar-brand hidden-xs" href="{% url 'box:index' %}">Hearcloud</a>
+        <a class="navbar-brand visible-xs navbar-brand-xs" href="{% url 'box:index' %}">Hearcloud</a>
       </div><!-- navbar-header -->
 
       <!-- Items: Nav left -->
@@ -70,7 +71,7 @@
             </ul>
 
             <div class="search-form" id="imaginary_container">
-                <form class="navbar-form" role="search">
+                <form class="navbar-form" role="search"> {% csrf_token %}
                     <div class="input-group stylish-input-group">
                         <input type="text" class="form-control"  placeholder="{% trans "Search on Hearcloud" %}" >
                         <span class="input-group-addon">
@@ -86,18 +87,6 @@
 
       <!-- Items: Nav-right -->
       <div class="nav-right">
-
-        <!-- Search songs section desktop -->
-        <!--<div class="search-form hidden-xs hidden-sm t-search-form-desktop">
-            {% csrf_token %}
-            <input type="text" name="query" id="query" placeholder="{% trans "Search on Hearcloud" %}" class="form-control" />
-            <button name="button" type="submit">
-              <i class="fa fa-search"></i>
-            </button>
-          </form>
-        </div>-->
-
-
 
         <!-- User nav -->
         <div class="user-nav">
@@ -162,7 +151,7 @@
 </div>
 
 <footer class="footer">
-  <div class="container">
+  <div class="container-fluid">
     <p class="text-muted">{% trans "This software is open source, licensed under AGPL v3. You can find the code, license and instructions " %}<a href="http://github.com/mpvillafranca/hearcloud">here</a>.</p>
     <p class="text-muted">{% trans "Coded by" %} <a href="http://github.com/mpvillafranca">mpvillafranca</a> &copy; 2016.</p>
   </div>
@@ -210,20 +199,53 @@
 <script type="text/javascript" src="{% static "box/js/sorttable.js" %}"></script>
 <script type="text/javascript" src="{% static "box/js/search.js" %}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.0.52/wavesurfer.min.js"></script>
-<script>
-  var wavesurfer = Object.create(WaveSurfer);
 
+<script>
+  $('.navbar-fixed-bottom').hide();
+
+  var wavesurfer = Object.create(WaveSurfer);
   wavesurfer.init({
 	  container: document.querySelector('#waveform'),
 	  cursorColor: '#aaa',
 	  cursorWidth: 1,
 	  height: 80,
-	  waveColor: '#588efb',
-	  progressColor: '#f043a4'
+	  waveColor: '#009688',
+	  progressColor: '#00796b'
+    });
+
+  $('.a-play-song').click(function(){
+    var songurl;
+    songurl = $(this).attr("data-songurl");
+    var songartwork = $(this).parents('.song').find('.artwork').attr("src");
+    var songtitle = $(this).parents('.song').find('.title').text();
+    var songartist = $(this).parents('.song').find('.artist').text();
+    $('.track-artwork').attr("src", songartwork);
+    $('.primary-title').text(songtitle);
+    $('.track-artist').text(songartist);
+
+    $('.navbar-fixed-bottom').show();
+
+    wavesurfer.load(songurl);
+    $('.play-button-container').find('span').addClass('glyphicon-pause').removeClass('glyphicon-play');
+
+    wavesurfer.on('ready', function () {
+        wavesurfer.play();
+    });
   });
 
-  wavesurfer.load('http://127.0.0.1:8000/media/mpvillafranca/Marvin_Gaye__Tammi_Terrell_-_Aint_No_Mountain_High_Enough.m4a');
+    $('.play-pause-button').click(function(){
+        if(wavesurfer.isPlaying()){
+            $('.play-button-container').find('span').addClass('glyphicon-play').removeClass('glyphicon-pause');
+        }
+        else{
+            $('.play-button-container').find('span').addClass('glyphicon-pause').removeClass('glyphicon-play');
+        }
+        wavesurfer.playPause();
+    });
 </script>
+
+
+
 <script>
 $(function() {
   $( "#slider" ).slider();
@@ -236,5 +258,7 @@ slider.slider({
   value: 35,
 });
 </script>
+
+
 </body>
 </html>

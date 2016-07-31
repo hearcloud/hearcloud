@@ -81,10 +81,13 @@ body {
     font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive;
     font-size: xx-large;
 }
+.navbar-brand-xs{
+    font-size: x-large !important;
+}
 /* Responsive */
 @media only screen and (max-width: 767px) {
     .navbar-header .navbar-brand {
-        left: 50%;
+        left: 70%;
         position: absolute;
         margin: 0 0 0 -147px;
     }
@@ -227,6 +230,7 @@ body {
     .navbar-nav .open .dropdown-menu {
         position: absolute;
         top: 50px;
+        border: 2px solid;
     }
 }
 .dropdown-menu ul>li>a:hover,
@@ -318,12 +322,13 @@ body {
   margin-bottom: 130px;
 }
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 140px;
-  background-color: #f5f5f5;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 175px;
+    background-color: #f5f5f5;
+    text-align: right;
 }
 
 
@@ -332,11 +337,11 @@ body {
 /* Not required for template or sticky footer method. */
 
 body > .container {
-  padding: 60px 0px 0;
-  width: 95%;
+    padding: 60px 0px 60px 0px;
+    width: 95%;
 }
 
-.container .text-muted {
+.container-fluid .text-muted {
   margin: 20px 0;
 }
 
@@ -354,12 +359,6 @@ code {
     margin-top: 10px;
 }
 
-
-
-/* Logo */
-.navbar-brand{
-  font-family: 'Satisfy', cursive;
-}
 
 /* Play button */
 .btn-circle.btn-lg {

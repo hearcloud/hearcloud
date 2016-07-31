@@ -31,34 +31,34 @@
       </thead>
       <tbody>
       {% for song in all_songs %}
-          <tr id="song-{{ song.id }}">
+          <tr class="song" id="song-{{ song.id }}">
               <td class="vert-align" data-title="{% trans "ARTWORK" %}">
                 <!-- Artwork cropped -->
                 <div class="crop">
                   <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}">
                     {% if song.artwork %}
-                        <img src="{{ song.artwork.url }}">
+                        <img class="artwork" src="{{ song.artwork.url }}">
                     {% else %}
-                        <img src="{% static 'box/images/NoArtwork_Black.png' %}">
+                        <img class="artwork" src="{% static 'box/images/NoArtwork_Black.png' %}">
                     {% endif %}
                   </a>
                 </div>
               </td>
               <!-- Title -->
               <td class="vert-align" data-title="{% trans "TITLE" %}">
-                <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}"><p class="list-value">{% if song.title %}{{ song.title }}{% endif %}</p></a>
+                <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}"><p class="list-value title">{% if song.title %}{{ song.title }}{% endif %}</p></a>
               </td>
               <!-- Artist -->
-              <td class="vert-align" data-title="{% trans "ARTIST" %}"><p class="list-value">{% if song.artist %}{{ song.artist }}{% endif %}</p></td>
+              <td class="vert-align" data-title="{% trans "ARTIST" %}"><p class="list-value artist">{% if song.artist %}{{ song.artist }}{% endif %}</p></td>
               <!-- Album -->
-              <td class="vert-align" data-title="{% trans "ALBUM" %}"><p class="list-value">{% if song.album %}{{ song.album }}{% endif %}</p></td>
+              <td class="vert-align" data-title="{% trans "ALBUM" %}"><p class="list-value album">{% if song.album %}{{ song.album }}{% endif %}</p></td>
               <!-- Duration -->
-              <td class="vert-align" data-title="{% trans "DURATION" %}"><p class="list-value">{% if song.duration %}{{ song.duration }}{% endif %}</p></td>
+              <td class="vert-align" data-title="{% trans "DURATION" %}"><p class="list-value duration">{% if song.duration %}{{ song.duration }}{% endif %}</p></td>
               <!-- Actions -->
               <td class="vert-align" data-title="{% trans "ACTIONS" %}">
                 <!-- Play -->
-                <a class="no-decoration" href="{{ song.file.url }}">
-                  <button type="submit" class="btn btn-success btn-xs">
+                <a class="no-decoration a-play-song" data-songurl="{{ song.file.url }}">
+                  <button type="submit" class="btn btn-success btn-xs" data-action="play">
                       <span class="glyphicon glyphicon-play"></span>
                   </button>
                 </a>

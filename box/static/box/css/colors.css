@@ -129,3 +129,6 @@ a:hover, a:focus, a:active, a.active {
 		border-bottom-color: var(--graye);
 	}
 }
+.play-pause-button{
+    color: var(--white);
+}

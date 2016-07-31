@@ -1,8 +1,11 @@
+.navbar-fixed-bottom {
+    margin-bottom: -5px;
+}
 .hearcloudplayer-container {
   width: 100%;
   height: 90px;
   padding-left: 0;
-  background: #000;
+  background: #333;
   color: #fff;
   font: 700 1.077em/1.25 "SourceSans", Arial, sans-serif;
   font-size: 1.3em;
@@ -54,4 +57,7 @@
 }
 .deck-looper{
   display:block;
+}
+.play-pause-button{
+    font-size: xx-large;
 }

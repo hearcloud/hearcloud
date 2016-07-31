@@ -1,5 +1,8 @@
+{% load i18n %}
+{% load staticfiles %}
+
 <!-- Player -->
-<nav class="navbar navbar-default navbar-fixed-bottom">
+<nav class="navbar navbar-default navbar-fixed-bottom" style="display: none;">
   <div class="container-fluid hearcloudplayer-container">
     <div id="player">
       <div id="deck" class="deck">
@@ -8,14 +11,14 @@
             <span id="deck-info" class="deck-info">
               <!-- Track artwork -->
               <div class="track-artwork-container">
-                <img class="track-artwork" src="/media/mpvillafranca/Marvin_Gaye__Tammi_Terrell_-_Aint_No_Mountain_High_Enough_-_Artwork.jpg">
+                <img class="track-artwork" src="{% static 'box/images/NoArtwork_Black.png' %}">
               </div>
               <!-- Title and artist names -->
               <div class="player-track-name-artist player-track-name-artist-standard">
                 <span class="track-title">
-                  <span class="primary-title">Track title could be more than one line</span> 
+                  <span class="primary-title"></span>
                 </span>
-                <span class="track-artist">Artist name could be also more than one line</span>  
+                <span class="track-artist"></span>
               </div>
             </span>
           </div>
@@ -29,17 +32,17 @@
           <div class="player-buttons-container">
 
             <!-- Volume control -->
-            <section> 
-              <span class="tooltip"></span> 
+            <section>
+              <span class="tooltip"></span>
               <div id="slider"></div>
               <span class="volume"></span>
             </section>
 
 
             <div class="play-button-container">
-              <canvas id="deck-play-button" class="deck-play-button"></canvas>
+                <a class="play-pause-button"><span class="glyphicon glyphicon-play" aria-hidden="true"></span></a>
             </div>
-            <canvas id="deck-looper" class="deck-looper"></canvas>
+            <!--<canvas id="deck-looper" class="deck-looper"></canvas>-->
           </div>
     </div>
     </div>
