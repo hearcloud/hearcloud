@@ -1,15 +1,33 @@
 from django.contrib import admin
-from .models import Song
+from .models import Song, Playlist
 
 from django.utils.translation import ugettext_lazy as _
 
+class SongInline(admin.TabularInline):
+    model = Song.playlists.through
+    extra = 1
+    verbose_name = 'Song'
+    verbose_name_plural = 'Songs in this playlist'
+
+class PlaylistAdmin(admin.ModelAdmin):
+    """
+    Admin class to view, update, create or delete new Playlist models
+    """
+    list_display = ('name', 'user')
+    readonly_fields = ('user',)
+    inlines = [
+        SongInline,
+    ]
 
 class SongAdmin(admin.ModelAdmin):
     """
     Admin class to view, update, create or delete new Song models
     """
     list_display = ('title', 'artist', 'duration', 'file')
-    readonly_fields = ('duration', 'file_size', 'file_type', 'slug', 'artwork_tag', 'ctime', 'mtime')
+    readonly_fields = ('duration', 'file_size', 'file_type', 'slug', 'artwork_tag', 'ctime', 'mtime', 'user')
+    suit_form_tabs = (('file', 'File'), ('song', 'Song'),
+                 ('metadata', 'Metadata'))
+    filter_horizontal = ('playlists',) 
 
     def save_model(self, request, obj, form, change):
         if getattr(obj, 'user', None) is None:
@@ -21,14 +39,23 @@ class SongAdmin(admin.ModelAdmin):
         if obj: # this is a change form
             fieldsets = [
                 (_('FILE'), {
+                    'classes': ('suit-tab', 'suit-tab-file',),
                     'fields': [
                         ('file', 'file_size', 'file_type'),
-                        ('duration'),
                         ('ctime'),
                         ('mtime'),
                     ]
                 }),
+                (_('SONG'), {
+                    'classes': ('suit-tab', 'suit-tab-song',),
+                    'fields': [
+                        ('duration'),
+                        ('user'),
+                        ('playlists'),
+                    ]
+                }),                
                 (_('METADATA'), {
+                    'classes': ('suit-tab', 'suit-tab-metadata',),
                     'fields': [
                         ('artwork', 'artwork_tag'),
                         ('title'),
@@ -62,3 +89,4 @@ class SongAdmin(admin.ModelAdmin):
         return ()
 
 admin.site.register(Song, SongAdmin)
+admin.site.register(Playlist, PlaylistAdmin)

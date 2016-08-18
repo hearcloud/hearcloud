@@ -11,7 +11,7 @@
               <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body panel-body-artwork">
-                        <a href="{% url 'box:song-detail' username=user.username slug=song.slug %}">
+                        <a href="{% url 'box:song-detail' username=user.slug slug=song.slug %}">
                             {% if song.artwork %}
                                 <img src="{{ song.artwork.url }}" class="img-responsive img-detail-artwork">
                             {% else %}
@@ -41,7 +41,7 @@
               <div class="clearfix">
                 <!-- Delete action -->
                 <div class="pull-right">
-                  <form action="{% url 'box:song-delete' username=user.username slug=song.slug %}" method="post">
+                  <form action="{% url 'box:song-delete' username=user.slug slug=song.slug %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="song_id" value="{{ song.id }}" />
                     <button type="submit" class="btn btn-danger btn-xs">
@@ -51,7 +51,7 @@
                 </div>
                 <!-- Download action -->
                 <div class="pull-right detail-action">
-                  <a href="{% url 'box:song-download' username=user.username slug=song.slug %}">
+                  <a href="{% url 'box:song-download' username=user.slug slug=song.slug %}">
                   <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-download"></span>&nbsp;Download</button>
                   </a>
                 </div>
@@ -61,7 +61,7 @@
                 </div>
                 <!-- Edit action -->
                 <div class="pull-right detail-action">
-                  <a href="{% url 'box:song-update' username=user.username slug=song.slug %}" class="fm-update" data-fm-callback="redirect" data-fm-target="{% url 'box:song-detail' username=user.username slug=song.slug %}">
+                  <a href="{% url 'box:song-update' username=user.slug slug=song.slug %}" class="fm-update" data-fm-callback="redirect" data-fm-target="{% url 'box:song-detail' username=user.slug slug=song.slug %}">
                   <button type="button" class="btn btn-warning btn-xs" id="btn-edit-song"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</button>
                   </a>
                 </div>

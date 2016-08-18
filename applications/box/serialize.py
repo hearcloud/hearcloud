@@ -2,6 +2,7 @@
 import mimetypes
 import re
 from django.core.urlresolvers import reverse
+from django.templatetags.static import static
 
 
 def order_name(name):
@@ -20,11 +21,17 @@ def order_name(name):
 def serialize_file(instance, file_attr='file', thumbnail_attr='artwork'):
     obj = getattr(instance, file_attr)
     thumbnail = getattr(instance, thumbnail_attr)
+    print thumbnail
+    if thumbnail:
+        thumbnail_url = thumbnail.url
+    else:
+        thumbnail_url = static('box/images/NoArtwork_Black.png')
+    print thumbnail_url
     return {
         'url': obj.url,
         'name': order_name(obj.name),
         'type': mimetypes.guess_type(obj.path)[0],
-        'thumbnailUrl': thumbnail.url,
+        'thumbnailUrl': thumbnail_url,
         'size': obj.size,
         'deleteUrl': reverse('box:song-delete', kwargs={'username': instance.user.username, 'slug': instance.slug}),
         'deleteType': 'DELETE',

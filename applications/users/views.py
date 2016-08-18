@@ -7,6 +7,8 @@ from django.utils.timezone import now as tznow
 from django.utils.translation import ugettext as _
 from django.views import generic
 from django.views.generic import View
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
 from applications.box.views import handler401
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateProfileForm
@@ -25,7 +27,9 @@ class UserRegisterFormView(View):
         Display blank form if user is not loged
         """
         if request.user.is_authenticated():
-            return redirect('box:index')
+            return HttpResponseRedirect(
+                reverse('box:index', kwargs={'username': request.user.slug})
+            )
 
         form = self.form_class(None) # No context
         return render(request, self.template_name, {'form': form})
@@ -68,7 +72,9 @@ class UserLogInFormView(View):
         Display blank form if user is not loged
         """
         if request.user.is_authenticated():
-            return redirect('box:index')
+            return HttpResponseRedirect(
+                reverse('box:index', kwargs={'username': request.user.slug})
+            )
 
         form = self.form_class(None)  # No context
         return render(request, self.template_name, {'form': form})
@@ -92,7 +98,9 @@ class UserLogInFormView(View):
                     if 'next' in request.GET:
                         return redirect(request.GET['next'])
                     else:
-                        return redirect('box:index')
+                        return HttpResponseRedirect(
+                            reverse('box:index', kwargs={'username': request.user.slug})
+                        )
 
                 else:
                     return render(request, self.template_name, {'error_message': _('Your account has been disabled'), 'form': form})
@@ -119,6 +127,7 @@ class LogoutView(View):
 class UserDetailView(generic.DetailView):
     template_name = "users/detail.html"
     model = User
+    slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(
@@ -129,7 +138,7 @@ class UserDetailView(generic.DetailView):
 
     def get(self, request, **kwargs):
         # Check if the user is trying to get his profile page or another user page
-        if not request.user.id == User.objects.get(slug=kwargs['slug']).id:
+        if not request.user.id == User.objects.get(slug=kwargs['username']).id:
             return handler401(request)
 
         return super(UserDetailView, self).get(request)
@@ -139,6 +148,7 @@ class UserUpdateView(generic.UpdateView):
     template_name = "users/user_profile_form.html"
     form_class = UserUpdateProfileForm
     model = User
+    slug_url_kwarg = 'username'
 
     def form_valid(self, form):
         form.instance.user = self.request.user

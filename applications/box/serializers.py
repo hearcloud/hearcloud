@@ -17,7 +17,7 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
           'artist', 'album', 'year', 'release_date', 'album_artist',
           'track_number', 'track_total', 'bpm', 'original_artist',
           'key', 'composer', 'lyricist', 'comments', 'remixer', 'label',
-          'genre', 'artwork',
+          'genre', 'artwork', 'user', 'ctime', 'mtime'
         )
         read_only_fields = ('ctime', 'mtime', 'user')
         # fields = '__all__'

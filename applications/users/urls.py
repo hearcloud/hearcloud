@@ -16,11 +16,11 @@ urlpatterns = [
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
 
     # /<username>
-    url(r'^profile/(?P<slug>[\w.@+-]+)/$', views.UserDetailView.as_view(), name='user-detail'),
+    url(r'^users/(?P<username>[\w.@+-]+)/profile/$', views.UserDetailView.as_view(), name='user-detail'),
 
     # /<username>/edit
-    url(r'^profile/(?P<slug>[\w.@+-]+)/edit/$', views.UserUpdateView.as_view(), name='user-update-profile'),
+    url(r'^users/(?P<username>[\w.@+-]+)/profile/edit/$', views.UserUpdateView.as_view(), name='user-update-profile'),
 
     # /account/settings
-    url(r'^account/settings/$', views.UserDetailView.as_view(), name='user-update-settings'),
+    url(r'^users/(?P<username>[\w.@+-]+)/account/settings/$', views.UserDetailView.as_view(), name='user-update-settings'),
 ]

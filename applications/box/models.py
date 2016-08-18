@@ -124,7 +124,10 @@ class Song(models.Model):
             
             check_slug_exists = slugify(slugaux)            
             if not Song.objects.filter(slug=check_slug_exists).exists():
-                self.slug = slugify(slugaux)
+                if slugify(slugaux) != 'add':
+                    self.slug = slugify(slugaux)
+                else:
+                    self.slug = '%s-%d' % (slugify(slugaux), 1)
 
                 if not self.title:
                     self.title = slugaux
@@ -151,7 +154,7 @@ class Song(models.Model):
         super(Song, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.file.name
+        return self.title
 
         # def clean_filename(self):
         #    cleaned_name = (self.file.name).replace("_", " ") # Replace '_' by ' '

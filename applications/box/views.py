@@ -1,6 +1,7 @@
 import json
 
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
@@ -29,11 +30,11 @@ class IndexView(TemplateView):
         )
         return context
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
             return redirect('home:index')
 
-        return super(IndexView, self).get(request)
+        return super(IndexView, self).get(request, *args, **kwargs)
 
 class PlaylistListView(ListView):
     """
@@ -116,6 +117,11 @@ class SongUpdateView(AjaxUpdateView):
     model = Song
     pk_url_kwarg = 'song_id'
 
+    def form_invalid(self, form):
+        print form.errors
+
+        return super(SongUpdateView, self).form_invalid(form)
+
     def form_valid(self, form):
         """
         Overriding the form_valid method to do the ID3 tags stuff over the
@@ -134,7 +140,9 @@ class SongUpdateView(AjaxUpdateView):
 class SongDelete(AjaxDeleteView):
     model = Song
     # pk_url_kwarg = 'song_id'
-    success_url = reverse_lazy('box:index')  # Redirect to index after successfully delete a song
+    
+    def get_success_url(self):
+        return HttpResponseRedirect(reverse('box:index', kwargs={'username': self.request.user.username}))
 
     def delete(self, request, *args, **kwargs):
         return super(SongDelete, self).delete(request)

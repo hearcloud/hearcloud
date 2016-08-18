@@ -50,8 +50,8 @@
             <span class="sr-only">Toggle navigation</span> <i class="fa fa-bars"></i>
         </button>
         <!-- Logo itself -->
-        <a class="navbar-brand hidden-xs" href="{% url 'box:index' %}">Hearcloud</a>
-        <a class="navbar-brand visible-xs navbar-brand-xs" href="{% url 'box:index' %}">Hearcloud</a>
+        <a class="navbar-brand hidden-xs" href="{% url 'box:index' username=user.username %}">Hearcloud</a>
+        <a class="navbar-brand visible-xs navbar-brand-xs" href="{% url 'box:index' username=user.username %}">Hearcloud</a>
       </div><!-- navbar-header -->
 
       <!-- Items: Nav left -->
@@ -61,7 +61,7 @@
             <!-- Songs box section -->
             <ul class="nav navbar-nav">
               <li>
-                <a href="{% url 'box:index' %}">
+                <a href="{% url 'box:index' username=user.username %}">
                   <span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp; {% trans "Collection" %}
                 </a>
               </li>
@@ -96,11 +96,11 @@
           <ul class="nav navbar-nav loggedin clearfix">
             <!-- Add songs -->
             <li class="addthing t-addthing">
-              <a href="{% url 'box:song-add' %}" class="hidden-xs hidden-sm">
+              <a href="{% url 'box:song-add' username=user.username %}" class="hidden-xs hidden-sm">
                 <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Upload
               </a>
 
-              <a href="{% url 'box:song-add' %}" class="visible-xs visible-sm">
+              <a href="{% url 'box:song-add' username=user.username %}" class="visible-xs visible-sm">
                 <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
               </a>
             </li>
@@ -116,16 +116,16 @@
                 </a><div class="dropdown-menu pull-right" role="menu">
                 <ul>
                     <li>
-                    <a href="{% url 'users:user-detail' user.slug %}"><i class="fa fa-user fa-fw"></i>
+                    <a href="{% url 'users:user-detail' username=user.slug %}"><i class="fa fa-user fa-fw"></i>
                     {% trans "Profile" %}
                     </a></li>
                     <li>
-                    <a href="{% url 'users:user-update-profile' user.slug %}"><i class="fa fa-edit fa-fw"></i>
+                    <a href="{% url 'users:user-update-profile' username=user.slug %}"><i class="fa fa-edit fa-fw"></i>
                     {% trans "Edit profile" %}
                     </a></li>
                     <li class="divider"></li>
                     <li>
-                    <a href="{% url 'users:user-update-settings' %}"><i class="fa fa-cog fa-fw"></i>
+                    <a href="{% url 'users:user-update-settings' username=user.slug %}"><i class="fa fa-cog fa-fw"></i>
                     {% trans "Account settings" %}
                     </a></li>
                     <li class="divider"></li>

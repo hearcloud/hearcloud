@@ -8,31 +8,30 @@ from . import views
 app_name = 'box'
 
 urlpatterns = [
-    # /box/
-    url(r'^$', views.IndexView.as_view(), name='index'),
+    # /box/<username>/songs
+    url(r'^(?P<username>[\w.@+-]+)/songs/$', views.IndexView.as_view(), name='index'),
 
-    # /box/song/add
-    url(r'song/add/$', login_required(views.SongCreateView.as_view()), name='song-add'),
-    #url(r'song/add/view/$', login_required(views.SongListView.as_view()), name='song-add-view'),
+    # /box/<username>/songs/add
+    url(r'^(?P<username>[\w.@+-]+)/songs/add/$', login_required(views.SongCreateView.as_view()), name='song-add'),
 
-    # /box/<username>/<song-slug>/
-    url(r'^(?P<username>[\w.@+-]+)/(?!playlists)(?P<slug>[\w.-]{0,256})/$', login_required(views.SongDetailView.as_view()),
+    # /box/<username>/songs/<song-slug>/
+    url(r'^(?P<username>[\w.@+-]+)/songs/(?P<slug>[\w.-]{0,256})/$', login_required(views.SongDetailView.as_view()), 
         name='song-detail'),
 
-    # /box/<username>/<song-slug>/download
-    url(r'^(?P<username>[\w.@+-]+)/(?!playlists)(?P<slug>[\w.-]{0,256})/download/$', login_required(views.song_download),
-        name='song-download'),
-
-    # /box/<username>/<song-slug>/update
-    url(r'^(?P<username>[\w.@+-]+)/(?!playlists)(?P<slug>[\w.-]{0,256})/update/$', login_required(views.SongUpdateView.as_view()),
+    # /box/<username>/songs/<song-slug>/update
+    url(r'^(?P<username>[\w.@+-]+)/songs/(?P<slug>[\w.-]{0,256})/update/$', login_required(views.SongUpdateView.as_view()),
         name='song-update'),
 
-    # /box/song/<username>/<song-slug>/delete-
-    url(r'song/(?P<username>[\w.@+-]+)/(?P<slug>[\w.-]{0,256})/delete/$', login_required(views.SongDelete.as_view()),
+    # /box/<username>/songs/<song-slug>/delete
+    url(r'^(?P<username>[\w.@+-]+)/songs/(?P<slug>[\w.-]{0,256})/delete/$', login_required(views.SongDelete.as_view()),
         name='song-delete'),
 
-    # /box/search
-    url(r'^search/$', views.song_search, name='song-search'),
+    # /box/<username>/songs/<song-slug>/download
+    url(r'^(?P<username>[\w.@+-]+)/songs/(?P<slug>[\w.-]{0,256})/download/$', login_required(views.song_download),
+        name='song-download'),
+
+    # /box/<username>/search
+    url(r'^(?P<username>[\w.@+-]+)/search/$', views.song_search, name='song-search'),
 
     # /box/<username>/playlists
     url(r'^(?P<username>[\w.@+-]+)/playlists/$', login_required(views.PlaylistListView.as_view()),

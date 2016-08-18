@@ -33,15 +33,22 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 THIRD_PARTY_APPS = [
     'corsheaders',
-    'rest_framework',
     'easy_pjax',
     'crispy_forms',
     'fm',
     'easy_thumbnails',
+  
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
+    'allauth',
+    'allauth.account',
 ]
 
 LOCAL_APPS = [
@@ -176,7 +183,7 @@ SUIT_CONFIG = {
     'MENU': (
         'sites',
         {'app': 'auth', 'icon':'icon-lock', 'models': (AUTH_USER_MODEL, 'group')},
-        {'app': 'box', 'icon': 'icon-cog', 'models': ('song')},
+        {'app': 'box', 'icon': 'icon-cog', 'models': ('song', 'playlist')},
         #{'label': 'Settings', 'icon':'icon-cog', 'models': ('auth.user', 'auth.group')},
         #{'label': 'Support', 'icon':'icon-question-sign', 'url': '/support/'},
     ),
@@ -184,3 +191,27 @@ SUIT_CONFIG = {
     # misc
     # 'LIST_PER_PAGE': 15
 }
+
+
+###############################################################################
+"""                              Rest Framework                             """
+""" http://www.django-rest-framework.org/                                   """
+###############################################################################
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'PAGE_SIZE': 10
+}
+
+
+###############################################################################
+"""                            Rest Auth/All auth                           """
+""" http://django-rest-auth.readthedocs.io/                                 """
+###############################################################################
+SITE_ID = 1
+
+EMAIL_BACKEND= 'django.core.mail.backends.console.EmailBackend'

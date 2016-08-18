@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
-from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
 
 class IndexView(TemplateView):
@@ -7,6 +8,8 @@ class IndexView(TemplateView):
 
     def get(self, request, **kwargs):
         if request.user.is_authenticated():
-            return redirect('box:index')
+            return HttpResponseRedirect(
+                reverse('box:index', kwargs={'username': request.user.slug})
+            )
 
         return super(IndexView, self).get(request)
