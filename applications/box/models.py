@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import humanize
 import os
 import itertools
+import re
 
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -122,22 +123,29 @@ class Song(models.Model):
             slugaux = slugaux.replace("_", " ")  # Replace '_' by ' '
             slugaux = ' '.join(slugaux.split())  # Leave only one space between words
             
-            check_slug_exists = slugify(slugaux)            
-            if not Song.objects.filter(slug=check_slug_exists).exists():
-                if slugify(slugaux) != 'add':
-                    self.slug = slugify(slugaux)
-                else:
-                    self.slug = '%s-%d' % (slugify(slugaux), 1)
+            check_slug_exists = slugify(slugaux)        
+            if not Song.objects.filter(slug=check_slug_exists).exists() and check_slug_exists != 'add':
+                self.slug = slugify(slugaux)
 
                 if not self.title:
                     self.title = slugaux
             else:
                 slug_final = check_slug_exists
-                for x in itertools.count(1):
-                    if not Song.objects.filter(slug=slug_final).exists():
-                        break
-                    slug_final = '%s-%d' % (check_slug_exists, x)
+
+                if check_slug_exists != 'add':
+                    for x in itertools.count(1):
+                        if not Song.objects.filter(slug=slug_final).exists():
+                            break
+                        slug_final = '%s-%d' % (check_slug_exists, x)
+                else:
+                    slug_final = '%s-%d' % (check_slug_exists, 1)
+                    for x in itertools.count(1):
+                        if not Song.objects.filter(slug=slug_final).exists():
+                            break
+                        slug_final = '%s-%d' % (check_slug_exists, x)
+          
                 self.slug = slug_final
+
                 if not self.title:
                     self.title = slugaux
 
