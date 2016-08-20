@@ -13,3 +13,4 @@ easy-thumbnails==2.3
 mutagen==1.31
 humanize==0.5.1
 django-suit==0.2.20
+pydub==0.16.5

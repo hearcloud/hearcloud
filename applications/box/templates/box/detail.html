@@ -51,7 +51,7 @@
                 </div>
                 <!-- Download action -->
                 <div class="pull-right detail-action">
-                  <a href="{% url 'box:song-download' username=user.slug slug=song.slug %}">
+                  <a href="{% url 'box:song-download' username=user.slug slug=song.slug format='wav' %}">
                   <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-download"></span>&nbsp;Download</button>
                   </a>
                 </div>

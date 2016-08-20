@@ -1,4 +1,7 @@
 import json
+import os
+from pprint import pprint
+import urllib
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -10,11 +13,15 @@ from django.views import generic
 from django.views.generic import ListView, TemplateView, CreateView, DeleteView
 from django.views.generic.edit import FormView
 from fm.views import AjaxUpdateView, AjaxDeleteView
+from django.core.files.temp import NamedTemporaryFile
+from wsgiref.util import FileWrapper
+from pydub import AudioSegment
 
 from .forms import UpdateSongForm
 from .models import Song, Playlist
 from .response import JSONResponse, response_mimetype
 from .serialize import serialize_file
+from .functions import tags_from_song_model_to_mp3
 
 
 class IndexView(TemplateView):
@@ -148,16 +155,40 @@ class SongDelete(AjaxDeleteView):
         return super(SongDelete, self).delete(request)
 
 
-def song_download(request, username, slug):
+def song_download(request, username, slug, format):
     song = Song.objects.get(slug=slug)
 
     if not request.user.id == song.user.id:
         return handler401(request)
 
-    fsock = open(song.file.path, 'rb')
-    response = HttpResponse(fsock, content_type="audio/mpeg")
-    response['Content-Disposition'] = "attachment; filename=%s - %s.%s" % \
-                                      (song.artist, song.title, song.file_type)
+    fsock = open(song.file.path, 'rb')  # Opening the original song file for read
+    if format != song.file_type:  # We need to convert the file
+        temp_file = NamedTemporaryFile()  # Creating a temporary file to save the new data on it
+
+        if song.file_type == 'wav':  # if the original is wav, we can convert to mp3 or m4a
+            if format == 'mp3':  # if we want to convert to mp3
+                audio_segment = AudioSegment.from_wav(song.file.path)  # Read the wav file
+                audio_segment.export(out_f=temp_file.name, format='mp3', bitrate='320k')
+                tags_from_song_model_to_mp3(song, temp_file.name)
+            if format == 'm4a':
+                pass
+
+        response = HttpResponse(open(temp_file.name, 'rb'), content_type="audio/mpeg")
+    else:
+        response = HttpResponse(fsock, content_type="audio/mpeg")
+
+
+    filename = ''
+    if song.artist and song.title:
+        filename = "%s - %s.%s" % (song.artist, song.title, format)
+    else:
+        filename = "%s.%s" % (song.get_filename(), format)
+
+    filename = filename.encode('utf-8')
+    filename = urllib.quote(filename)
+
+    response['Content-Disposition'] = "attachment; filename*=UTF-8''%s" % filename
+
     return response
 
 

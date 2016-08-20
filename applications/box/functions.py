@@ -44,7 +44,10 @@ def mp3_tags_to_song_model(file_name, file_path, song):
 
         # - TDRC: Year
         elif i.startswith("TDRC"):
-            song.year = int(audio_file.tags[i].text[0].get_text())
+            try:
+                song.year = int(audio_file.tags[i].text[0].get_text())
+            except ValueError:
+                pass
 
         # - TALB: Album
         elif i.startswith("TALB"):
@@ -59,17 +62,23 @@ def mp3_tags_to_song_model(file_name, file_path, song):
 
         # - TRCK: Track number
         elif i.startswith("TRCK"):
-            aux = audio_file.tags[i].text[0].split('/')
-            if len(aux) > 1:
-                song.track_number = int(aux[0])
-                song.track_total = int(aux[1])
-            else:
-                song.track_number = int(aux[0])
-                song.track_total = int(aux[0])
+            try:
+                aux = audio_file.tags[i].text[0].split('/')
+                if len(aux) > 1:
+                    song.track_number = int(aux[0])
+                    song.track_total = int(aux[1])
+                else:
+                    song.track_number = int(aux[0])
+                    song.track_total = int(aux[0])
+            except ValueError:
+                pass
 
         # - TBPM: BPM
         elif i.startswith("TBPM"):
-            song.bpm = float(audio_file.tags[i].text[0])
+            try:
+                song.bpm = float(audio_file.tags[i].text[0])
+            except ValueError:
+                pass
 
         # - TOPE: Original artist
         elif i.startswith("TOPE"):
@@ -111,7 +120,7 @@ def mp3_tags_to_song_model(file_name, file_path, song):
     song.duration = timedelta(seconds=int(audio_file.info.length))
 
 
-def tags_from_song_model_to_mp3(song):
+def tags_from_song_model_to_mp3(song, file_path):
     """
     Read all the new model attributes and save them according to the ID3 tags
     of the mp3 file stored
@@ -119,60 +128,75 @@ def tags_from_song_model_to_mp3(song):
     # ID3 tags stuff
     # 1.- Creating an ID3 tag if not present or read it if present
     try:
-        tags = ID3(song.file.path)
+        tags = ID3(file_path)
     except ID3NoHeaderError:
         tags = ID3()
 
     # 2.- Save everything into ID3 tags
     # - TIT2: Song Title
-    tags["TIT2"] = TIT2(encoding=3, text=song.title.decode('unicode-escape'))
+    if song.title:
+        tags["TIT2"] = TIT2(encoding=3, text=song.title.decode('unicode-escape'))
 
     # - TPE1: Artist
-    tags["TPE1"] = TPE1(encoding=3, text=song.artist.decode('unicode-escape'))
+    if song.artist:
+        tags["TPE1"] = TPE1(encoding=3, text=song.artist.decode('unicode-escape'))
 
     # - TDRC: Year
-    tags["TDRC"] = TDRC(encoding=3, text=str(song.year).decode('unicode-escape'))
+    if song.year:
+        tags["TDRC"] = TDRC(encoding=3, text=str(song.year).decode('unicode-escape'))
 
     # - TALB: Album
-    tags["TALB"] = TALB(encoding=3, text=song.album.decode('unicode-escape'))
+    if song.album:
+        tags["TALB"] = TALB(encoding=3, text=song.album.decode('unicode-escape'))
 
     #: Release date?
     # release_date = 
 
     # - TPE2: Album artist
-    tags["TPE2"] = TPE2(encoding=3, text=song.album_artist.decode('unicode-escape'))
+    if song.album_artist:
+        tags["TPE2"] = TPE2(encoding=3, text=song.album_artist.decode('unicode-escape'))
 
     # - TRCK: Track number
-    tags["TRCK"] = TRCK(encoding=3, text=str(song.track_number).decode('unicode-escape'))
+    if song.track_number:
+        tags["TRCK"] = TRCK(encoding=3, text=str(song.track_number).decode('unicode-escape'))
 
     # - TBPM: BPM
-    tags["TBPM"] = TBPM(encoding=3, text=str(song.bpm).decode('unicode-escape'))
+    if song.bpm:
+        tags["TBPM"] = TBPM(encoding=3, text=str(song.bpm).decode('unicode-escape'))
 
     # - TOPE: Original artist
-    tags["TOPE"] = TOPE(encoding=3, text=song.original_artist.decode('unicode-escape'))
+    if song.original_artist:
+        tags["TOPE"] = TOPE(encoding=3, text=song.original_artist.decode('unicode-escape'))
 
     # - TKEY: Key
-    tags["TKEY"] = TKEY(encoding=3, text=song.key.decode('unicode-escape'))
+    if song.key:
+        tags["TKEY"] = TKEY(encoding=3, text=song.key.decode('unicode-escape'))
 
     # - TCOM: Composer
-    tags["TCOM"] = TCOM(encoding=3, text=song.composer.decode('unicode-escape'))
+    if song.composer:
+        tags["TCOM"] = TCOM(encoding=3, text=song.composer.decode('unicode-escape'))
 
     # - TEXT: Lyricist
-    tags["TEXT"] = TEXT(encoding=3, text=song.lyricist.decode('unicode-escape'))
+    if song.lyricist:
+        tags["TEXT"] = TEXT(encoding=3, text=song.lyricist.decode('unicode-escape'))
 
     # - COMM: Comments
-    tags["COMM"] = COMM(encoding=3, text=song.comments.decode('unicode-escape'))
+    if song.comments:
+        tags["COMM"] = COMM(encoding=3, text=song.comments.decode('unicode-escape'))
 
     # - TPE4: Remixer
-    tags["TPE4"] = TPE4(encoding=3, text=song.remixer.decode('unicode-escape'))
+    if song.remixer:
+        tags["TPE4"] = TPE4(encoding=3, text=song.remixer.decode('unicode-escape'))
 
     # - TPUB: Label/Publisher
-    tags["TPUB"] = TPUB(encoding=3, text=song.label.decode('unicode-escape'))
+    if song.label:
+        tags["TPUB"] = TPUB(encoding=3, text=song.label.decode('unicode-escape'))
 
     # - TCON: Genre/content type
-    tags["TCON"] = TCON(encoding=3, text=song.genre.decode('unicode-escape'))
+    if song.genre:
+        tags["TCON"] = TCON(encoding=3, text=song.genre.decode('unicode-escape'))
 
-    tags.save(song.file.path)
+    tags.save(file_path)
 
 
 ###############################################################################

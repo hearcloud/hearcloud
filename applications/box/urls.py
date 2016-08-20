@@ -27,7 +27,7 @@ urlpatterns = [
         name='song-delete'),
 
     # /box/<username>/songs/<song-slug>/download
-    url(r'^(?P<username>[\w.@+-]+)/songs/(?P<slug>[\w.-]{0,256})/download/$', login_required(views.song_download),
+    url(r'^(?P<username>[\w.@+-]+)/songs/(?P<slug>[\w.-]{0,256})/download/(?P<format>[\w.-]{0,256})$', login_required(views.song_download),
         name='song-download'),
 
     # /box/<username>/search

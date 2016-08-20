@@ -153,7 +153,7 @@ class Song(models.Model):
         elif update:
             # MP3
             if self.file_type == "mp3":
-                tags_from_song_model_to_mp3(self)
+                tags_from_song_model_to_mp3(song=self, file_path=self.file.path)
 
             # MP4
             elif self.file_type == "m4a":
@@ -180,3 +180,6 @@ class Song(models.Model):
 
     artwork_tag.short_description = 'Artwork'
     artwork_tag.allow_tags = True
+
+    def get_filename(self):
+        return os.path.splitext(self.original_filename)[0]
