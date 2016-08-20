@@ -1,0 +1,63 @@
+.navbar-fixed-bottom {
+    margin-bottom: -5px;
+}
+.hearcloudplayer-container {
+  width: 100%;
+  height: 90px;
+  padding-left: 0;
+  background: #333;
+  color: #fff;
+  font: 700 1.077em/1.25 "SourceSans", Arial, sans-serif;
+  font-size: 1.3em;
+  display: inline-block;
+}
+.player-current-track-container{
+  float: left;
+  width: 30%;
+  padding: 23px 0 10px 20px;
+}
+.track-artwork{
+  float: left;
+  width: 45px;
+}
+.player-track-name-artist{
+  float: left;
+  margin-left: 10px;
+  height: 100%;
+  font-size: 0.6em;
+}
+.primary-title{
+  display: block;
+}
+.track-artist{
+  display: block;
+  font-weight: 400;
+}
+.player-waveform-container{
+    float: left;
+    width: 45%;
+}
+.deck-scope{
+  display:block;
+}
+.deck-position{
+  display:block;
+}
+.player-buttons-container{
+  float: left;
+  width: 25%;
+  padding: 17px 0px 0px 25px
+}
+.play-button-container{
+  width: 100%;
+  text-align:center;
+}
+.deck-play-button{
+  display:inline-block;
+}
+.deck-looper{
+  display:block;
+}
+.play-pause-button{
+    font-size: xx-large;
+}

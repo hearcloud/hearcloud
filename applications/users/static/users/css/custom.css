@@ -1,0 +1,196 @@
+.background{
+    background-image: url('../img/header-bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -69px;
+    z-index: -1;
+}
+
+@media (min-width: 768px) {
+    .navbar-custom {
+        padding: 10px 0;
+    }
+}
+
+form{
+    padding-top: 10px;
+}
+
+.pagewrapper{
+    padding: 100px 0px 0;
+    width: 95%;
+    background-color: white;
+}
+
+.form-header {
+    font-size: 30px;
+    margin-top: 0px;
+    padding-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+/* Normal outline */
+.outline {
+    background: none;
+    padding: 12px 22px; /* reducing the button padding to not appear oversized. */
+    border: 2px solid;
+}
+
+/* Outline for footer form */
+.panel-footer-outline{
+    background: none;
+    text-align: right;
+}
+
+/* Outline form buttons */
+.btn-outline {
+	background: none;
+	padding: 12px 22px; /* reducing the button padding to not appear oversized. */
+	border: 2px solid;
+}
+
+.btn-outline:hover, .btn-outline:focus, .btn-outline:active, .btn-outline.active, .open > .dropdown-toggle.btn-primary {
+    background: none !important;
+}
+.btn-outline:active, .btn-outline.active{
+    box-shadow: none !important;
+}
+
+.form-buttons{
+    text-align: right;
+}
+
+/* Outline form controls */
+.form-control {
+	background: none;
+	padding: 12px 22px; /* reducing the button padding to not appear oversized. */
+	border: 2px solid;
+}
+
+/* 3.- Adding some hover effects */
+.form-control:focus, .form-control:active, .form-control.active, .open > .dropdown-toggle.form-control {
+    background: none;
+}
+.form-control:active, .form-control.active {
+	box-shadow: none;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+}
+
+.form-cancel{
+    padding-right: 10px;
+    margin: auto;
+    text-decoration: none;
+}
+.form-cancel:hover {
+    text-decoration: none;
+}
+
+/* form errors */
+.errorlist{
+    list-style-type: none;
+    line-height: 1.3em;
+    margin: 0 0 0 0 !important;
+    padding: 0;
+    position: relative;
+    top: 2px;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+
+
+/*
+ * Header
+ */
+.masthead-brand {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+  }
+}
+
+
+/*
+ * Cover
+ */
+
+.cover {
+  padding: 0 20px;
+}
+.cover .btn-lg {
+  padding: 10px 20px;
+}
+
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 768px) {
+  /* Pull out the header and footer */
+  .masthead {
+    position: fixed;
+    top: 0;
+  }
+  .mastfoot {
+    position: fixed;
+    bottom: 0;
+  }
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+}

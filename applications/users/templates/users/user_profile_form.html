@@ -1,0 +1,23 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<h3>{% trans 'Edit user profile' %}</h3>
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="user" value="{{ user }}">
+    {% include 'users/form_template.html' %}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="modal-buttons">
+            <button type="submit" class="btn btn-success">{% trans 'Submit' %}</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button">
+                <i class="fa fa-times"></i>{% trans 'Cancel' %}
+            </button>
+          </div>
+        </div>
+    </div>
+</form>

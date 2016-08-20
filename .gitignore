@@ -76,3 +76,5 @@ media/
 
 # PDF
 *pdf
+
+*.idea/
