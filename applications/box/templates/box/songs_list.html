@@ -58,9 +58,9 @@
               <td class="vert-align" data-title="{% trans "ALBUM" %}"><p class="list-value album">{% if song.album %}{{ song.album }}{% endif %}</p></td>
               <!-- Duration -->
               <td class="vert-align" data-title="{% trans "DURATION" %}"><p class="list-value duration">{% if song.duration %}{{ song.duration }}{% endif %}</p></td>
-<!-- Duration -->
+              <!-- Creation Time -->
               <td class="vert-align" data-title="{% trans "CREATION TIME" %}"><p class="list-value ctime">{% if song.ctime %}{{ song.ctime|date:'d/m/Y H:i' }}{% endif %}</p></td>
-<!-- Duration -->
+              <!-- Update Time -->
               <td class="vert-align" data-title="{% trans "UPDATED TIME" %}"><p class="list-value mtime">{% if song.mtime %}{{ song.mtime|date:'d/m/Y H:i' }}{% endif %}</p></td>
               <!-- Actions -->
               <td class="vert-align" data-title="{% trans "ACTIONS" %}">
@@ -71,11 +71,21 @@
                   </button>
                 </a>
                 <!-- Download -->
-                <a class="no-decoration" href="{% url 'box:song-download' username=user.username slug=song.slug format='mp3' %}">
-                  <button type="submit" class="btn btn-default btn-xs">
-                      <span class="glyphicon glyphicon-download"></span>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-download"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
                   </button>
-                </a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a class="dropdown-item" href="{% url 'box:song-download' username=user.username slug=song.slug format='mp3' %}">mp3</a></li>
+                    {% if not song.file_type == 'mp3' and not song.file_type == 'm4a' %}
+                    <li><a class="dropdown-item disabled" href="{% url 'box:song-download' username=user.username slug=song.slug format='wav' %}">wav</a></li>
+                    <li><a class="dropdown-item disabled" href="{% url 'box:song-download' username=user.username slug=song.slug format='aif' %}">aif</a></li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href="{% url 'box:song-download' username=user.username slug=song.slug format='m4a' %}">m4a</a></li>
+                  </ul>
+                </div>
+
                 <!-- Delete -->
                 <a href="{% url 'box:song-delete' username=user.username slug=song.slug %}" class="no-decoration fm-delete" data-fm-callback="remove" data-fm-target="#song-{{ song.id }}">
                   <button type="submit" class="btn btn-danger btn-xs">

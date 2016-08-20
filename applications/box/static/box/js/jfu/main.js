@@ -38,7 +38,7 @@ $(function () {
         disableImageResize: /Android(?!.*Chrome)|Opera/
             .test(window.navigator.userAgent),
         maxFileSize: 100000000,
-        acceptFileTypes: /(\.|\/)(mp3|wav|m4a)$/i
+        acceptFileTypes: /(\.|\/)(mp3|wav|m4a|aif)$/i
     });
 
 

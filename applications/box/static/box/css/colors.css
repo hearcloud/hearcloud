@@ -97,25 +97,25 @@ a:hover, a:focus, a:active, a.active {
 .nav .open>a:hover {
     background-color: var(--graye);
 }
-.dropdown-menu {
+.user .dropdown-menu {
     background-color: var(--gray2);
     color: var(--white);
     border-color: var(--main);
 }
 @media (max-width: 767px){
-    .navbar-nav .open .dropdown-menu {
+    .user .navbar-nav .open .dropdown-menu {
         background-color: var(--gray2);
         border-color: var(--main);
     }
 }
-.dropdown-menu ul>li>a {
+.user .dropdown-menu ul>li>a {
     color: var(--white);
 }
-.dropdown-menu ul>li>a:hover,
-.dropdown-menu ul>li>a:focus {
+.user .dropdown-menu ul>li>a:hover,
+.user .dropdown-menu ul>li>a:focus {
     color: var(--main);
 }
-.navbar .dropdown-menu:after {
+.user .navbar .dropdown-menu:after {
     border-left-color: var(--transparent);
     border-right-color: var(--transparent);
     border-bottom-color: var(--main);

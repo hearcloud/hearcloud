@@ -165,20 +165,45 @@ def song_download(request, username, slug, format):
     if format != song.file_type:  # We need to convert the file
         temp_file = NamedTemporaryFile()  # Creating a temporary file to save the new data on it
 
-        if song.file_type == 'wav':  # if the original is wav, we can convert to mp3 or m4a
-            if format == 'mp3':  # if we want to convert to mp3
-                audio_segment = AudioSegment.from_wav(song.file.path)  # Read the wav file
+        if song.file_type == 'wav':  # if the original is wav, we can convert to mp3, m4a or aiff
+            audio_segment = AudioSegment.from_wav(song.file.path)  # Read the wav file
+            if format == 'mp3':
                 audio_segment.export(out_f=temp_file.name, format='mp3', bitrate='320k')
                 tags_from_song_model_to_mp3(song, temp_file.name)
+            elif format == 'm4a':
+                audio_segment.export(out_f=temp_file.name, format='mp4', bitrate='256k')
+                #tags_from_song_model_to_m4a(song, temp_file.name) TODO: Create function
+            elif format == 'aif':
+                audio_segment.export(out_f=temp_file.name, format='aac')
+                #tags_from_song_model_to_aif(song, temp_file.name) TODO: Create function
+        elif song.file_type == 'mp3':
+            audio_segment = AudioSegment.from_mp3(song.file.path)  # Read the mp3 file
             if format == 'm4a':
-                pass
+                audio_segment.export(out_f=temp_file.name, format='mp4', bitrate='256k')
+                # tags_from_song_model_to_m4a(song, temp_file.name) TODO: Create function
+        elif song.file_type == 'm4a':
+            audio_segment = AudioSegment.from_file(song.file.path)  # Read the m4a file
+            if format == 'mp3':
+                audio_segment.export(out_f=temp_file.name, format='mp3', bitrate='320k')
+                tags_from_song_model_to_mp3(song, temp_file.name)
+        elif song.file_type == 'aif':
+            audio_segment = AudioSegment.from_file(song.file.path)  # Read the aiff file
+            if format == 'mp3':
+                audio_segment.export(out_f=temp_file.name, format='mp3', bitrate='320k')
+                tags_from_song_model_to_mp3(song, temp_file.name)
+            elif format == 'm4a':
+                audio_segment.export(out_f=temp_file.name, format='mp4', bitrate='256k')
+                #tags_from_song_model_to_m4a(song, temp_file.name) TODO: Create function
+            elif format == 'wav':
+                audio_segment.export(out_f=temp_file.name, format='wav')
+                #tags_from_song_model_to_wav(song, temp_file.name) TODO: Create function
 
         response = HttpResponse(open(temp_file.name, 'rb'), content_type="audio/mpeg")
     else:
         response = HttpResponse(fsock, content_type="audio/mpeg")
 
 
-    filename = ''
+    filename = ""
     if song.artist and song.title:
         filename = "%s - %s.%s" % (song.artist, song.title, format)
     else:
