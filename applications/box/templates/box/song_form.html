@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <label class="control-label">{{ form.artwork.label_tag }}</label>
             <div>
-                <img width="50px" src="{{ artwork_url }}"/>
+                {% if artwork_url %}<img width="50px" src="{{ artwork_url }}"/>{% endif %}
                 {{ form.artwork }}
             </div>
         </div>

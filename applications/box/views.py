@@ -137,12 +137,12 @@ class SongUpdateView(AjaxUpdateView):
     model = Song
     pk_url_kwarg = 'song_id'
 
-
     def get_context_data(self, **kwargs):
         context = super(SongUpdateView, self).get_context_data(
             **kwargs
         )
-        context['artwork_url'] = context["object"].artwork.url
+        if context["object"].artwork:
+            context['artwork_url'] = context["object"].artwork.url
         return context
 
     def form_invalid(self, form):
