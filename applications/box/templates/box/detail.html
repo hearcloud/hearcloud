@@ -4,6 +4,18 @@
 
 {% block content %}
 <div class="container-fluid songs-container" id="song-{{ song.id }}">
+{% if song.file_type == "wav" %}
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="panel panel-default outline-black-text">
+                <div class="panel-body">
+                  <h3>WAV File warning</h3>
+                  <p>Currently wav files metadata edition is not supported, so the changes you apply on it won't be applied to the file. Furthermore, you can download a converted file on a supported format (mp3, m4a or aiff) with the new tags.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
   <div class="row song-details-row">
       <div class="col-sm-4 col-md-3">
           <div class="row">

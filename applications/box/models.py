@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 import humanize
 import os
 import itertools
-import re
 
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -13,13 +12,12 @@ from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models.signals import \
-    pre_delete  # Receive the pre_delete signal and delete the file associated with the model instance.
-from django.dispatch.dispatcher import receiver
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
-from .functions import mp3_tags_to_song_model, tags_from_song_model_to_mp3, m4a_tags_to_song_model
+from .functions import mp3_tags_to_song_model, tags_from_song_model_to_mp3, m4a_tags_to_song_model, \
+    aiff_tags_to_song_model, tags_from_song_model_to_aiff, wav_tags_to_song_model, tags_from_song_model_to_m4a, \
+    tags_from_song_model_to_wav
 
 
 def upload_to_username(instance, filename):
@@ -29,15 +27,17 @@ def upload_to_username(instance, filename):
 def upload_to_root(instance, filename):
     return '%s/%s' % ('./', filename)
 
+
 class Playlist(models.Model):
     """
     Playlist model
     """
     name = models.CharField(_('Playlist name'), max_length=250)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)  # User which this playlist belongs to
-    
+
     def __unicode__(self):
         return self.name
+
 
 class Song(models.Model):
     """
@@ -116,14 +116,24 @@ class Song(models.Model):
             elif self.file_type == "m4a":
                 m4a_tags_to_song_model(file_name, file_temp_path, self)
 
+            # AIF or AIFF, it's the same
+            elif self.file_type == "aif" or self.file_type == "aiff":
+                if self.file_type == "aif":
+                    self.file_type = "aiff"
+                aiff_tags_to_song_model(file_name, file_temp_path, self)
+
+            # WAV
+            elif self.file_type == "wav":
+                wav_tags_to_song_model(file_name, file_temp_path, self)
+
             default_storage.delete(os.path.join(settings.MEDIA_ROOT, 'tmp', 'temp.' + self.file_type))
 
             # Slug
             slugaux = os.path.splitext(os.path.basename(self.original_filename))[0]  # Filename without extension
             slugaux = slugaux.replace("_", " ")  # Replace '_' by ' '
             slugaux = ' '.join(slugaux.split())  # Leave only one space between words
-            
-            check_slug_exists = slugify(slugaux)        
+
+            check_slug_exists = slugify(slugaux)
             if not Song.objects.filter(slug=check_slug_exists).exists() and check_slug_exists != 'add':
                 self.slug = slugify(slugaux)
 
@@ -143,12 +153,11 @@ class Song(models.Model):
                         if not Song.objects.filter(slug=slug_final).exists():
                             break
                         slug_final = '%s-%d' % (check_slug_exists, x)
-          
+
                 self.slug = slug_final
 
                 if not self.title:
                     self.title = slugaux
-
 
         elif update:
             # MP3
@@ -157,7 +166,15 @@ class Song(models.Model):
 
             # MP4
             elif self.file_type == "m4a":
-                pass
+                tags_from_song_model_to_m4a(song=self, file_path=self.file.path)
+
+            # AIFF
+            elif self.file_type == "aiff":
+                tags_from_song_model_to_aiff(song=self, file_path=self.file.path)
+
+            # WAV
+            elif self.file_type == "wav":
+                tags_from_song_model_to_wav(song=self, file_path=self.file.path)
 
         super(Song, self).save(*args, **kwargs)
 

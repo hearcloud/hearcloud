@@ -4,28 +4,23 @@ import os
 from django.core.files import File
 
 from mutagen import File as MutaFile
-from mutagen.mp4 import MP4, MP4Cover
+from mutagen.mp3 import MP3
+from mutagen.mp4 import MP4, MP4Cover, MP4Tags
+from mutagen.aiff import _IFFID3
 
-from mutagen.id3 import ID3NoHeaderError
-from mutagen.id3 import (ID3, TIT2, TPE1, TDRC, TALB, TPE2, TRCK, TBPM,
-                         TOPE, TKEY, TCOM, TEXT, COMM, TPE4, TPUB, TCON)
+from mutagen.id3 import ID3NoHeaderError, ID3
+from mutagen.id3._frames import (APIC, TIT2, TPE1, TDRC, TALB, TPE2, TRCK, TBPM,
+                                 TOPE, TKEY, TCOM, TEXT, COMM, TPE4, TPUB, TCON, USLT)
 
 from datetime import timedelta
 
-
 ###############################################################################
-#                                     MP3                                     #
+#                               Common functions                              #
 ###############################################################################
-def mp3_tags_to_song_model(file_name, file_path, song):
+def read_and_store_id3_tags(audio_file, file_name, song):
     """
-    Read all the ID3 tags from an mp3 file an store them according to the
-    song model attributes
+    Read all the ID3 tags from the file and save them on the song model
     """
-    # ID3 tags stuff
-    # 1.- Creating a mutagen file instance
-    audio_file = MutaFile(file_path)
-
-    # 2.- Read all the ID3 tags from the file and save them on the song model
     for i in audio_file.tags:
         # - APIC: Artwork
         if i.startswith("APIC"):
@@ -54,7 +49,7 @@ def mp3_tags_to_song_model(file_name, file_path, song):
             song.album = audio_file.tags[i].text[0]
 
         #: Release date?
-        # release_date = 
+        # release_date =
 
         # - TPE2: Album artist
         elif i.startswith("TPE2"):
@@ -112,27 +107,22 @@ def mp3_tags_to_song_model(file_name, file_path, song):
         elif i.startswith("TCON"):
             song.genre = audio_file.tags[i].text[0]
 
-        # - 
+        # -
         elif i.startswith("USLT"):
             song.lyrics = audio_file.tags[i].text
 
-    # Get the song length
-    song.duration = timedelta(seconds=int(audio_file.info.length))
 
+def save_song_attrs_to_id3tags(tags, song):
+    # - APIC: Artwork
+    if song.artwork:
+        tags["APIC"] = APIC(
+            encoding=3,  # 3 is for utf-8
+            mime='image/jpeg',  # image/jpeg or image/png
+            type=3,  # 3 is for the cover image
+            desc=u'Cover',
+            data=song.artwork.read()
+        )
 
-def tags_from_song_model_to_mp3(song, file_path):
-    """
-    Read all the new model attributes and save them according to the ID3 tags
-    of the mp3 file stored
-    """
-    # ID3 tags stuff
-    # 1.- Creating an ID3 tag if not present or read it if present
-    try:
-        tags = ID3(file_path)
-    except ID3NoHeaderError:
-        tags = ID3()
-
-    # 2.- Save everything into ID3 tags
     # - TIT2: Song Title
     if song.title:
         tags["TIT2"] = TIT2(encoding=3, text=song.title.decode('unicode-escape'))
@@ -150,7 +140,7 @@ def tags_from_song_model_to_mp3(song, file_path):
         tags["TALB"] = TALB(encoding=3, text=song.album.decode('unicode-escape'))
 
     #: Release date?
-    # release_date = 
+    # release_date =
 
     # - TPE2: Album artist
     if song.album_artist:
@@ -196,19 +186,11 @@ def tags_from_song_model_to_mp3(song, file_path):
     if song.genre:
         tags["TCON"] = TCON(encoding=3, text=song.genre.decode('unicode-escape'))
 
-    tags.save(file_path)
+    if song.lyrics:
+        tags["USLT"] = USLT(encoding=3, text=song.lyrics.decode('unicode-escape'))
 
 
-###############################################################################
-#                                     M4A                                     #
-###############################################################################
-def m4a_tags_to_song_model(file_name, file_path, song):
-    """
-    Read all the tags from an m4a file an store them according to the
-    song model attributes
-    """
-    audio_file = MP4(file_path)
-
+def read_and_store_mp4_tags(audio_file, file_name, song):
     # Read all tags and save them on the song model
     for i in audio_file.tags:
         # - covr: Artwork
@@ -241,7 +223,7 @@ def m4a_tags_to_song_model(file_name, file_path, song):
             song.album = audio_file.tags[i][0]
 
         #: Release date?
-        # release_date = 
+        # release_date =
 
         # - aART: Album artist
         elif i.startswith("aART"):
@@ -287,5 +269,202 @@ def m4a_tags_to_song_model(file_name, file_path, song):
         elif i.startswith("\xa9gen"):
             song.genre = audio_file.tags[i][0]
 
-    # Get the song length
-    song.duration = timedelta(seconds=int(audio_file.info.length))
+
+def save_song_attrs_to_mp4tags(tags, song):
+    # - covr: Artwork
+    if song.artwork:
+        tags["covr"] = [
+            MP4Cover(song.artwork.read(), imageformat=MP4Cover.FORMAT_JPEG)
+        ]
+
+    # - \xa9nam: Song Title
+    if song.title:
+        tags["\xa9nam"] = song.title.decode('unicode-escape')
+
+    # - \xa9ART: Artist
+    if song.artist:
+        tags["\xa9ART"] = song.artist.decode('unicode-escape')
+
+    # - \xa9day: Year
+    if song.year:
+        tags["\xa9day"] = str(song.year).decode('unicode-escape')
+
+    # - \xa9alb: Album
+    if song.album:
+        tags["\xa9alb"] = song.album.decode('unicode-escape')
+
+    # - Release date?
+    # release_date =
+
+    # - aART: Album artist
+    if song.album_artist:
+        tags["aART"] = song.album_artist.decode('unicode-escape')
+
+    # - trkn: Track number
+    if song.track_number:
+        tags["trkn"] = str(song.track_number).decode('unicode-escape')
+
+    # - tmpo: BPM
+    if song.bpm:
+        tags["tmpo"] = str(song.bpm).decode('unicode-escape')
+
+    # - Original artist
+    # if song.original_artist:
+    #    ???
+
+    # - Key
+    # if song.key:
+    #    ???
+
+    # - \xa9wrt: Composer
+    if song.composer:
+        tags["\xa9wrt"] = song.composer.decode('unicode-escape')
+
+    # - \xa9lyr: Lyricist
+    if song.lyrics:
+        tags["\xa9lyr"] = song.lyrics.decode('unicode-escape')
+
+    # - \xa9cmt: Comments
+    if song.comments:
+        tags["\xa9cmt"] = song.comments.decode('unicode-escape')
+
+    # - Remixer
+    # if song.remixer:
+    #    ???
+
+    # - Label/Publisher
+    # if song.label:
+    #    ???
+
+    # - \xa9gen: Genre/content type
+    if song.genre:
+        tags["\xa9gen"] = song.genre.decode('unicode-escape')
+
+###############################################################################
+#                                     MP3                                     #
+###############################################################################
+def mp3_tags_to_song_model(file_name, file_path, song):
+    """
+    Read all the ID3 tags from a mp3 file an store them according to the
+    song model attributes
+    """
+    # ID3 tags stuff
+    # Creating a mutagen file instance
+    try:
+        audio_file = MP3(file_path)
+
+        read_and_store_id3_tags(audio_file, file_name, song)
+
+        # Get the song length
+        song.duration = timedelta(seconds=int(audio_file.info.length))
+    except ValueError:
+        pass
+
+
+def tags_from_song_model_to_mp3(song, file_path):
+    """
+    Read all the new model attributes and save them according to the ID3 tags
+    of the mp3 file stored
+    """
+    # ID3 tags stuff
+    # 1.- Creating an ID3 tag if not present or read it if present
+    try:
+        tags = ID3(file_path)
+    except ID3NoHeaderError:
+        tags = ID3()
+
+    save_song_attrs_to_id3tags(tags, song)
+
+    tags.save(file_path)
+
+
+###############################################################################
+#                                     M4A                                     #
+###############################################################################
+def m4a_tags_to_song_model(file_name, file_path, song):
+    """
+    Read all the tags from a m4a file an store them according to the
+    song model attributes
+    """
+    try:
+        audio_file = MP4(file_path)
+
+        read_and_store_mp4_tags(audio_file, file_name, song)
+
+        # Get the song length
+        song.duration = timedelta(seconds=int(audio_file.info.length))
+    except ValueError:
+        pass
+
+
+def tags_from_song_model_to_m4a(song, file_path):
+    """
+    Read all the new model attributes and save them according to the MP4 tags
+    of the m4a stored file
+    """
+    # Creating an MP4 tag if not present or read it if present
+    try:
+        tags = MP4(file_path).tags
+    except ValueError:
+        tags = MP4Tags()
+
+    save_song_attrs_to_mp4tags(tags, song)
+
+    tags.save(file_path)
+
+
+###############################################################################
+#                                     AIFF                                    #
+###############################################################################
+def aiff_tags_to_song_model(file_name, file_path, song):
+    """
+    Read all the ID3 tags from an aiff file an store them according to the
+    song model attributes
+    """
+    # ID3 tags stuff
+    # Creating a mutagen file instance
+    try:
+        audio_file = MutaFile(file_path)
+
+        if audio_file.tags:
+            read_and_store_id3_tags(audio_file, file_name, song)
+
+        # Get the song length
+        song.duration = timedelta(seconds=int(audio_file.info.length))
+    except ValueError:
+        pass
+
+
+def tags_from_song_model_to_aiff(song, file_path):
+    """
+    Read all the new model attributes and save them according to the ID3 tags
+    of the aiff file stored
+    """
+    # ID3 tags stuff
+    # 1.- Creating an ID3 tag if not present or read it if present
+    try:
+        tags = _IFFID3(file_path)
+    except ID3NoHeaderError:
+        tags = _IFFID3()
+
+    save_song_attrs_to_id3tags(tags, song)
+
+    tags.save(file_path)
+
+
+###############################################################################
+#                                      WAV                                    #
+###############################################################################
+def wav_tags_to_song_model(file_name, file_path, song):
+    """
+    Read all the tags from a wav file an store them according to the
+    song model attributes
+    """
+    pass
+
+def tags_from_song_model_to_wav(song, file_path):
+    """
+    Read all the new model attributes and save them according to the Wav tags
+    of the wav file stored
+    """
+    pass

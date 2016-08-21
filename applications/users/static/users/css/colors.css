@@ -20,6 +20,10 @@ body{
     border-color: var(--main);
     color: var(--white);
 }
+.outline-black-text {
+    border-color: var(--main);
+    color: var(--black);
+}
 .panel-footer-outline{
     color: var(--white);
 }
