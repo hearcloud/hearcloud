@@ -20,7 +20,14 @@ class UpdateSongForm(forms.ModelForm):
         required=False
     )
     year = forms.IntegerField(required=False)
-    release_date = forms.DateField(required=False)
+    release_date = forms.DateField(
+        required=False,
+        widget=forms.TextInput(attrs=
+            {
+                'class': 'datepicker'
+            }
+        )
+    )
     album_artist = forms.CharField(
         max_length=Song._meta.get_field('album_artist').max_length,
         required=False

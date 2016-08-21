@@ -76,13 +76,13 @@
                     <span class="glyphicon glyphicon-download"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a class="dropdown-item" href="{% url 'box:song-download' username=user.username slug=song.slug format='mp3' %}">mp3</a></li>
+                  <ul class="dropdown-menu pull-right index-download-song-dropdown-menu" role="menu">
+                    <li><a class="dropdown-item" href="{% url 'box:song-download' username=user.username slug=song.slug format='mp3' %}">mp3{% if song.file_type != "mp3" %} (convert){% endif %}</a></li>
                     {% if not song.file_type == 'mp3' and not song.file_type == 'm4a' %}
-                    <li><a class="dropdown-item disabled" href="{% url 'box:song-download' username=user.username slug=song.slug format='wav' %}">wav</a></li>
-                    <li><a class="dropdown-item disabled" href="{% url 'box:song-download' username=user.username slug=song.slug format='aif' %}">aif</a></li>
+                    <li><a class="dropdown-item disabled" href="{% url 'box:song-download' username=user.username slug=song.slug format='wav' %}">wav {% if song.file_type != "wav" %} (convert){% endif %}</a></li>
+                    <li><a class="dropdown-item disabled" href="{% url 'box:song-download' username=user.username slug=song.slug format='aiff' %}">aiff {% if song.file_type != "aiff" %} (convert){% endif %}</a></li>
                     {% endif %}
-                    <li><a class="dropdown-item" href="{% url 'box:song-download' username=user.username slug=song.slug format='m4a' %}">m4a</a></li>
+                    <li><a class="dropdown-item" href="{% url 'box:song-download' username=user.username slug=song.slug format='m4a' %}">m4a {% if song.file_type != "m4a" %} (convert){% endif %}</a></li>
                   </ul>
                 </div>
 

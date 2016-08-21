@@ -237,8 +237,16 @@ body {
 .user .dropdown-menu ul>li>a:focus {
     text-decoration: none;
 }
+
+.index-download-song-dropdown-menu{
+    min-width: initial;
+    font-size: 10px;
+    right: -39px !important;
+    text-align: center;
+}
+
 /* Arrow */
-.user .navbar .dropdown-menu:after {
+.navbar .dropdown-menu:after {
     content: '';
     border-left: 6px solid;
     border-right: 6px solid;
@@ -248,7 +256,7 @@ body {
     right: 28px;
 }
 @media (max-width: 767px){
-  .user .navbar .dropdown-menu:after {
+  .navbar .dropdown-menu:after {
       right: 26px;
   }
 }

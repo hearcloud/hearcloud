@@ -21,12 +21,10 @@ def order_name(name):
 def serialize_file(instance, file_attr='file', thumbnail_attr='artwork'):
     obj = getattr(instance, file_attr)
     thumbnail = getattr(instance, thumbnail_attr)
-    print thumbnail
     if thumbnail:
         thumbnail_url = thumbnail.url
     else:
         thumbnail_url = static('box/images/NoArtwork_Black.png')
-    print thumbnail_url
     return {
         'url': obj.url,
         'name': order_name(obj.name),

@@ -1,27 +1,22 @@
 import json
-import os
-from pprint import pprint
 import urllib
 
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.core.files.temp import NamedTemporaryFile
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
 from django.utils.timezone import now as tznow
 from django.views import generic
-from django.views.generic import ListView, TemplateView, CreateView, DeleteView
-from django.views.generic.edit import FormView
+from django.views.generic import ListView, TemplateView, CreateView
 from fm.views import AjaxUpdateView, AjaxDeleteView
-from django.core.files.temp import NamedTemporaryFile
-from wsgiref.util import FileWrapper
 from pydub import AudioSegment
 
 from .forms import UpdateSongForm
+from .functions import tags_from_song_model_to_mp3, tags_from_song_model_to_m4a
 from .models import Song, Playlist
 from .response import JSONResponse, response_mimetype
 from .serialize import serialize_file
-from .functions import tags_from_song_model_to_mp3
 
 
 class IndexView(TemplateView):
@@ -149,7 +144,7 @@ class SongDelete(AjaxDeleteView):
     # pk_url_kwarg = 'song_id'
     
     def get_success_url(self):
-        return HttpResponseRedirect(reverse('box:index', kwargs={'username': self.request.user.username}))
+        return reverse_lazy('box:index', kwargs={'username': self.request.user.username})
 
     def delete(self, request, *args, **kwargs):
         return super(SongDelete, self).delete(request)
@@ -172,28 +167,28 @@ def song_download(request, username, slug, format):
                 tags_from_song_model_to_mp3(song, temp_file.name)
             elif format == 'm4a':
                 audio_segment.export(out_f=temp_file.name, format='mp4', bitrate='256k')
-                #tags_from_song_model_to_m4a(song, temp_file.name) TODO: Create function
-            elif format == 'aif':
+                tags_from_song_model_to_m4a(song, temp_file.name)
+            elif format == 'aiff':
                 audio_segment.export(out_f=temp_file.name, format='aac')
-                #tags_from_song_model_to_aif(song, temp_file.name) TODO: Create function
+                #tags_from_song_model_to_aiff(song, temp_file.name) TODO: Create function
         elif song.file_type == 'mp3':
             audio_segment = AudioSegment.from_mp3(song.file.path)  # Read the mp3 file
             if format == 'm4a':
                 audio_segment.export(out_f=temp_file.name, format='mp4', bitrate='256k')
-                # tags_from_song_model_to_m4a(song, temp_file.name) TODO: Create function
+                tags_from_song_model_to_m4a(song, temp_file.name)
         elif song.file_type == 'm4a':
             audio_segment = AudioSegment.from_file(song.file.path)  # Read the m4a file
             if format == 'mp3':
                 audio_segment.export(out_f=temp_file.name, format='mp3', bitrate='320k')
                 tags_from_song_model_to_mp3(song, temp_file.name)
-        elif song.file_type == 'aif':
+        elif song.file_type == 'aiff':
             audio_segment = AudioSegment.from_file(song.file.path)  # Read the aiff file
             if format == 'mp3':
                 audio_segment.export(out_f=temp_file.name, format='mp3', bitrate='320k')
                 tags_from_song_model_to_mp3(song, temp_file.name)
             elif format == 'm4a':
                 audio_segment.export(out_f=temp_file.name, format='mp4', bitrate='256k')
-                #tags_from_song_model_to_m4a(song, temp_file.name) TODO: Create function
+                tags_from_song_model_to_m4a(song, temp_file.name)
             elif format == 'wav':
                 audio_segment.export(out_f=temp_file.name, format='wav')
                 #tags_from_song_model_to_wav(song, temp_file.name) TODO: Create function
@@ -203,6 +198,8 @@ def song_download(request, username, slug, format):
         response = HttpResponse(fsock, content_type="audio/mpeg")
 
 
+    if format == "aiff":
+        format = "aif"
     filename = ""
     if song.artist and song.title:
         filename = "%s - %s.%s" % (song.artist, song.title, format)

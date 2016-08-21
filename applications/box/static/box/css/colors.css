@@ -115,7 +115,7 @@ a:hover, a:focus, a:active, a.active {
 .user .dropdown-menu ul>li>a:focus {
     color: var(--main);
 }
-.user .navbar .dropdown-menu:after {
+.navbar .dropdown-menu:after {
     border-left-color: var(--transparent);
     border-right-color: var(--transparent);
     border-bottom-color: var(--main);
