@@ -14,7 +14,16 @@ class PlaylistAdmin(admin.ModelAdmin):
     Admin class to view, update, create or delete new Playlist models
     """
     list_display = ('name', 'user')
-    readonly_fields = ('user',)
+    fieldsets = [
+        (None, {
+            'fields': [
+                ('name'),
+                ('user'),
+                ('slug'),
+            ]
+        }),
+    ]
+    readonly_fields = ('user', 'slug')
     inlines = [
         SongInline,
     ]
@@ -23,11 +32,12 @@ class SongAdmin(admin.ModelAdmin):
     """
     Admin class to view, update, create or delete new Song models
     """
-    list_display = ('title', 'artist', 'duration', 'file')
+    list_display = ('title', 'artist', 'duration', 'file', 'user')
     readonly_fields = ('duration', 'file_size', 'file_type', 'slug', 'artwork_tag', 'ctime', 'mtime', 'user')
     suit_form_tabs = (('file', 'File'), ('song', 'Song'),
                  ('metadata', 'Metadata'))
     filter_horizontal = ('playlists',) 
+    list_filter = ['user', ]
 
     def save_model(self, request, obj, form, change):
         if getattr(obj, 'user', None) is None:

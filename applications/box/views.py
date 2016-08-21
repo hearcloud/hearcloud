@@ -12,8 +12,8 @@ from django.views.generic import ListView, TemplateView, CreateView
 from fm.views import AjaxUpdateView, AjaxDeleteView
 from pydub import AudioSegment
 
-from .forms import UpdateSongForm
-from .functions import tags_from_song_model_to_mp3, tags_from_song_model_to_m4a
+from .forms import UpdateSongForm, CreatePlaylistForm
+from .functions import tags_from_song_model_to_mp3, tags_from_song_model_to_m4a, tags_from_song_model_to_aiff, tags_from_song_model_to_wav
 from .models import Song, Playlist
 from .response import JSONResponse, response_mimetype
 from .serialize import serialize_file
@@ -38,6 +38,7 @@ class IndexView(TemplateView):
 
         return super(IndexView, self).get(request, *args, **kwargs)
 
+
 class PlaylistListView(ListView):
     """
     View to show a list of all the playlists an user has created
@@ -58,10 +59,20 @@ class PlaylistListView(ListView):
 
         return super(PlaylistListView, self).get(request, *args, **kwargs)
 
+
 class PlaylistCreateView(CreateView):
+    form_class = CreatePlaylistForm
+    template_name = 'box/playlist_form.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(PlaylistCreateView, self).form_valid(form)
+
+
+class PlaylistDetailView(generic.DetailView):
     model = Playlist
-    fields = ('name',)
-    template_name = "box/playlist_create.html"
+    template_name = 'box/playlists_detail.html'
+
 
 class SongCreateView(CreateView):
     model = Song
@@ -83,6 +94,7 @@ class SongCreateView(CreateView):
     def form_invalid(self, form):
         data = json.dumps(form.errors)
         return HttpResponse(content=data, status=400, content_type='application/json')
+
 
 class SongListView(ListView):
     model = Song
@@ -108,6 +120,11 @@ class SongDetailView(generic.DetailView):
 
     def get(self, request, **kwargs):
         # Check if the user is trying to get a song which doesn't own
+        try:
+            self.object = Song.objects.get(slug=kwargs['slug'])
+        except Song.DoesNotExist:
+            return handler404(request)
+            
         if not request.user.id == Song.objects.get(slug=kwargs['slug']).user.id:
             return handler401(request)
 
@@ -116,8 +133,17 @@ class SongDetailView(generic.DetailView):
 
 class SongUpdateView(AjaxUpdateView):
     form_class = UpdateSongForm
+    template_name = "box/song_form.html"
     model = Song
     pk_url_kwarg = 'song_id'
+
+
+    def get_context_data(self, **kwargs):
+        context = super(SongUpdateView, self).get_context_data(
+            **kwargs
+        )
+        context['artwork_url'] = context["object"].artwork.url
+        return context
 
     def form_invalid(self, form):
         print form.errors
@@ -170,7 +196,7 @@ def song_download(request, username, slug, format):
                 tags_from_song_model_to_m4a(song, temp_file.name)
             elif format == 'aiff':
                 audio_segment.export(out_f=temp_file.name, format='aac')
-                #tags_from_song_model_to_aiff(song, temp_file.name) TODO: Create function
+                tags_from_song_model_to_aiff(song, temp_file.name)
         elif song.file_type == 'mp3':
             audio_segment = AudioSegment.from_mp3(song.file.path)  # Read the mp3 file
             if format == 'm4a':
@@ -191,7 +217,7 @@ def song_download(request, username, slug, format):
                 tags_from_song_model_to_m4a(song, temp_file.name)
             elif format == 'wav':
                 audio_segment.export(out_f=temp_file.name, format='wav')
-                #tags_from_song_model_to_wav(song, temp_file.name) TODO: Create function
+                tags_from_song_model_to_wav(song, temp_file.name)
 
         response = HttpResponse(open(temp_file.name, 'rb'), content_type="audio/mpeg")
     else:
