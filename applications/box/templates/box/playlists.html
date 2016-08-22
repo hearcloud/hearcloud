@@ -1,0 +1,11 @@
+{% extends "box/base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="panel-body">
+  {% for playlist in all_playlists %}
+      {% if playlist.name %} <p> {{ playlist.name }} </p> {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}

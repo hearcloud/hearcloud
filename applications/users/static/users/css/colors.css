@@ -1,0 +1,84 @@
+/* Color variables */
+:root{
+    --black-transparent-03: rgba(250, 250, 250, 0.3);
+}
+
+/******************* Visitors Colors ***************/
+body{
+    background-color: var(--transparent);
+}
+.navbar-custom {
+  background-color: var(--gray2);
+  border-color: var(--transparent);
+}
+@media (min-width: 768px) {
+  .navbar-custom {
+    background-color: var(--gray2);
+  }
+}
+.outline {
+    border-color: var(--main);
+    color: var(--white);
+}
+.outline-black-text {
+    border-color: var(--main);
+    color: var(--black);
+}
+.panel-footer-outline{
+    color: var(--white);
+}
+.btn-outline {
+	border-color: var(--main);
+	color: var(--white);
+}
+.btn-outline:hover, .btn-outline:focus, .btn-outline:active, .btn-outline.active, .open > .dropdown-toggle.btn-primary {
+    color: var(--main-dark1) !important;
+    border-color: var(--main-dark1) !important;
+}
+.btn-outline:active, .btn-outline.active{
+	border-color: var(--main-dark1) !important;
+	color: var(--white) !important;
+}
+.user-form-control {
+	border-color: var(--white);
+	color: var(--white);
+}
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+  background-color: var(--black-transparent-03) !important;
+  color: var(--black) !important;
+}
+.user-form-control:focus, .user-form-control:active, .user-form-control.active, .open > .dropdown-toggle.form-control {
+    color: var(--white);
+	border-color: var(--main-dark1);
+}
+.user-form-control:active, .user-form-control.active {
+	border-color: var(--main-dark1);
+	color: var(--white);
+}
+a {
+    color: var(--main);
+}
+a:hover, a:focus, a:active {
+    color: var(--white);
+}
+.form-cancel{
+    color: var(--white);
+}
+.form-cancel:hover {
+    color: var(--main);
+}
+
+/* form errors */
+.errorlist{
+    color: var(--main);
+}
+strong{
+    color: var(--main);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--white) !important;
+}

@@ -1,0 +1,72 @@
+header .intro-text .intro-heading{
+    font-size: 41px;
+    margin-bottom: 5px;
+}
+header .intro-text .intro-lead-in{
+    margin-bottom: 70px;
+}
+
+/****************************** Rounded buttons ******************************/
+/* Removing the background */
+.btn.outline {
+	background: none;
+	padding: 12px 22px; /* reducing the button padding to not appear oversized. */
+}
+
+/* Increase the thickness of the border and change the color to match the border */
+.btn-primary.outline {
+	border: 2px solid #000000;
+}
+
+/* Adding some hover effects */
+.btn-primary.outline:active, .btn-primary.outline.active {
+	box-shadow: none;
+}
+
+/* Space between buttons (mobile view) */
+@media (max-width: 768px){
+    .btn-space{
+      padding-bottom: 60px;
+    }
+}
+
+/* Centered navbar items */
+.navbar .navbar-collapse {
+    text-align: center;
+}
+@media (min-width: 768px) {
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
+
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
+}
+
+.nav li .btn{
+  float: right;
+  margin-right: 20px;
+}
+
+
+/* Description interline */
+section h3.section-subheading{
+  line-height: 30px;
+}
+
+.strong-font{
+  text-transform: none;
+  font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive
+}
+
+/* Sections spacing */
+section{
+    padding: 100px 0;
+}
+
+.img-developer{
+    width: 239px;
+}
