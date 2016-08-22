@@ -1,0 +1,141 @@
+{% load i18n %}
+<form method="post" id="song-details-form">{% csrf_token %}
+    <div class="row">
+        <!-- Artwork -->
+        <div class="col-md-12">
+            <label class="control-label">{{ form.artwork.label_tag }}</label>
+            <div>
+                {% if artwork_url %}<img width="50px" src="{{ artwork_url }}"/>{% endif %}
+                {{ form.artwork }}
+            </div>
+        </div>
+
+        <!-- Track title -->
+        <div class="col-md-6">
+            <label class="control-label">{{ form.title.label_tag }}</label>
+            <div>
+                {{ form.title }}
+            </div>
+        </div>
+
+        <!-- Artist -->
+        <div class="col-md-6">
+            <label class="control-label">{{ form.artist.label_tag }}</label>
+            <div>
+                {{ form.artist }}
+            </div>
+        </div>
+
+        <!-- Artist -->
+        <div class="col-md-9">
+            <label class="control-label">{{ form.album.label_tag }}</label>
+            <div>
+                {{ form.album }}
+            </div>
+        </div>
+
+        <!-- Year -->
+        <div class="col-md-3">
+            <label class="control-label">{{ form.year.label_tag }}</label>
+            <div>
+                {{ form.year }}
+            </div>
+        </div>
+
+        <!-- Album artist -->
+        <div class="col-md-7">
+            <label class="control-label">{{ form.album_artist.label_tag }}</label>
+            <div>
+                {{ form.album_artist }}
+            </div>
+        </div>
+
+        <!-- Track number -->
+        <div class="col-md-5">
+          <label class="control-label">{{ form.track_number.label_tag }}</label>
+          <div class="row">
+            <div class="col-md-5">
+                {{ form.track_number }}
+            </div>
+            <div class="col-md-2">
+                <p>{% trans "of" %}</p>
+            </div>
+            <div class="col-md-5">
+                {{ form.track_total  }}
+            </div>
+          </div>
+        </div>
+
+        <!-- BPM -->
+        <div class="col-md-3">
+            <label class="control-label">{{ form.bpm.label_tag }}</label>
+            <div>
+                {{ form.bpm }}
+            </div>
+        </div>
+        <!-- Original artist -->
+        <div class="col-md-6">
+            <label class="control-label">{{ form.original_artist.label_tag }}</label>
+            <div>
+                {{ form.original_artist }}
+            </div>
+        </div>
+        <!-- Key -->
+        <div class="col-md-3">
+            <label class="control-label">{{ form.key.label_tag }}</label>
+            <div>
+                {{ form.key }}
+            </div>
+        </div>
+        <!-- Composer -->
+        <div class="col-md-6">
+            <label class="control-label">{{ form.composer.label_tag }}</label>
+            <div>
+                {{ form.composer }}
+            </div>
+        </div>
+        <!-- Lyricist -->
+        <div class="col-md-6">
+            <label class="control-label">{{ form.lyricist.label_tag }}</label>
+            <div>
+                {{ form.lyricist }}
+            </div>
+        </div>
+        <!-- Comments -->
+        <div class="col-md-5">
+            <label class="control-label">{{ form.comments.label_tag }}</label>
+            <div>
+                {{ form.comments }}
+            </div>
+        </div>
+        <!-- Remixer -->
+        <div class="col-md-7">
+            <label class="control-label">{{ form.remixer.label_tag }}</label>
+            <div>
+                {{ form.remixer }}
+            </div>
+        </div>
+        <!-- Label/Publisher -->
+        <div class="col-md-6">
+            <label class="control-label">{{ form.label.label_tag }}</label>
+            <div>
+                {{ form.label }}
+            </div>
+        </div>
+        <!-- Genre/content type -->
+        <div class="col-md-6">
+            <label class="control-label">{{ form.genre.label_tag }}</label>
+            <div>
+                {{ form.genre }}
+            </div>
+        </div>
+        <!-- Lyrics -->
+        <div class="col-md-6">
+            <label class="control-label">{{ form.lyrics.label_tag }}</label>
+            <div>
+                {{ form.lyrics }}
+            </div>
+        </div>
+
+  </div>
+</form>

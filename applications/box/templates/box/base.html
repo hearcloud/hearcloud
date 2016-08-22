@@ -50,8 +50,8 @@
             <span class="sr-only">Toggle navigation</span> <i class="fa fa-bars"></i>
         </button>
         <!-- Logo itself -->
-        <a class="navbar-brand hidden-xs" href="{% url 'box:index' username=user.username %}">Hearcloud</a>
-        <a class="navbar-brand visible-xs navbar-brand-xs" href="{% url 'box:index' username=user.username %}">Hearcloud</a>
+        <a class="navbar-brand hidden-xs" href="{% url 'box:index' username=user.slug %}">Hearcloud</a>
+        <a class="navbar-brand visible-xs navbar-brand-xs" href="{% url 'box:index' username=user.slug %}">Hearcloud</a>
       </div><!-- navbar-header -->
 
       <!-- Items: Nav left -->
@@ -61,13 +61,13 @@
             <!-- Songs box section -->
             <ul class="nav navbar-nav">
               <li>
-                <a href="{% url 'box:index' username=user.username %}">
+                <a href="{% url 'box:index' username=user.slug %}">
                   <span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp; {% trans "Collection" %}
                 </a>
               </li>
 
               <li>
-                <a href="{% url 'box:playlist-list' username=user.username %}">
+                <a href="{% url 'box:playlist-list' username=user.slug %}">
                   <span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp; {% trans "Playlists" %}
                 </a>
               </li>
@@ -96,11 +96,11 @@
           <ul class="nav navbar-nav loggedin clearfix">
             <!-- Add songs -->
             <li class="addthing t-addthing">
-              <a href="{% url 'box:song-add' username=user.username %}" class="hidden-xs hidden-sm">
+              <a href="{% url 'box:song-add' username=user.slug %}" class="hidden-xs hidden-sm">
                 <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Upload
               </a>
 
-              <a href="{% url 'box:song-add' username=user.username %}" class="visible-xs visible-sm">
+              <a href="{% url 'box:song-add' username=user.slug %}" class="visible-xs visible-sm">
                 <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
               </a>
             </li>

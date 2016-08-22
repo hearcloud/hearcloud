@@ -1,19 +1,4 @@
-{% extends "box/base.html" %}
+{% extends "base_errors.html" %}
 {% load i18n %}
-{% load staticfiles %}
 
-{% block content %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12 col-md-offset-3 col-md-6">
-            <div class="panel panel-default outline-black-text">
-                <div class="panel-body">
-                  <h3>Oooooops</h3>
-                  <p>You have no permissions to access this content</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-{% endblock %}
+{% block error_message %}{% trans "You have no permissions to access this content"%}{% endblock %}

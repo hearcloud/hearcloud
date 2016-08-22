@@ -33,7 +33,22 @@ class Playlist(models.Model):
     Playlist model
     """
     name = models.CharField(_('Playlist name'), max_length=250)
+    slug = models.SlugField(_('Slug'), unique=True, db_index=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)  # User which this playlist belongs to
+
+    # Where to be redirected after you add a new playlist
+    def get_absolute_url(self):
+        return reverse('box:playlist-detail', kwargs={'username': self.user.username, 'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        self.slug =  check_slug_exists = slugify(self.name)
+
+        for x in itertools.count(1):
+            if not Playlist.objects.filter(slug=self.slug).exists():
+                break
+            self.slug = '%s-%d' % (check_slug_exists, x)
+        return super(Playlist, self).save(*args, **kwargs)
+
 
     def __unicode__(self):
         return self.name
@@ -55,9 +70,10 @@ class Song(models.Model):
     year = models.PositiveSmallIntegerField(
         _('Year'),
         validators=[MaxValueValidator(3000)],
-        null=True
+        blank=True,
+        null=True,
     )
-    release_date = models.DateField(_('Complete release date (day-month-year)'), null=True)
+    release_date = models.DateField(_('Complete release date (day-month-year)'), blank=True, null=True)
     album_artist = models.CharField(_('Album artist (band/orchestra/accompaniment)'), max_length=250, blank=True,
                                     null=True)
     track_number = models.PositiveSmallIntegerField(
@@ -73,6 +89,7 @@ class Song(models.Model):
     bpm = models.FloatField(
         _('Beats per minute'),
         validators=[MinValueValidator(5), MaxValueValidator(300)],
+        blank=True,
         null=True
     )
     original_artist = models.CharField(_('Original artist(s)/performer(s)'), max_length=250, blank=True, null=True)
@@ -176,7 +193,7 @@ class Song(models.Model):
             elif self.file_type == "wav":
                 tags_from_song_model_to_wav(song=self, file_path=self.file.path)
 
-        super(Song, self).save(*args, **kwargs)
+        return super(Song, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title
