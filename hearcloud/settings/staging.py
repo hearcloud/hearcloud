@@ -10,12 +10,25 @@ ALLOWED_HOSTS = ['*']
 
 TRAVIS_DB = {
     'default': {
-        'ENGINE':   'django.db.backends.postgresql_psycopg2',
-        'NAME':     'travisdb',
-        'USER':     'postgres',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'travisdb',
+        'USER': 'postgres',
         'PASSWORD': '',
-        'HOST':     'localhost',
-        'PORT':     '',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
+import urlparse
+url = urlparse.urlparse(os.environ["OPENSHIFT_POSTGRESQL_DB_URL"])
+OPENSHIFT_DB = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': url.path[1:],
+		    'USER': url.username,
+		    'PASSWORD': url.password,
+		    'HOST': url.hostname,
+		    'PORT': url.port,
     }
 }
 

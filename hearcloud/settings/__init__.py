@@ -27,8 +27,9 @@ if LOCAL_DEVELOPMENT:
     from .local import *
 elif TRAVIS_ENVIRONMENT:
     from .staging import *
-    DATABASE = TRAVIS_DB
+    DATABASES = TRAVIS_DB
 elif STAGING_ENVIRONMENT:
     from .staging import *
+    DATABASES = OPENSHIFT_DB
 elif PRODUCTION_ENVIRONMENT:
     from .production import *
