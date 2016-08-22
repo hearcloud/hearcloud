@@ -1,86 +1,58 @@
 from django import forms
 from django.core.exceptions import ValidationError 
 
-from .models import Song
+from .models import Song, Playlist
 
-# Allowed file types
-file_TYPES = ['mp3', 'wav', 'm4a']
+
+class CreatePlaylistForm(forms.ModelForm):
+    """
+    Form class to create playlists
+    """
+
+    class Meta:
+        model = Playlist
+        fields = [
+            'name',
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 
 class UpdateSongForm(forms.ModelForm):
     """
     Form class to update already created songs on the db
     """
-    title = forms.CharField(
-        max_length=Song._meta.get_field('title').max_length,
-        required=False
-    )
-    artist = forms.CharField(
-        max_length=Song._meta.get_field('artist').max_length,
-        required=False
-    )
-    year = forms.IntegerField(required=False)
-    release_date = forms.DateField(
-        required=False,
-        widget=forms.TextInput(attrs=
-            {
-                'class': 'datepicker'
-            }
-        )
-    )
-    album_artist = forms.CharField(
-        max_length=Song._meta.get_field('album_artist').max_length,
-        required=False
-    )
-    track_number = forms.IntegerField(required=False)
-    track_total = forms.IntegerField(required=False)
-    bpm = forms.FloatField(required=False)
-    original_artist = forms.CharField(
-        max_length=Song._meta.get_field('original_artist').max_length,
-        required=False
-    )
-    key = forms.CharField(
-        max_length=Song._meta.get_field('key').max_length,
-        required=False
-    )
-    composer = forms.CharField(
-        max_length=Song._meta.get_field('composer').max_length,
-        required=False
-    )
-    lyricist = forms.CharField(
-        max_length=Song._meta.get_field('lyricist').max_length,
-        required=False
-    )
-    comments = forms.CharField(
-        max_length=Song._meta.get_field('comments').max_length,
-        required=False
-    )
-    remixer = forms.CharField(
-        max_length=Song._meta.get_field('remixer').max_length,
-        required=False
-    )
-    label = forms.CharField(
-        max_length=Song._meta.get_field('label').max_length,
-        required=False
-    )
-    genre = forms.CharField(
-        max_length=Song._meta.get_field('genre').max_length,
-        required=False
-    )
-    lyrics = forms.CharField(
-        required=False,
-        widget=forms.Textarea
-    )
-    artwork = forms.ImageField(required=False)
 
     class Meta:
         model = Song
         fields = [
             'artwork', 'title', 'artist', 'year', 'album',
-            'release_date', 'album_artist', 'track_number', 'bpm', 
+            'release_date', 'album_artist', 'track_number', 'track_total', 'bpm',
             'original_artist', 'key', 'composer', 'lyricist', 'comments',
-            'remixer', 'label', 'genre'
+            'remixer', 'label', 'genre', 'file', 'lyrics',
         ]
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'artist': forms.TextInput(attrs={'class': 'form-control'}),
+            'year': forms.NumberInput(attrs={'class': 'form-control'}),
+            'album': forms.TextInput(attrs={'class': 'form-control'}),
+            'release_date': forms.DateInput(attrs={'class': 'form-control'}),
+            'album_artist': forms.TextInput(attrs={'class': 'form-control'}),
+            'track_number': forms.NumberInput(attrs={'class': 'form-control'}),
+            'track_total': forms.NumberInput(attrs={'class': 'form-control'}),
+            'bpm': forms.NumberInput(attrs={'class': 'form-control'}),
+            'original_artist': forms.TextInput(attrs={'class': 'form-control'}),
+            'key': forms.TextInput(attrs={'class': 'form-control'}),
+            'composer': forms.TextInput(attrs={'class': 'form-control'}),
+            'lyricist': forms.TextInput(attrs={'class': 'form-control'}),
+            'comments': forms.TextInput(attrs={'class': 'form-control'}),
+            'remixer': forms.TextInput(attrs={'class': 'form-control'}),
+            'label': forms.TextInput(attrs={'class': 'form-control'}),
+            'genre': forms.TextInput(attrs={'class': 'form-control'}),
+            'file': forms.TextInput(attrs={'class': 'form-control'}),
+            'lyrics': forms.Textarea(attrs={'class': 'form-control'})
+        }
 
     def save(self, commit=True):
         instance = super(UpdateSongForm, self).save(commit=False)

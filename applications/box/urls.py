@@ -40,4 +40,8 @@ urlpatterns = [
     # /box/<username>/playlists/add
     url(r'^(?P<username>[\w.@+-]+)/playlists/add/$', login_required(views.PlaylistCreateView.as_view()),
         name='playlist-add'),
+
+    # /box/<username>/playlists/<playlist-slug>/
+    url(r'^(?P<username>[\w.@+-]+)/playlists/(?P<slug>[\w.-]{0,256})/$', login_required(views.PlaylistDetailView.as_view()),
+        name='playlist-detail'),
 ]

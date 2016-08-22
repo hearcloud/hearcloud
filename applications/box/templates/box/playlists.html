@@ -4,8 +4,18 @@
 
 {% block content %}
 <div class="panel-body">
+  <div class="pull-right">
+    <a href="{% url 'box:playlist-add' username=user.slug %}">
+      <button type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Playlist
+      </button>
+    </a>
+  </div>
+
+{% if all_playlists %}
   {% for playlist in all_playlists %}
       {% if playlist.name %} <p> {{ playlist.name }} </p> {% endif %}
   {% endfor %}
+{% endif %}
 </div>
 {% endblock %}
