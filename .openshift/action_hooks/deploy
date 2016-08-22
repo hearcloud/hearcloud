@@ -4,6 +4,8 @@
 # up again.  This script gets executed directly, so it could be python, php,
 # ruby, etc.
 
+source ${VIRTUAL_ENV}/bin/activate
+
 echo "Executing 'python ${OPENSHIFT_REPO_DIR}manage.py migrate --noinput'"
 python "$OPENSHIFT_REPO_DIR"manage.py migrate --noinput
 

@@ -16,12 +16,12 @@ sudo checkinstall --pkgname=x264 --pkgversion="3:$(./version.sh | \
   --fstrans=no --default
 
 cd
-wget http://downloads.sourceforge.net/opencore-amr/fdk-aac-0.1.0.tar.gz
+wget http://downloads.sourceforge.net/opencore-amr/fdk-aac-0.1.4.tar.gz
 tar xzvf fdk-aac-0.1.0.tar.gz
 cd fdk-aac-0.1.0
 ./configure
 make
-sudo checkinstall --pkgname=fdk-aac --pkgversion="0.1.0" --backup=no \
+sudo checkinstall --pkgname=fdk-aac --pkgversion="0.1.4" --backup=no \
   --deldoc=yes --fstrans=no --default
 
 cd
