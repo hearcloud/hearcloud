@@ -42,9 +42,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     Represents the users models.
     """
 
-    def get_full_name(self):
-        return self.username
-
     username = models.CharField(unique=True, max_length=30)
     email = models.EmailField(unique=True, max_length=50)
     first_name = models.CharField(max_length=50, blank=True)
@@ -64,6 +61,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.username)
         super(User, self).save(*args, **kwargs)
+
+    def get_full_name(self):
+        return self.username
 
     def get_short_name(self):
         return self.username

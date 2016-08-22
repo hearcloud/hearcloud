@@ -20,7 +20,9 @@ before_script:
 
 # Ejecucion de pruebas
 script:
+  - python manage.py test applications.box
   - python manage.py test applications.users
+  - python manage.py test applications.home
 
 # Ejecutamos solo los test de la rama master del repositorio
 branches:
