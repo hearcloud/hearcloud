@@ -18,9 +18,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'b%sv-2nk)(cidk1&n1=9y$m#jz36!5hn18*12=tsyvu&(_$j5)'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = []
-
 
 ###############################################################################
 """                         Application definition                          """
@@ -128,12 +125,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-###############################################################################
-"""                              CORS Headers                               """
-""" https://github.com/ottoyiu/django-cors-headers                          """
-###############################################################################
-CORS_ORIGIN_ALLOW_ALL = True
 
 
 ###############################################################################
