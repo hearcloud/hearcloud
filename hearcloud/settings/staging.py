@@ -19,18 +19,19 @@ TRAVIS_DB = {
     }
 }
 
-import urlparse
-url = urlparse.urlparse(os.environ["OPENSHIFT_POSTGRESQL_DB_URL"])
-OPENSHIFT_DB = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': url.path[1:],
-		    'USER': url.username,
-		    'PASSWORD': url.password,
-		    'HOST': url.hostname,
-		    'PORT': url.port,
+if STAGING_ENVIRONMENT:
+    import urlparse
+    url = urlparse.urlparse(os.environ["OPENSHIFT_POSTGRESQL_DB_URL"])
+    OPENSHIFT_DB = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': url.path[1:],
+		        'USER': url.username,
+		        'PASSWORD': url.password,
+		        'HOST': url.hostname,
+		        'PORT': url.port,
+        }
     }
-}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
