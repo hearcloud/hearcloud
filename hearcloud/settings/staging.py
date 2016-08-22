@@ -1,7 +1,7 @@
 from .base import *
 from . import STAGING_ENVIRONMENT, TRAVIS_ENVIRONMENT
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 ###############################################################################
