@@ -1,4 +1,6 @@
 from .base import *
+from settings import STAGING_ENVIRONMENT
+from settings import TRAVIS_ENVIRONMENT
 
 DEBUG = False
 ALLOWED_HOSTS = ['*']
@@ -8,21 +10,22 @@ ALLOWED_HOSTS = ['*']
 """ https://docs.djangoproject.com/en/1.9/ref/settings/#databases           """
 ###############################################################################
 
-TRAVIS_DB = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'travisdb',
-        'USER': 'postgres',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+if TRAVIS_ENVIRONMENT:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'travisdb',
+            'USER': 'postgres',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
     }
-}
 
 if STAGING_ENVIRONMENT:
     import urlparse
     url = urlparse.urlparse(os.environ["OPENSHIFT_POSTGRESQL_DB_URL"])
-    OPENSHIFT_DB = {
+    DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': url.path[1:],
