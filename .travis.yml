@@ -1,30 +1,26 @@
-# Lenguaje de programacion 
 language: python
-
-# Version Python
 python:
-  - "2.7" 
-
-# Servicios a usar
+- '2.7'
 services: postgresql
-
-# Provisionamiento de la maquina
 install:
-  - sudo apt-get install python-dev libjpeg8-dev zlib1g-dev
-  - pip install --upgrade pip
-  - pip install -r requirements/staging.txt
-
-# Acciones antes de comenzar las pruebas
+- sudo apt-get install python-dev libjpeg8-dev zlib1g-dev
+- pip install --upgrade pip
+- pip install -r requirements/staging.txt
 before_script:
-  - psql -c "CREATE DATABASE travisdb;" -U postgres
-
-# Ejecucion de pruebas
+- psql -c "CREATE DATABASE travisdb;" -U postgres
 script:
-  - python manage.py test applications.box
-  - python manage.py test applications.users
-  - python manage.py test applications.home
-
-# Ejecutamos solo los test de la rama master del repositorio
+- python manage.py test applications.box
+- python manage.py test applications.users
+- python manage.py test applications.home
 branches:
-  - only:
-    - master
+- only:
+  - master
+deploy:
+  provider: openshift
+  user: mpvillafranca@correo.ugr.es
+  password:
+    secure: l4RGc4sc0wNjEmIYuqGdBojPZQOvlvDhpMFjQY/scNfVNnXQbCCihdgOaByNbeLwlywWsEUszm8yBWBYCNTl1jdtRYZY1ffdUgr6O+QmKBfWl0nOXG2sfLsuOvcjKk8E+SyZ7b/TQUga3uvCRoNVvVSYuJ3hpo1HdDU+DySo2KO60ON3C2o+7wwFxRVtI0mogQUaLllBhdmfFJMCLRAH0WBAlMY9cIg+Zp9n/dsvTXRoTw+AeoebdE9FntLiSvO5hAwih5xMTywPNdGvQkURR4/qvq8B7MO6BAXij8CLTwrD13kRD5cHNhfgKCZPAA6j/bOJIe+RIFn+D727a6GGxq3VStsEx4AutBsd6OU0sL3NR5YEBuHLIXe96+SZZ2Y1xzFFA0kfg5VyVcrNDhm5k6NQL2/xKS1sSbJKnfG6/MJOn9oCL3hLiMkDuryrtfDZyFPyrcM+UrPci55fReFkzaIBc50XkhRqXWaXjAT3aGEzOIwbHAA8070aRYzR6T1FidGJ2EZcUY2MzsffP9ofPz0wb79FKR8vStSkcKV6gmHhjNGlr/eFzqr+csK/AcdYomCc61W3PYif+mIvfCMbtB1k3yeH3UB6bOmFge1JKgcXpjJ/vszr9ohsROexqBHKsL4ns5uFNJ9JNh2ononT2ztRSSXQXdjTcDQmNcP/Fqs=
+  app: hearcloud
+  domain: hearcloud-mpvillafranca.rhcloud.com
+  on:
+    repo: mpvillafranca/hearcloud
