@@ -51,7 +51,6 @@ All the code developed for the Headcloud project is licensed under GNU AFFERO GE
 
 - [X] [Bootstrap](http://getbootstrap.com/css/)
 - [X] [jQuery](https://jquery.com/)
-- [X] [NProgress](https://github.com/rstacruz/nprogress): Slim progress bars for Ajax'y applications. Inspired by Google, YouTube, and Medium.
 - [X] [Django REST framework](http://www.django-rest-framework.org/): Web APIs for Django. 
 - [X] [django-cors-headers](https://github.com/ottoyiu/django-cors-headers): A Django App that adds CORS (Cross-Origin Resource Sharing) headers to responses.
 - [X] [Django FM](https://github.com/django-fm/django-fm): Modal AJAX form to create, update and delete Django objects with ease. 
