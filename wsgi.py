@@ -16,7 +16,7 @@ except IOError:
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'hearcloud.settings'
 
-sys.path.append(os.path.join(os.environ['OPENSHIFT_REPO_DIR'])
+sys.path.append(os.path.join(os.environ['OPENSHIFT_REPO_DIR']))
 
 from distutils.sysconfig import get_python_lib
 os.environ['PYTHON_EGG_CACHE'] = get_python_lib()
