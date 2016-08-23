@@ -8,7 +8,7 @@ TRAVIS_ENVIRONMENT = False
 
 
 # Detecting environment by OS variables
-if 'STAGING' in os.environ:
+if 'STAGING' in os.environ or 'OPENSHIFT_APP_NAME' in os.environ:
     LOCAL_DEVELOPMENT = False
     STAGING_ENVIRONMENT = True
 elif 'PRODUCTION' in os.environ:
