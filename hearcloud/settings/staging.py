@@ -27,11 +27,11 @@ if STAGING_ENVIRONMENT:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': url.path[1:],
-		        'USER': url.username,
-		        'PASSWORD': url.password,
-		        'HOST': url.hostname,
-		        'PORT': url.port,
+            'NAME': os.environ['OPENSHIFT_APP_NAME'],
+            'USER': url.username,
+            'PASSWORD': url.password,
+            'HOST': url.hostname,
+            'PORT': url.port,
         }
     }
 
