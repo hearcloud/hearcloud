@@ -4,6 +4,12 @@ from . import STAGING_ENVIRONMENT, TRAVIS_ENVIRONMENT
 DEBUG = False
 ALLOWED_HOSTS = ['*']
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
 ###############################################################################
 """                                Database                                 """
 """ https://docs.djangoproject.com/en/1.9/ref/settings/#databases           """
@@ -20,6 +26,9 @@ if TRAVIS_ENVIRONMENT:
             'PORT': '',
         }
     }
+    STATIC_ROOT = os.path.join(BASE_DIR, STATIC_URL.strip("/"))
+    MEDIA_ROOT = os.path.join(BASE_DIR, *MEDIA_URL.strip("/").split("/"))
+
 
 if STAGING_ENVIRONMENT:
     import urlparse
@@ -27,22 +36,16 @@ if STAGING_ENVIRONMENT:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': url.path[1:],
-		        'USER': url.username,
-		        'PASSWORD': url.password,
-		        'HOST': url.hostname,
-		        'PORT': url.port,
+            'NAME': os.environ['OPENSHIFT_APP_NAME'],
+            'USER': url.username,
+            'PASSWORD': url.password,
+            'HOST': url.hostname,
+            'PORT': url.port,
         }
     }
+    STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
+    MEDIA_ROOT = os.path.join(os.environ.get('OPENSHIFT_DATA_DIR'), 'media')
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
-
-STATIC_ROOT = os.path.join(BASE_DIR, '/wsgi/static')
-STATIC_URL = '/static/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 
 ###############################################################################
 """                              CORS Headers                               """

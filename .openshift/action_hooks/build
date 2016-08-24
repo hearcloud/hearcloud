@@ -6,3 +6,9 @@
 
 # Activate VirtualEnv in order to use the correct libraries
 source ${VIRTUAL_ENV}/bin/activate
+
+if [ ! -d $OPENSHIFT_DATA_DIR/media ]; then
+mkdir $OPENSHIFT_DATA_DIR/media
+fi
+
+ln -sf $OPENSHIFT_DATA_DIR/media $OPENSHIFT_REPO_DIR/wsgi/static/media
