@@ -105,7 +105,7 @@ class Song(models.Model):
 
     artwork = models.ImageField(_('Song cover'), upload_to=upload_to_root, null=True)
 
-    slug = models.SlugField(_('Slug'), unique=True, db_index=True)
+    slug = models.SlugField(_('Slug'), max_length=100, unique=True, db_index=True)
     ctime = models.DateTimeField(_('Creation time'), auto_now_add=True)
     mtime = models.DateTimeField(_('Modified time'), auto_now=True)
 
