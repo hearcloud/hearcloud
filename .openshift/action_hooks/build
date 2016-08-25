@@ -11,6 +11,10 @@ if [ ! -d $OPENSHIFT_REPO_DIR/wsgi/static ]; then
 mkdir $OPENSHIFT_REPO_DIR/wsgi/static
 fi
 
+if [ ! -d $OPENSHIFT_REPO_DIR/wsgi/static/.htaccess ]; then
+touch $OPENSHIFT_REPO_DIR/wsgi/static/.htaccess
+fi
+
 echo "RewriteEngine On" > $OPENSHIFT_REPO_DIR/wsgi/static/.htaccess
 echo "RewriteRule ^application/static/(.+)$ /static/$1 [L]" >> $OPENSHIFT_REPO_DIR/wsgi/static/.htaccess:
 
