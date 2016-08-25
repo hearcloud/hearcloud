@@ -7,6 +7,10 @@
 # Activate VirtualEnv in order to use the correct libraries
 source ${VIRTUAL_ENV}/bin/activate
 
+if [ ! -d $OPENSHIFT_REPO_DIR/wsgi ]; then
+mkdir $OPENSHIFT_REPO_DIR/wsgi
+fi
+
 if [ ! -d $OPENSHIFT_REPO_DIR/wsgi/static ]; then
 mkdir $OPENSHIFT_REPO_DIR/wsgi/static
 fi
