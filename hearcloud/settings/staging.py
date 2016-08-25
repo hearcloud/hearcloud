@@ -45,7 +45,7 @@ if STAGING_ENVIRONMENT:
     }
     STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
     MEDIA_ROOT = os.path.join(os.environ.get('OPENSHIFT_DATA_DIR'), 'media')
-    MEDIA_URL = STATIC_URL + '/media'
+    MEDIA_URL = STATIC_URL + '/media/'
 
 
 ###############################################################################
