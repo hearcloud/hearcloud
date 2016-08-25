@@ -35,7 +35,6 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'corsheaders',
-    'easy_pjax',
     'crispy_forms',
     'fm',
     'easy_thumbnails',
