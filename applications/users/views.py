@@ -55,7 +55,9 @@ class UserRegisterFormView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('box:index')
+                    return HttpResponseRedirect(
+        	        reverse('box:index', kwargs={'username': request.user.slug})
+                    )
 
         return render(request, self.template_name, {'form': form})
 
