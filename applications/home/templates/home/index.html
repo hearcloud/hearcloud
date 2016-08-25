@@ -12,6 +12,13 @@
     <meta name="description" content="Your music everywhere">
     <meta name="author" content="mpvillafranca">
 
+    <!-- Facebook -->
+    <meta property="og:title" content="Hearcloud" />
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{{ object.get_absolute_url }}" />
+    <meta property="og:description" content="Your music everywhere" />
+    <meta property="og:image" content="{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.get_host }}{% static 'home/img/open-graph-default.png' %}" />
+
     <title>{% block title %}Hearcloud - Your music everywhere{% endblock %}</title>
 
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
