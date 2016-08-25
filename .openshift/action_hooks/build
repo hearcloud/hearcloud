@@ -7,6 +7,13 @@
 # Activate VirtualEnv in order to use the correct libraries
 source ${VIRTUAL_ENV}/bin/activate
 
+if [ ! -d $OPENSHIFT_REPO_DIR/wsgi/static ]; then
+mkdir $OPENSHIFT_REPO_DIR/wsgi/static
+fi
+
+echo "RewriteEngine On" > $OPENSHIFT_REPO_DIR/wsgi/static/.htaccess
+echo "RewriteRule ^application/static/(.+)$ /static/$1 [L]" >> $OPENSHIFT_REPO_DIR/wsgi/static/.htaccess:
+
 if [ ! -d $OPENSHIFT_DATA_DIR/media ]; then
 mkdir $OPENSHIFT_DATA_DIR/media
 fi
