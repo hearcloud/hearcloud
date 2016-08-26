@@ -351,12 +351,13 @@ def mp3_tags_to_song_model(file_name, file_path, song):
     # ID3 tags stuff
     # Creating a mutagen file instance
     try:
-        audio_file = MP3(file_path)
+        audio_file = MutaFile(file_path)
 
-        read_and_store_id3_tags(audio_file, file_name, song)
+        if audio_file:
+            read_and_store_id3_tags(audio_file, file_name, song)
 
-        # Get the song length
-        song.duration = timedelta(seconds=int(audio_file.info.length))
+            # Get the song length
+            song.duration = timedelta(seconds=int(audio_file.info.length))
     except ValueError:
         pass
 
@@ -389,10 +390,11 @@ def m4a_tags_to_song_model(file_name, file_path, song):
     try:
         audio_file = MP4(file_path)
 
-        read_and_store_mp4_tags(audio_file, file_name, song)
+        if audio_file:
+            read_and_store_mp4_tags(audio_file, file_name, song)
 
-        # Get the song length
-        song.duration = timedelta(seconds=int(audio_file.info.length))
+            # Get the song length
+            song.duration = timedelta(seconds=int(audio_file.info.length))
     except ValueError:
         pass
 
@@ -428,9 +430,9 @@ def aiff_tags_to_song_model(file_name, file_path, song):
 
         if audio_file.tags:
             read_and_store_id3_tags(audio_file, file_name, song)
-
-        # Get the song length
-        song.duration = timedelta(seconds=int(audio_file.info.length))
+        if audio_file:
+            # Get the song length
+            song.duration = timedelta(seconds=int(audio_file.info.length))
     except ValueError:
         pass
 
