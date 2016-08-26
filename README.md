@@ -1,8 +1,11 @@
-![](./static/favicon.ico) Hearcloud
+![](./applications/home/static/favicon.ico) Hearcloud
 ============
 [![Build Status](https://travis-ci.org/mpvillafranca/hearcloud.svg?branch=master)](https://travis-ci.org/mpvillafranca/hearcloud)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 [![Code Climate](https://codeclimate.com/github/mpvillafranca/hearcloud/badges/gpa.svg)](https://codeclimate.com/github/mpvillafranca/hearcloud)
+[![OpenShift](https://assets.openshift.net/content/subdomain/openshift-logo-horizontal.svg)](http://hearcloud-mpvillafranca.rhcloud.com)
+
+
 
 ##About the project
 
