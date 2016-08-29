@@ -79,11 +79,13 @@ class Song(models.Model):
     track_number = models.PositiveSmallIntegerField(
         _('Track number'),
         validators=[MaxValueValidator(3000)],
+        blank=True,
         null=True
     )
     track_total = models.PositiveSmallIntegerField(
         _('Total track count'),
         validators=[MaxValueValidator(3000)],
+        blank=True,
         null=True
     )
     bpm = models.FloatField(
@@ -103,7 +105,7 @@ class Song(models.Model):
     genre = models.CharField(_('Genre/content type'), max_length=100, blank=True, null=True)
     lyrics = models.TextField(_('Lyrics'), blank=True, null=True)
 
-    artwork = models.ImageField(_('Song cover'), upload_to=upload_to_root, null=True)
+    artwork = models.ImageField(_('Song cover'), upload_to=upload_to_root, null=True, blank=True)
 
     slug = models.SlugField(_('Slug'), max_length=100, unique=True, db_index=True)
     ctime = models.DateTimeField(_('Creation time'), auto_now_add=True)
@@ -117,6 +119,22 @@ class Song(models.Model):
         return reverse('box:song-detail', kwargs={'username': self.user.username, 'slug': self.slug})
 
     def save(self, create=False, update=False, *args, **kwargs):
+        if not self.slug:
+            slug_final = check_slug_exists = slugify(self.file.name)
+            if check_slug_exists != 'add':
+                for x in itertools.count(1):
+                    if not Song.objects.filter(slug=slug_final).exists():
+                        break
+                    slug_final = '%s-%d' % (check_slug_exists, x)
+            else:
+                slug_final = '%s-%d' % (check_slug_exists, 1)
+                for x in itertools.count(1):
+                    if not Song.objects.filter(slug=slug_final).exists():
+                        break
+                    slug_final = '%s-%d' % (check_slug_exists, x)
+
+            self.slug = slug_final
+
         if create:
             file_final_path = self.file.path
             file_name = self.file.name
@@ -154,8 +172,6 @@ class Song(models.Model):
             if not Song.objects.filter(slug=check_slug_exists).exists() and check_slug_exists != 'add':
                 self.slug = slugify(slugaux)
 
-                if not self.title:
-                    self.title = slugaux
             else:
                 slug_final = check_slug_exists
 
@@ -173,8 +189,8 @@ class Song(models.Model):
 
                 self.slug = slug_final
 
-                if not self.title:
-                    self.title = slugaux
+            if not self.title:
+                self.title = slugaux
 
         elif update:
             # MP3
