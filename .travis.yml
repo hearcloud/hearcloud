@@ -23,7 +23,7 @@ deploy:
   password:
     secure: l4RGc4sc0wNjEmIYuqGdBojPZQOvlvDhpMFjQY/scNfVNnXQbCCihdgOaByNbeLwlywWsEUszm8yBWBYCNTl1jdtRYZY1ffdUgr6O+QmKBfWl0nOXG2sfLsuOvcjKk8E+SyZ7b/TQUga3uvCRoNVvVSYuJ3hpo1HdDU+DySo2KO60ON3C2o+7wwFxRVtI0mogQUaLllBhdmfFJMCLRAH0WBAlMY9cIg+Zp9n/dsvTXRoTw+AeoebdE9FntLiSvO5hAwih5xMTywPNdGvQkURR4/qvq8B7MO6BAXij8CLTwrD13kRD5cHNhfgKCZPAA6j/bOJIe+RIFn+D727a6GGxq3VStsEx4AutBsd6OU0sL3NR5YEBuHLIXe96+SZZ2Y1xzFFA0kfg5VyVcrNDhm5k6NQL2/xKS1sSbJKnfG6/MJOn9oCL3hLiMkDuryrtfDZyFPyrcM+UrPci55fReFkzaIBc50XkhRqXWaXjAT3aGEzOIwbHAA8070aRYzR6T1FidGJ2EZcUY2MzsffP9ofPz0wb79FKR8vStSkcKV6gmHhjNGlr/eFzqr+csK/AcdYomCc61W3PYif+mIvfCMbtB1k3yeH3UB6bOmFge1JKgcXpjJ/vszr9ohsROexqBHKsL4ns5uFNJ9JNh2ononT2ztRSSXQXdjTcDQmNcP/Fqs=
   app: hearcloud
-  domain: hearcloud
+  domain: mpvillafranca
   on:
     repo: hearcloud/hearcloud
 after_success: coveralls
