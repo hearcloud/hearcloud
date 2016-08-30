@@ -1,4 +1,6 @@
-sudo apt-get install -y libjpeg-dev zlib1g-dev
+#!/bin/bash
+
+sudo apt-get -y install libjpeg-dev zlib1g-dev
 
 sudo apt-get remove ffmpeg x264 libav-tools libvpx-dev libx264-dev
 

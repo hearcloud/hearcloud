@@ -1,8 +1,9 @@
 ![](./applications/home/static/favicon.ico) Hearcloud
 ============
-[![Build Status](https://travis-ci.org/mpvillafranca/hearcloud.svg?branch=master)](https://travis-ci.org/mpvillafranca/hearcloud)
+[![Build Status](https://travis-ci.org/hearcloud/hearcloud.svg?branch=master)](https://travis-ci.org/hearcloud/hearcloud)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 [![Code Climate](https://codeclimate.com/github/mpvillafranca/hearcloud/badges/gpa.svg)](https://codeclimate.com/github/mpvillafranca/hearcloud)
+[![Coverage Status](https://coveralls.io/repos/github/hearcloud/hearcloud/badge.svg?branch=master)](https://coveralls.io/github/hearcloud/hearcloud?branch=master)
 [![OpenShift](https://assets.openshift.net/content/subdomain/openshift-logo-horizontal.svg)](http://hearcloud-mpvillafranca.rhcloud.com)
 
 
@@ -23,7 +24,7 @@ From all the programming languages that I've studied so far, Python es the one w
 
 ## Requirements
 
-[Here](./requirements.txt) is a list of everything you will need in order to run the project on your machine. But don't worry, if you read the next section, you will find how to install easily.
+[Here](./requirements/local.txt) is a list of everything you will need in order to run the project on your machine. But don't worry, if you read the next section, you will find how to install easily.
 
 ## How to install
 
@@ -32,19 +33,14 @@ Run:
 ```
 $ git clone https://github.com/mpvillafranca/hearcloud.git
 $ cd hearcloud
+$ sudo bash dependencies.sh
+$ sudo pip install virtualenv
 $ virtualenv hcenv
 $ source hcenv/bin/activate
-$ pip install -r requirements.txt
-$ python manage.py migrate
-$ python manage.py runserver
+(hcenv)$ pip install -r requirements/local.txt
+(hcenv)$ python manage.py migrate
+(hcenv)$ python manage.py runserver
 ```
-
-If you get any error related with the `Pillow` dependency, try installing a lower version of it. You need some `apt-get install` dependecincies installed if you want to use some of the latests `Pillow` versions.
-
-## Some stuff I'm planning to include
-- [ ] [jQuery File Upload](https://github.com/blueimp/jQuery-File-Upload): to allow users upload multiple file songs at the same time.
-
-- [ ] [Mixbolt](https://github.com/adaline/mixbolt): I'm trying to figure out how to include this project as my music player, refactoring the code to get the appearance of a single deck instead of a complete DJ mixer.
 
 ## License
 
@@ -59,3 +55,4 @@ All the code developed for the Headcloud project is licensed under GNU AFFERO GE
 - [X] [Django FM](https://github.com/django-fm/django-fm): Modal AJAX form to create, update and delete Django objects with ease. 
 - [X] [Mutagen](https://mutagen.readthedocs.io/en/latest/): Python module to handle audio metadata.
 - [X] [Easy-Thumbnails](https://github.com/SmileyChris/easy-thumbnails): Thumbnailing application for Django
+- [X] [jQuery File Upload](https://github.com/blueimp/jQuery-File-Upload): to allow users upload multiple file songs at the same time.
