@@ -6,12 +6,14 @@ install:
 - sudo apt-get install python-dev libjpeg8-dev zlib1g-dev
 - pip install --upgrade pip
 - pip install -r requirements/staging.txt
+- pip install coveralls
 before_script:
 - psql -c "CREATE DATABASE travisdb;" -U postgres
 script:
 - python manage.py test applications.box
 - python manage.py test applications.users
 - python manage.py test applications.home
+- coverage run --source=applications.users manage.py test applications.users
 branches:
 - only:
   - master
@@ -24,3 +26,4 @@ deploy:
   domain: mpvillafranca
   on:
     repo: mpvillafranca/hearcloud
+after_success: coveralls
