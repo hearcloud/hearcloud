@@ -10,12 +10,8 @@ install:
 before_script:
 - psql -c "CREATE DATABASE travisdb;" -U postgres
 script:
-- python manage.py test applications.box
-- python manage.py test applications.users
-- python manage.py test applications.home
-- coverage run --source=applications.box manage.py test applications.box
-- coverage run --source=applications.users manage.py test applications.users
-- coverage run --source=applications.home manage.py test applications.home
+- python manage.py test applications.box applications.users applications.home
+- coverage run --source=applications.box,applications.users,applications.home manage.py test applications.box applications.users applications.home
 branches:
 - only:
   - master
