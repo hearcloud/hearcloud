@@ -1,0 +1,18 @@
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+
+	server_name localhost;
+
+    # servidor web para archivos en  /static
+	location /static/ {
+		alias /var/www/static/;
+	}
+	
+    # proxy inverso, se pasa a la aplicación wsgi
+	location / {
+		proxy_pass http://127.0.0.1:8000;
+		proxy_set_header X-Forwarded-Host $server_name;
+		proxy_set_header X-Real-IP $remote_addr;
+	}
+}

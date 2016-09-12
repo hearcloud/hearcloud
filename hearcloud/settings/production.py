@@ -12,12 +12,12 @@ ALLOWED_HOSTS = ['*']
 if PRODUCTION_ENVIRONMENT:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': '',
-            'USER': '',
-            'PASSWORD': '',
-            'HOST': '',
-            'PORT': '',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['MYSQL_DB'],
+            'USER': 'root',
+            'PASSWORD': os.environ['MYSQL_PASS'],
+            'HOST': 'localhost',
+            'PORT': '3307',
         }
     }
 
@@ -25,10 +25,10 @@ if PRODUCTION_ENVIRONMENT:
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join('/var/www/', STATIC_URL.strip("/"))
+MEDIA_ROOT = os.path.join('/var/www/', MEDIA_URL.strip("/"))
 
 ###############################################################################
 """                              CORS Headers                               """
