@@ -21,7 +21,7 @@ if PRODUCTION_ENVIRONMENT:
             'USER': 'root',
             'PASSWORD': passwords['dbpassword'],
             'HOST': 'localhost',
-            'PORT': '3307',
+            'PORT': '',
         }
     }
 
