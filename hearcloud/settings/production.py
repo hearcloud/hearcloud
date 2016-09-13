@@ -1,5 +1,10 @@
 from .base import *
 from . import PRODUCTION_ENVIRONMENT
+from ansible_vault import Vault
+
+vault = Vault(os.environ['VAULT_PASSWORD'])
+passwords = vault.load(open(os.path.join(BASE_DIR, 'vars.yml')).read())
+print passwords
 
 DEBUG = False
 ALLOWED_HOSTS = ['*']

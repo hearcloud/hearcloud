@@ -1,10 +1,11 @@
 ---
 - hosts: www.hearcloud.com
-  vars:
-    username: mpvillafranca
   remote_user: mpvillafranca
   become: yes
   tasks:
+  - name: Include vars
+    include_vars: vars.yml
+
   - name: Update package repositories
     when: ansible_os_family == 'Debian'
     become_method: sudo
@@ -12,7 +13,6 @@
 
   - name: Install python, pip, libjpeg, git, supervisor and nginx
     when: ansible_os_family == 'Debian'
-    become_method: sudo
     apt: package={{ item }} state=installed
     with_items:
       - python-setuptools
@@ -30,7 +30,6 @@
 
   - name: Install ffmpeg dependencies
     when: ansible_os_family == 'Debian'
-    become_method: sudo
     apt: package={{ item }} state=installed
     with_items:
       - checkinstall 
@@ -54,15 +53,12 @@
       - zlib1g-dev
 
   - name: Set MySQL root password before installing
-    become_method: sudo
-    debconf: name='mysql-server' question='mysql-server/root_password' value='{{lookup('env', 'MYSQL_PASS') | quote}}' vtype='password'
+    debconf: name='mysql-server' question='mysql-server/root_password' value='{{dbpassword | quote}}' vtype='password'
 
   - name: Confirm MySQL root password before installing
-    become_method: sudo
-    debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{lookup('env', 'MYSQL_PASS') | quote}}' vtype='password'
+    debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{dbpassword | quote}}' vtype='password'
 
   - name: Install MySQL
-    become_method: sudo
     apt: package={{ item }} state=installed force=yes update_cache=yes cache_valid_time=3600
     when: ansible_os_family == 'Debian'
     with_items:
@@ -73,17 +69,16 @@
     action: service name=mysql state=started
 
   - name: Create database
-    mysql_db: name={{lookup('env', 'MYSQL_DB')}} login_password={{lookup('env', 'MYSQL_PASS') | quote}} state=present
+    mysql_db: name={{dbname}} login_password={{dbpassword | quote}} state=present
 
   - name: Pip upgrade
-    become_method: sudo
     pip: name=pip extra_args='--upgrade'
 
   - name: Install virtualenv via pip
-    become_method: sudo
     pip: name=virtualenv state=present
 
   - name: Virtual environment creation
+    become_user: mpvillafranca
     command: virtualenv /home/{{username}}/VirtualEnvs/hcenv -p python2.7 creates="/home/{{username}}/VirtualEnvs/hcenv"
 
   - name: Clone repository
