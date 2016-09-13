@@ -4,7 +4,6 @@ from ansible_vault import Vault
 
 vault = Vault(os.environ['VAULT_PASSWORD'])
 passwords = vault.load(open(os.path.join(BASE_DIR, 'vars.yml')).read())
-print passwords
 
 DEBUG = False
 ALLOWED_HOSTS = ['*']
@@ -18,9 +17,9 @@ if PRODUCTION_ENVIRONMENT:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ['MYSQL_DB'],
+            'NAME': passwords['dbname'],
             'USER': 'root',
-            'PASSWORD': os.environ['MYSQL_PASS'],
+            'PASSWORD': passwords['dbpassword'],
             'HOST': 'localhost',
             'PORT': '3307',
         }

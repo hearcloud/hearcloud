@@ -11,7 +11,7 @@
     become_method: sudo
     apt: update_cache=yes
 
-  - name: Install python, pip, libjpeg, git, supervisor and nginx
+  - name: Install python, pip, libjpeg, git, supervisor, nginx and ssl
     when: ansible_os_family == 'Debian'
     apt: package={{ item }} state=installed
     with_items:
@@ -27,6 +27,9 @@
       - supervisor
       - git
       - build-essential
+      - libssl1.0.0
+      - libssl-dev
+      - libffi-dev  
 
   - name: Install ffmpeg dependencies
     when: ansible_os_family == 'Debian'
@@ -82,7 +85,9 @@
     command: virtualenv /home/{{username}}/VirtualEnvs/hcenv -p python2.7 creates="/home/{{username}}/VirtualEnvs/hcenv"
 
   - name: Clone repository
-    git: repo=https://github.com/hearcloud/hearcloud.git  dest=/home/{{username}}/hearcloud clone=yes force=yes
+    become_user: mpvillafranca
+    git: repo=https://github.com/hearcloud/hearcloud.git  dest=/home/{{username}}/hearcloud clone=yes force=yes version=dev
     
   - name: Install project requirements via pip
+    become_user: mpvillafranca
     pip: requirements=/home/{{username}}/hearcloud/requirements/production.txt virtualenv=/home/{{username}}/VirtualEnvs/hcenv state=present
