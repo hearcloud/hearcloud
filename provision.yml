@@ -72,11 +72,8 @@
   - name: Start the MySQL service
     action: service name=mysql state=started
 
-  - name: configure root user default allowed hosts
-    mysql_user: name=root state=present host={{ item }} login_password={{dbpassword | quote}}
-    with_items:
-        - localhost
-        - 0.0.0.0
+  - name: Modify configuration file to listen on all interfaces
+    lineinfile: dest=/etc/mysql/my.cnf regexp="^bind-address" line="bind-address=0.0.0.0"
 
   - name: Restart MySQL
     service: name=mysql state=restarted
@@ -102,11 +99,5 @@
     become_user: mpvillafranca
     pip: requirements=/home/{{username}}/hearcloud/requirements/production.txt virtualenv=/home/{{username}}/VirtualEnvs/hcenv state=present
 
-  - name: Create group to manage /var/www
-    group: name=varwwwusers state=present
-
-  - name: Add mpvillafranca to that group
-    user: name=mpvillafranca groups=varwwwusers append=yes
-
   - name: Add permissions over /var/www to the group varwwwusers and set to 770
-    file: path=/var/www/ group=varwwwusers mode=770 recurse=yes
+    file: path=/var/www/ group=www-data mode=770 recurse=yes
