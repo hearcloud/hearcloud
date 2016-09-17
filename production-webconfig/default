@@ -4,9 +4,14 @@ server {
 
 	server_name localhost;
 
-    # servidor web para archivos en  /static
+  # servidor web para archivos en  /static
 	location /static/ {
 		alias /var/www/static/;
+	}
+
+  # servidor web para archivos en  /media
+	location /media/ {
+		alias /var/www/media/;
 	}
 	
     # proxy inverso, se pasa a la aplicación wsgi
