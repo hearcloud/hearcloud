@@ -19,7 +19,7 @@ if PRODUCTION_ENVIRONMENT:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': passwords['dbname'],
             'USER': 'root',
-            'PASSWORD': passwords['dbpassword'],,
+            'PASSWORD': passwords['dbpassword'],
             'HOST': 'localhost',
             'PORT': '',
         }
