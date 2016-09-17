@@ -17,7 +17,7 @@ def checkout_master():
 def config_nginx():
     with cd('/home/mpvillafranca/hearcloud'):
         run('source /home/mpvillafranca/VirtualEnvs/hcenv/bin/activate && python manage.py collectstatic')
-        run('cd production-webconfig && pwd && python add_vaultpass.py supervisor.conf')
+        run('cd production-webconfig && python add_vaultpass.py supervisor.conf')
         run('sudo cp production-webconfig/default /etc/nginx/sites-available/')
         run('sudo cp production-webconfig/nginx.conf /etc/nginx/')
         run('sudo cp production-webconfig/supervisor.conf /etc/supervisor/conf.d/')
