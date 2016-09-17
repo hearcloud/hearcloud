@@ -103,7 +103,7 @@ a:hover, a:focus, a:active, a.active {
     border-color: var(--main);
 }
 @media (max-width: 767px){
-    .user .navbar-nav .open .dropdown-menu {
+    .navbar-nav .open .dropdown-menu {
         background-color: var(--gray2);
         border-color: var(--main);
     }

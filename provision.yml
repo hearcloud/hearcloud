@@ -2,59 +2,276 @@
 - hosts: www.hearcloud.com
   remote_user: mpvillafranca
   become: yes
+  vars:
+    - ffmpeg_root_dir: "/home/{{ ansible_ssh_user }}" 
+    - ffmpeg_build_dir: "{{ ffmpeg_root_dir }}/ffmpeg_build_dir"
+    - ffmpeg_source_dir: "{{ ffmpeg_root_dir }}/ffmpeg_sources"
+    - ffmpeg_bin_dir: "{{ ffmpeg_root_dir }}/bin"
+    - ffmpeg_env:
+        PKG_CONFIG_PATH: "{{ ffmpeg_build_dir }}/lib/pkgconfig"
+        PATH: "{{ ffmpeg_bin_dir }}:{{ ansible_env.PATH }}"
   tasks:
+
+# CRYPTED VARS
   - name: Include vars
     include_vars: vars.yml
 
+# UPDATE
   - name: Update package repositories
     when: ansible_os_family == 'Debian'
     become_method: sudo
     apt: update_cache=yes
 
-  - name: Install python, pip, libjpeg, git, supervisor, nginx and ssl
+# PYTHON & PIP
+  - name: Install python and pip
     when: ansible_os_family == 'Debian'
     apt: package={{ item }} state=installed
     with_items:
-      - python-setuptools
       - build-essential
       - python-dev
-      - python-pip 
-      - python-dev
-      - python-mysqldb
+      - python-pip
+      - python-setuptools
+
+# LIBJPEG
+  - name: Install libjpeg
+    when: ansible_os_family == 'Debian'
+    apt: package={{ item }} state=installed
+    with_items:
       - libjpeg-dev
       - zlib1g-dev
-      - nginx
-      - supervisor
+
+# GIT
+  - name: Install git
+    when: ansible_os_family == 'Debian'
+    apt: package={{ item }} state=installed
+    with_items:
       - git
-      - build-essential
+
+# SUPERVISOR
+  - name: Install supervisor
+    when: ansible_os_family == 'Debian'
+    apt: package={{ item }} state=installed
+    with_items:
+      - supervisor
+
+# NGINX
+  - name: Install nginx
+    when: ansible_os_family == 'Debian'
+    apt: package={{ item }} state=installed
+    with_items:
+      - nginx
+
+# SSL
+  - name: Install ssl
+    when: ansible_os_family == 'Debian'
+    apt: package={{ item }} state=installed
+    with_items:
       - libssl1.0.0
       - libssl-dev
       - libffi-dev  
 
+# FFMPEG
   - name: Install ffmpeg dependencies
     when: ansible_os_family == 'Debian'
     apt: package={{ item }} state=installed
     with_items:
-      - checkinstall 
-      - libfaac-dev
-      - libgpac-dev
-      - libjack-jackd2-dev
-      - libmp3lame-dev 
-      - libopencore-amrnb-dev 
-      - libopencore-amrwb-dev
-      - librtmp-dev 
-      - libsdl1.2-dev 
-      - libtheora-dev 
-      - libva-dev 
-      - libvdpau-dev 
-      - libvorbis-dev
-      - libx11-dev
-      - libxfixes-dev
-      - pkg-config
-      - texi2html
-      - yasm
-      - zlib1g-dev
+        - autoconf
+        - automake
+        - build-essential
+        - pkg-config
+        - git-core
+        - cmake
+        - libass-dev
+        - libfreetype6-dev
+        - libtheora-dev
+        - libtool
+        - libvorbis-dev
+        - texi2html
+        - zlib1g-dev
 
+  - name: Make ffmpeg directories
+    file: dest={{ item }} state=directory
+    become_user: mpvillafranca
+    with_items:
+      - "{{ ffmpeg_source_dir }}"
+      - "{{ ffmpeg_bin_dir }}"
+      - "{{ ffmpeg_build_dir }}"
+
+
+  - name: clone latest yasm
+    become_user: mpvillafranca
+    git: >
+      repo=git://github.com/yasm/yasm.git
+      dest={{ ffmpeg_source_dir }}/yasm
+      accept_hostkey=true
+
+  - name: clone latest x264
+    become_user: mpvillafranca
+    git: >
+      repo=git://git.videolan.org/x264.git
+      dest={{ ffmpeg_source_dir }}/x264
+      accept_hostkey=true
+
+  - name: clone latest x265
+    become_user: mpvillafranca
+    git: >
+      repo=https://github.com/videolan/x265.git
+      dest={{ ffmpeg_source_dir }}/x265
+      accept_hostkey=true
+
+  - name: clone latest fdk-aac
+    become_user: mpvillafranca
+    git: >
+      repo=https://github.com/mstorsjo/fdk-aac.git
+      dest={{ ffmpeg_source_dir }}/fdk-aac
+      accept_hostkey=true
+
+  - name: clone latest libmp3lame
+    become_user: mpvillafranca
+    git: >
+      repo=https://github.com/gypified/libmp3lame.git
+      dest={{ ffmpeg_source_dir }}/libmp3lame
+      accept_hostkey=true
+
+  - name: download opus tarball
+    become_user: mpvillafranca
+    get_url:
+      url="http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz"
+      dest={{ ffmpeg_source_dir }}
+    register: opus_archive
+
+  - name: unarchive opus tarball
+    become_user: mpvillafranca
+    unarchive:
+      src="{{ ffmpeg_source_dir }}/opus-1.1.tar.gz"
+      dest={{ ffmpeg_source_dir }}
+      copy=no
+    when: opus_archive|changed
+
+  - name: clone latest libvpx
+    become_user: mpvillafranca
+    git: >
+      repo=https://chromium.googlesource.com/webm/libvpx.git
+      dest={{ ffmpeg_source_dir }}/libvpx
+      accept_hostkey=true
+  - name: clone latest ffmpeg
+    become_user: mpvillafranca
+    git: >
+      repo=git://github.com/FFmpeg/FFmpeg.git
+      dest={{ ffmpeg_source_dir }}/ffmpeg
+      accept_hostkey=true
+
+  - name: compile yasm
+    command: "{{ item }}"
+    args:
+      chdir: "{{ ffmpeg_source_dir }}/yasm"
+      creates: "{{ ffmpeg_bin_dir }}/yasm"
+    with_items:
+      - ./autogen.sh
+      - "./configure --prefix={{ ffmpeg_build_dir }} --bindir={{ ffmpeg_bin_dir }}"
+      - make
+      - make install
+      - make distclean
+    become_user: mpvillafranca
+
+  - name: compile x264
+    environment: "{{ffmpeg_env}}"
+    command: "{{ item }}"
+    become_user: mpvillafranca
+    args:
+      chdir: "{{ ffmpeg_source_dir }}/x264"
+      creates: "{{ ffmpeg_bin_dir }}/x264"
+    with_items:
+      - ./configure --prefix={{ ffmpeg_build_dir }} --bindir={{ ffmpeg_bin_dir }} --enable-static
+      - make
+      - make install
+      - make distclean
+
+
+  - name: compile x265
+    environment: "{{ffmpeg_env}}"
+    command: "{{ item }}"
+    become_user: mpvillafranca
+    args:
+      chdir: "{{ ffmpeg_source_dir }}/x265/build/linux"
+      creates: "{{ ffmpeg_bin_dir }}/x265"
+    with_items:
+      - cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX={{ ffmpeg_build_dir }} -DENABLE_SHARED:bool=off ../../source
+      - make
+      - make install
+      - make clean
+
+  - name: compile fdk-aac
+    environment: "{{ffmpeg_env}}"
+    command: "{{ item }}"
+    become_user: mpvillafranca
+    args:
+      chdir: "{{ ffmpeg_source_dir }}/fdk-aac"
+      creates: "{{ ffmpeg_build_dir }}/lib/libfdk-aac.a"
+    with_items:
+      - autoreconf -fiv
+      - ./configure --prefix={{ ffmpeg_build_dir }} --disable-shared
+      - make
+      - make install
+      - make distclean
+
+  - name: compile libmp3lame
+    environment: "{{ffmpeg_env}}"
+    command: "{{ item }}"
+    become_user: mpvillafranca
+    args:
+      chdir: "{{ ffmpeg_source_dir }}/libmp3lame"
+      creates: "{{ ffmpeg_build_dir }}/libmp3lame"
+    with_items:
+      - ./configure --prefix={{ ffmpeg_build_dir }} --enable-nasm --disable-shared
+      - make
+      - make install
+      - make distclean
+
+  - name: compile libopus
+    environment: "{{ffmpeg_env}}"
+    command: "{{ item }}"
+    become_user: mpvillafranca
+    args:
+      chdir: "{{ ffmpeg_source_dir }}/opus-1.1"
+      creates: "{{ ffmpeg_build_dir }}/lib/libopus.a"
+    with_items:
+      - ./configure --prefix={{ ffmpeg_build_dir }} --disable-shared
+      - make
+      - make install
+      - make distclean
+
+  - name: compile libvpx
+    environment: "{{ffmpeg_env}}"
+    command: "{{ item }}"
+    args:
+      chdir: "{{ ffmpeg_source_dir }}/libvpx"
+      creates: "{{ ffmpeg_build_dir }}/libvpx"
+    with_items:
+      - ./configure --prefix={{ ffmpeg_build_dir }} --disable-examples --disable-unit-tests
+      - make
+      - make install
+      - make clean
+    become_user: mpvillafranca
+
+  - name: compile ffmpeg
+    environment: "{{ffmpeg_env}}"
+    command: "{{ item }}"
+    become_user: mpvillafranca
+    args:
+      chdir: "{{ ffmpeg_source_dir }}/ffmpeg"
+      creates: "{{ ffmpeg_bin_dir }}/ffmpeg"
+    with_items:
+      - ./configure --prefix={{ ffmpeg_build_dir }} --pkg-config-flags="--static" --extra-cflags=-I{{ ffmpeg_build_dir }}/include --extra-ldflags=-L{{ ffmpeg_build_dir }}/lib --bindir={{ ffmpeg_bin_dir }} --enable-gpl --enable-libass --enable-libfdk-aac --enable-libmp3lame --enable-libopus --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-nonfree
+      - make
+      - make install
+      - make distclean
+
+  - name: update manpath map
+    shell: 'echo "MANPATH_MAP {{ ffmpeg_bin_dir }} {{ ffmpeg_build_dir }}/share/man" >> /etc/manpath.config'
+    tags: manpath
+
+# MYSQL
   - name: Set MySQL root password before installing
     debconf: name='mysql-server' question='mysql-server/root_password' value='{{dbpassword | quote}}' vtype='password'
 
@@ -67,13 +284,13 @@
     with_items:
       - mysql-server
       - libmysqlclient-dev
-
+      - python-mysqldb
 
   - name: Start the MySQL service
     action: service name=mysql state=started
 
   - name: Modify configuration file to listen on all interfaces
-    lineinfile: dest=/etc/mysql/my.cnf regexp="^bind-address" line="bind-address=0.0.0.0"
+    lineinfile: dest=/etc/mysql/mysql.conf.d/mysqld.cnf regexp="^bind-address" line="#bind-address=0.0.0.0"
 
   - name: Restart MySQL
     service: name=mysql state=restarted
@@ -81,9 +298,11 @@
   - name: Create database
     mysql_db: name={{dbname}} login_password={{dbpassword | quote}} state=present
 
+# PIP UPGRADE
   - name: Pip upgrade
     pip: name=pip extra_args='--upgrade'
 
+# VIRTUALENV
   - name: Install virtualenv via pip
     pip: name=virtualenv state=present
 
@@ -91,13 +310,26 @@
     become_user: mpvillafranca
     command: virtualenv /home/{{username}}/VirtualEnvs/hcenv -p python2.7 creates="/home/{{username}}/VirtualEnvs/hcenv"
 
+# GET THE PROJECT
   - name: Clone repository
     become_user: mpvillafranca
     git: repo=https://github.com/hearcloud/hearcloud.git  dest=/home/{{username}}/hearcloud clone=yes force=yes version=dev
     
+# PROJECT REQUIREMENTS
   - name: Install project requirements via pip
     become_user: mpvillafranca
     pip: requirements=/home/{{username}}/hearcloud/requirements/production.txt virtualenv=/home/{{username}}/VirtualEnvs/hcenv state=present
 
+# WWW DIRECTORIES CREATION
+  - name: Creating static and media on /var/www
+    file: path=/var/www/{{item}} state=directory
+    with_items:
+      - static
+      - media
+
+# FOLDERS PERMISSIONS
+  - name: Add mpvillafranca to www-data group
+    user: name=mpvillafranca groups=www-data append=yes
+
   - name: Add permissions over /var/www to the group varwwwusers and set to 770
-    file: path=/var/www/ group=www-data mode=770 recurse=yes
+    file: path=/var/www/ owner=www-data group=www-data mode=770 recurse=yes

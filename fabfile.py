@@ -15,11 +15,11 @@ def checkout_master():
         run('git pull')
 
 def config_nginx():
-    run('sudo mkdir -p /var/www')
-
     with cd('/home/mpvillafranca/hearcloud'):
         run('source /home/mpvillafranca/VirtualEnvs/hcenv/bin/activate && python manage.py collectstatic')
+        run ('cd production-webconfig && python supervisor.conf')
         run('sudo cp production-webconfig/default /etc/nginx/sites-available/')
+        run('sudo cp production-webconfig/nginx.conf /etc/nginx/')
         run('sudo cp production-webconfig/supervisor.conf /etc/supervisor/conf.d/')
 
 def runserver():
