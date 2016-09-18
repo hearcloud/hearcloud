@@ -1,23 +1,59 @@
+{% extends 'box/base.html' %}
 {% load i18n %}
-{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load thumbnail %}
 
-<h3>{% trans 'Edit user profile' %}</h3>
-{% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>
-{% endif %}
+{% block title %}Hearcloud | {{ user.username }} | {% trans 'Account Settings' %}{% endblock %}
 
-<form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="user" value="{{ user }}">
-    {% include 'users/form_template.html' %}
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <div class="modal-buttons">
-            <button type="submit" class="btn btn-success">{% trans 'Submit' %}</button>
-            <button data-dismiss="modal" class="btn btn-default" type="button">
-                <i class="fa fa-times"></i>{% trans 'Cancel' %}
-            </button>
+{% block content %}
+<div class="container-fluid songs-container">
+    <div class="row">
+        <!-- Left cover artwork -->
+        <div class="col-sm-4 col-md-3">
+          <div class="panel panel-default">
+              <div class="panel-body">
+                {% if user.picture %}
+                  <img class="img-responsive img-rounded img-detail-artwork" src="{{ user.picture|thumbnail_url:'normal' }}" alt=""/>
+                {% else %}
+                  <img class="img-responsive img-rounded img-detail-artwork" src="{% static 'users/img/DefaultProfile.png' %}" alt=""/>
+                {% endif %}
+              </div>
+            </div>
+        </div>
+        <!-- User details -->
+        <div class="col-sm-8 col-md-9">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="profile-header">
+                  {% if user.first_name %}<h2>{{ user.first_name }} {% if user.last_name %}{{ user.last_name }}{% endif %}</h2>{% endif %}
+                  <h4>@{{ user.username }}</h4>
+                  <p>
+                      <a href="{% url 'box:index' username=user.slug %}">Songs: <span class="badge">{{ user.get_songs_count }}</span></a>
+                      <a href="{% url 'box:playlist-list' username=user.slug %}">Playlists: <span class="badge">0</span></a>
+                  </p>
+
+                  {% if error_message %}
+                      <p><strong>{{ error_message }}</strong></p>
+                  {% endif %}
+
+                  <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <input type="hidden" name="user" value="{{ user }}">
+                      {% include 'users/form_template.html' %}
+                      <div class="form-group">
+                          <div class="col-sm-offset-2 col-sm-10">
+                              <button type="submit" class="btn btn-success">{% trans 'Submit' %}</button>
+                              <a href="{% url 'users:user-detail' username=user.slug %}">
+                                <button class="btn btn-default" type="button">{% trans 'Cancel' %}</button>
+                              </a>
+                            </div>
+                      </div>
+                  </form>
+
+              </div>
+            </div>
           </div>
         </div>
     </div>
-</form>
+</div>
+{% endblock %}

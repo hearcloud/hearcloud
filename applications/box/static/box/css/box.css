@@ -220,7 +220,7 @@ body {
 /*************************************/
 /* Dropdown menu */
 .user .dropdown-menu {
-    border: 2px solid;
+    border: 1px solid;
 }
 .user .dropdown-menu ul {
     margin: 5px 15px;

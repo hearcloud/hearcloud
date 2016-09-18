@@ -13,7 +13,7 @@
           <div class="panel panel-default">
               <div class="panel-body">
                 {% if user.picture %}
-                <!--<img class="img-rounded profile-thumbnail" src="{% thumbnail profile.photo 100x100 crop %}" alt=""/>-->
+                  <img class="img-responsive img-rounded img-detail-artwork" src="{{ user.picture|thumbnail_url:'normal' }}" alt=""/>
                 {% else %}
                   <img class="img-responsive img-rounded img-detail-artwork" src="{% static 'users/img/DefaultProfile.png' %}" alt=""/>
                 {% endif %}
@@ -25,16 +25,14 @@
           <div class="panel panel-default">
             <div class="panel-body">
               <div class="profile-header">
-                  <h1>{{ user.username }}</h1>
-                  {% if user.first_name %}
-                    <p>{{ user.first_name }}</p>
-                  {% endif %}
+                  {% if user.first_name %}<h2>{{ user.first_name }} {% if user.last_name %}{{ user.last_name }}{% endif %}</h2>{% endif %}
+                  <h4>@{{ user.username }}</h4>
                   <p>
                       <a href="{% url 'box:index' username=user.slug %}">Songs: <span class="badge">{{ user.get_songs_count }}</span></a>
                       <a href="{% url 'box:playlist-list' username=user.slug %}">Playlists: <span class="badge">0</span></a>
                   </p>
                   <p>
-                      <a class="btn btn-default" href="{% url 'users:user-update-profile' username=user.username %}">Edit Profile</a>
+                      <a class="btn btn-default" href="{% url 'users:user-update-settings' username=user.username %}">Edit Profile</a>
                   </p>
               </div>
             </div>

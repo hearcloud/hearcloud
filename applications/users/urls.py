@@ -18,9 +18,6 @@ urlpatterns = [
     # /<username>
     url(r'^users/(?P<username>[\w.@+-]+)/profile/$', views.UserDetailView.as_view(), name='user-detail'),
 
-    # /<username>/edit
-    url(r'^users/(?P<username>[\w.@+-]+)/profile/edit/$', views.UserUpdateView.as_view(), name='user-update-profile'),
-
     # /account/settings
-    url(r'^users/(?P<username>[\w.@+-]+)/account/settings/$', views.UserDetailView.as_view(), name='user-update-settings'),
+    url(r'^users/(?P<username>[\w.@+-]+)/account/settings/$', views.UserUpdateView.as_view(), name='user-update-settings'),
 ]

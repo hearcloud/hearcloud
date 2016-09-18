@@ -1,13 +1,12 @@
 #-*- coding: utf-8 -*-
 
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.utils.timezone import now as tznow
 from django.utils.translation import ugettext as _
 from django.views import generic
 from django.views.generic import View
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 
 from applications.box.views import handler401
@@ -151,6 +150,9 @@ class UserUpdateView(generic.UpdateView):
     form_class = UserUpdateProfileForm
     model = User
     slug_url_kwarg = 'username'
+
+    def get_success_url(self):
+        return reverse_lazy('users:user-detail', kwargs={'username': self.request.user.username})
 
     def form_valid(self, form):
         form.instance.user = self.request.user

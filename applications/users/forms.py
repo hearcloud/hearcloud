@@ -48,16 +48,15 @@ class UserUpdateProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', ]
+        fields = ['first_name', 'last_name', 'picture' ]
         widgets = {
             'first_name': forms.TextInput(attrs = {'class' : 'form-control'}),
             'last_name': forms.TextInput(attrs = {'class' : 'form-control'}),
-            #'picture': forms.FileField(),
         }
         labels = {
             'first_name': _("First name:"),
             'last_name': _("Last name:"),
-            #'picture': _("Avatar:"),
+            'picture': _("Avatar:"),
         }
 
 class UserUpdateSettingsForm(forms.ModelForm):

@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load staticfiles %}
+{% load thumbnail %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,30 +110,28 @@
             <li class="user">
               <a class="dropdown-toggle user-menu" aria-expanded="false" data-toggle="dropdown" id="me">
                 <span class="avatar avatar--s">
-                  <img title="{{ user.username }}" alt="{{ user.username }}" src="{% static 'users/img/DefaultProfile.png' %}" />
+                  <img title="{{ user.username }}" alt="{{ user.username }}" src="{% if user.picture %}{{ user.picture|thumbnail_url:'mini' }}{% else %}{% static 'users/img/DefaultProfile.png' %}{% endif %}"/>
 
                 </span>
               <span class="sr-only">{{ user.username }}</span>
                 </a><div class="dropdown-menu pull-right" role="menu">
                 <ul>
                     <li>
-                    <a href="{% url 'users:user-detail' username=user.slug %}"><i class="fa fa-user fa-fw"></i>
-                    {% trans "Profile" %}
-                    </a></li>
+                      <a href="{% url 'users:user-detail' username=user.slug %}"><i class="fa fa-user fa-fw"></i>
+                      {% trans "Profile" %}
+                      </a>
+                    </li>
                     <li>
-                    <a href="{% url 'users:user-update-profile' username=user.slug %}"><i class="fa fa-edit fa-fw"></i>
-                    {% trans "Edit profile" %}
-                    </a></li>
+                      <a href="{% url 'users:user-update-settings' username=user.slug %}"><i class="fa fa-cog fa-fw"></i>
+                      {% trans "Account settings" %}
+                      </a>
+                    </li>
                     <li class="divider"></li>
                     <li>
-                    <a href="{% url 'users:user-update-settings' username=user.slug %}"><i class="fa fa-cog fa-fw"></i>
-                    {% trans "Account settings" %}
-                    </a></li>
-                    <li class="divider"></li>
-                    <li>
-                    <a rel="nofollow" data-method="delete" href="{% url 'users:logout' %}"><i class="fa fa-arrow-left fa-fw"></i>
-                    {% trans "Logout" %}
-                    </a></li>
+                      <a rel="nofollow" data-method="delete" href="{% url 'users:logout' %}"><i class="fa fa-arrow-left fa-fw"></i>
+                      {% trans "Logout" %}
+                      </a>
+                    </li>
                 </ul>
               </div>
             </li>
