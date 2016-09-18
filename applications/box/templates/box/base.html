@@ -215,14 +215,14 @@
 	  waveColor: '#009688',
 	  progressColor: '#00796b',
 	  backend: 'MediaElement'
-    });
+  });
 
   $('.a-play-song').click(function(){
     var songurl;
     songurl = $(this).attr("data-songurl");
-    var songartwork = $(this).parents('.song').find('.artwork').attr("src");
-    var songtitle = $(this).parents('.song').find('.title').text();
-    var songartist = $(this).parents('.song').find('.artist').text();
+    var songartwork = $(this).attr("data-songartwork");
+    var songtitle = $(this).attr("data-songtitle");
+    var songartist = $(this).attr("data-songartist");
     $('.track-artwork').attr("src", songartwork);
     $('.primary-title').text(songtitle);
     $('.track-artist').text(songartist);

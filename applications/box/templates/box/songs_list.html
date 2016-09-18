@@ -65,7 +65,12 @@
               <!-- Actions -->
               <td class="vert-align" data-title="{% trans "ACTIONS" %}">
                 <!-- Play -->
-                <a class="no-decoration a-play-song" data-songurl="{{ song.file.url }}">
+                <a class="no-decoration a-play-song"
+                    data-songurl="{{ song.file.url }}" 
+                    data-songtitle="{% if song.title %}{{ song.title }}{% endif %}" 
+                    data-songartist="{% if song.artist %}{{ song.artist }}{% endif %}" 
+                    data-songartwork="{% if song.artwork %}{{ song.artwork.url }}{% else %}{% static 'box/images/NoArtwork_Black.png' %}{% endif %}"
+                >
                   <button type="submit" class="btn btn-success btn-xs" data-action="play">
                       <span class="glyphicon glyphicon-play"></span>
                   </button>
