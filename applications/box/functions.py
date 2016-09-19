@@ -231,7 +231,13 @@ def read_and_store_mp4_tags(audio_file, file_name, song):
 
         # - trkn: Track number
         elif i.startswith("trkn"):
-            song.track_number = int(audio_file.tags[i][0][0])
+            print audio_file.tags[i]
+            trkn = audio_file.tags[i][0]
+            if type(trkn) == tuple and len(trkn) == 2:
+                song.track_number = int(trkn[0])
+                song.track_total = int(trkn[1])
+            else:
+                song.track_number = int(trkn[0])
 
         # - tmpo: BPM
         elif i.startswith("tmpo"):
@@ -302,11 +308,14 @@ def save_song_attrs_to_mp4tags(tags, song):
 
     # - trkn: Track number
     if song.track_number:
-        tags["trkn"] = str(song.track_number).decode('unicode-escape')
+        if song.track_total:
+            tags["trkn"] = [(int(song.track_number), int(song.track_total))]
+        else:
+            tags["trkn"] = [(int(song.track_number), int(song.track_number))]
 
     # - tmpo: BPM
     if song.bpm:
-        tags["tmpo"] = str(song.bpm).decode('unicode-escape')
+        tags["tmpo"] = [int(song.bpm)]
 
     # - Original artist
     # if song.original_artist:
